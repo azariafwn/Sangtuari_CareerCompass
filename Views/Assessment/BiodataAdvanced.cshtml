@@ -4,6 +4,13 @@
     ViewData["Title"] = "Data Diri Tambahan";
 }
 
+<style>
+    .fluid-btn {
+        font-size: clamp(0.85rem, 1.2vw, 1.05rem);
+        padding: clamp(0.6rem, 1.5vw, 0.85rem) clamp(1.2rem, 2.5vw, 2.5rem);
+    }
+</style>
+
 <h3 class="fw-bold text-dark fst-italic mb-4 opacity-75" style="font-size: 1.65rem;">Data diri</h3>
 <form id="finalForm">
     @Html.AntiForgeryToken()
@@ -38,9 +45,13 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-between">
-        <button type="button" onclick="history.back()" class="btn btn-outline-dark rounded-pill px-4 py-2.5 fw-medium">Kembali</button>
-        <button type="button" onclick="sendData()" class="btn btn-purple-custom rounded-pill px-5 py-2.5 fw-medium shadow-sm">Mulai Asesmen</button>
+    <div class="d-flex flex-column flex-sm-row justify-content-between gap-3 mt-4">
+        <button type="button" onclick="history.back()" class="btn btn-outline-dark rounded-pill fw-medium fluid-btn order-2 order-sm-1 w-100 w-sm-auto">
+            Kembali
+        </button>
+        <button type="button" onclick="sendData()" class="btn btn-purple-custom rounded-pill fw-medium shadow-sm fluid-btn order-1 order-sm-2 w-100 w-sm-auto">
+            Mulai Asesmen
+        </button>
     </div>
 </form>
 

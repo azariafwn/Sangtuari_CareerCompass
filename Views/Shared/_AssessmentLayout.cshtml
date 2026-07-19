@@ -35,12 +35,11 @@
                 color: white;
             }
 
-        /* Cari dan sesuaikan class berikut di dalam tag <style> */
         .hover-card-select {
             transition: all 0.2s ease;
             background-color: #FFFDF4;
             border: none;
-            color: #4E325A !important; /* Memaksa warna teks tombol menjadi ungu tua */
+            color: #4E325A !important;
         }
 
             .hover-card-select:hover {
@@ -49,40 +48,64 @@
                 color: #4E325A !important;
             }
 
-        /* Tambahkan class ini untuk label form data diri agar ikut berwarna ungu */
-        .text-purple-brand {
-            color: #4E325A !important;
-        }
-
         .form-control:focus {
             box-shadow: 0 0 0 0.25rem rgba(78, 50, 90, 0.2);
             border: 1px solid #4E325A !important;
             background-color: #ffffff !important;
+        }
+
+        .text-nowrap-custom {
+            white-space: nowrap;
+        }
+
+        /* ================= FLUID TYPOGRAPHY UNTUK LAYAR BESAR ================= */
+        /* H1 Utama: Minimum 1.75rem (mobile), ideal 3.5vw, maksimum 3.75rem (desktop besar) */
+        .fluid-title {
+            font-size: clamp(1.75rem, 3.5vw, 3.75rem);
+            line-height: 1.1;
+        }
+
+        /* H2 Sub-title: Minimum 1.1rem, ideal 1.8vw, maksimum 1.75rem */
+        .fluid-subtitle {
+            font-size: clamp(1.1rem, 1.8vw, 1.75rem);
+        }
+
+        /* Deskripsi Paragraf Peningkat Keterbacaan Layar Lebar */
+        .fluid-desc {
+            font-size: clamp(0.95rem, 1.1vw, 1.2rem);
         }
     </style>
 </head>
 <body>
 
     <div class="container-fluid min-vh-100 d-flex p-0 m-0">
-        <div class="row w-100 m-0">
+        <div class="d-flex flex-column flex-md-row w-100 m-0">
 
-            <!-- ================= TEMPLATE FIXED KIRI ================= -->
-            <div class="col-md-5 d-flex flex-column justify-content-center align-items-start text-white p-5 bg-purple-brand">
-                <!-- Klik logo otomatis balik ke index awal assessment -->
-                <a href="@Url.Action("Index", "Assessment")" class="d-inline-block mb-4 shadow-sm rounded-circle bg-white p-2" style="width: 140px; height: 140px;">
-                    <img src="/images/logo-sangtuari.png" alt="Logo Sangtuari" class="img-fluid rounded-circle" onerror="this.style.display='none';">
+            <!-- ================= TEMPLATE FIXED KIRI / ATAS ================= -->
+            <div class="col-12 col-md-5 d-flex flex-row flex-md-column justify-content-start justify-content-md-center align-items-center align-items-md-start text-white p-3 p-md-4 bg-purple-brand gap-3 gap-md-0">
+
+                <!-- Logo Bundar -->
+                <a href="@Url.Action("Index", "Assessment")" class="d-inline-flex align-items-center justify-content-center shadow-sm rounded-circle bg-white p-1 mb-0 mb-md-4" style="width: 80px; height: 80px; min-width: 80px; max-width: 150px; max-height: 150px; width: clamp(80px, 12vw, 150px); height: clamp(80px, 12vw, 150px);">
+                    <img src="~/images/logo-sangtuari.png" alt="Logo Sangtuari" class="img-fluid rounded-circle">
                 </a>
-                <h2 class="fw-normal m-0 fs-4 text-start">Selamat Datang di</h2>
-                <h1 class="fw-bold fst-italic tracking-tight text-start my-2" style="font-size: 3.25rem; line-height: 1.1;">
-                    <span class="text-white">Sangtuari's</span><br><span class="text-yellow-brand">Career Compass</span>
-                </h1>
-                <p class="fs-6 opacity-75 fw-bold text-start lh-base mt-3" style="max-width: 400px;">
-                    Psikotes <em>online</em> untuk membantumu mengenali potensi, minat, kepribadian, serta arah pendidikan dan karier yang paling sesuai.
-                </p>
+
+                <!-- Kontainer Teks Beradaptasi Responsif -->
+                <div class="d-flex flex-column align-items-start w-100">
+                    <h2 class="fw-normal m-0 text-start opacity-75 fluid-subtitle">Selamat Datang di</h2>
+                    <h1 class="fw-bold fst-italic tracking-tight text-start my-1 my-md-3 fluid-title">
+                        <span class="text-white text-nowrap-custom">Sangtuari's</span><br class="d-md-block" />
+                        <span class="text-yellow-brand text-nowrap-custom">Career Compass</span>
+                    </h1>
+                    <!-- Deskripsi Deskriptif Otomatis Proporsional di Monitor Besar -->
+                    <p class="opacity-75 fw-normal text-start lh-base mt-2 d-none d-md-block fluid-desc" style="max-width: 450px;">
+                        Psikotes <em>online</em> untuk membantumu mengenali potensi, minat, kepribadian, serta arah pendidikan dan karier yang paling sesuai.
+                    </p>
+                </div>
+
             </div>
 
-            <!-- ================= KANAN DINAMIS (BERUBAH TIAP PAGE) ================= -->
-            <div class="col-md-7 d-flex align-items-center justify-content-center p-5">
+            <!-- ================= KANAN / BAWAH DINAMIS ================= -->
+            <div class="col-12 col-md-7 d-flex align-items-center justify-content-center p-4 p-md-5">
                 <div class="w-100" style="max-width: 580px;">
                     @RenderBody()
                 </div>
