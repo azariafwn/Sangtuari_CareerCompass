@@ -1,0 +1,19 @@
+﻿## User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+x64/
+x86/
+bincache/
+obj/
+bin/
+
+## Visual Studio 2015/2017/2019/2022 cache folder
+.vs/

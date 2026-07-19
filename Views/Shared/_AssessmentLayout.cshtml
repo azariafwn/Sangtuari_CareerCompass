@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - Sangtuari</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #FFE375;
+            overflow-x: hidden;
+        }
+
+        .bg-purple-brand {
+            background-color: #4E325A;
+        }
+
+        .text-yellow-brand {
+            color: #FFE375 !important;
+        }
+
+        .bg-input-custom {
+            background-color: #FFFDF4 !important;
+        }
+
+        .btn-purple-custom {
+            background-color: #9C7BB4;
+            color: white;
+            transition: all 0.2s ease;
+        }
+
+            .btn-purple-custom:hover {
+                background-color: #85629D;
+                color: white;
+            }
+
+        /* Cari dan sesuaikan class berikut di dalam tag <style> */
+        .hover-card-select {
+            transition: all 0.2s ease;
+            background-color: #FFFDF4;
+            border: none;
+            color: #4E325A !important; /* Memaksa warna teks tombol menjadi ungu tua */
+        }
+
+            .hover-card-select:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 .5rem 1rem rgba(0,0,0,.08) !important;
+                color: #4E325A !important;
+            }
+
+        /* Tambahkan class ini untuk label form data diri agar ikut berwarna ungu */
+        .text-purple-brand {
+            color: #4E325A !important;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 0.25rem rgba(78, 50, 90, 0.2);
+            border: 1px solid #4E325A !important;
+            background-color: #ffffff !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid min-vh-100 d-flex p-0 m-0">
+        <div class="row w-100 m-0">
+
+            <!-- ================= TEMPLATE FIXED KIRI ================= -->
+            <div class="col-md-5 d-flex flex-column justify-content-center align-items-start text-white p-5 bg-purple-brand">
+                <!-- Klik logo otomatis balik ke index awal assessment -->
+                <a href="@Url.Action("Index", "Assessment")" class="d-inline-block mb-4 shadow-sm rounded-circle bg-white p-2" style="width: 140px; height: 140px;">
+                    <img src="/images/logo-sangtuari.png" alt="Logo Sangtuari" class="img-fluid rounded-circle" onerror="this.style.display='none';">
+                </a>
+                <h2 class="fw-normal m-0 fs-4 text-start">Selamat Datang di</h2>
+                <h1 class="fw-bold fst-italic tracking-tight text-start my-2" style="font-size: 3.25rem; line-height: 1.1;">
+                    <span class="text-white">Sangtuari's</span><br><span class="text-yellow-brand">Career Compass</span>
+                </h1>
+                <p class="fs-6 opacity-75 fw-bold text-start lh-base mt-3" style="max-width: 400px;">
+                    Psikotes <em>online</em> untuk membantumu mengenali potensi, minat, kepribadian, serta arah pendidikan dan karier yang paling sesuai.
+                </p>
+            </div>
+
+            <!-- ================= KANAN DINAMIS (BERUBAH TIAP PAGE) ================= -->
+            <div class="col-md-7 d-flex align-items-center justify-content-center p-5">
+                <div class="w-100" style="max-width: 580px;">
+                    @RenderBody()
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

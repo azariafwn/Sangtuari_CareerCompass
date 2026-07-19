@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "~/Views/Shared/_AssessmentLayout.cshtml";
+    ViewData["Title"] = "Pilih Asesmen";
+}
+
+<h3 class="fw-bold text-purple-brand fst-italic mb-4 opacity-75 text-left" style="font-size: 1.65rem;">Pilih jenis asesmen</h3>
+<div class="d-flex flex-column gap-3">
+    <!-- Mengubah text-start menjadi text-center -->
+    <a href="@Url.Action("BiodataBasic", new { type = "Exploration" })" class="btn text-center fst-italic p-4 rounded-4 shadow-sm hover-card-select">
+        <span class="fw-bolder d-block fs-4">Exploration</span>
+        <span class="small fw-bold">(SMP/Sederajat)</span>
+    </a>
+
+    <a href="@Url.Action("BiodataBasic", new { type = "Discovery" })" class="btn text-center fst-italic p-4 rounded-4 shadow-sm hover-card-select">
+        <span class="fw-bolder d-block fs-4">Discovery</span>
+        <span class="small fw-bold">(SMA/Sederajat)</span>
+    </a>
+
+    <a href="@Url.Action("ComingSoon")" class="btn text-center fst-italic p-4 rounded-4 shadow-sm hover-card-select">
+        <span class="fw-bolder d-block fs-4">Advanced</span>
+        <span class="small fw-bold">(Dewasa/Mahasiswa/Pekerja)</span>
+    </a>
+</div>

@@ -1,0 +1,79 @@
+﻿@model SangtuariCareerCompass.Models.DTOs.AssessmentSubmissionDto
+@{
+    Layout = "~/Views/Shared/_AssessmentLayout.cshtml";
+    ViewData["Title"] = "Data Diri Tambahan";
+}
+
+<h3 class="fw-bold text-dark fst-italic mb-4 opacity-75" style="font-size: 1.65rem;">Data diri</h3>
+<form id="finalForm">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="AssessmentType" value="@Model.AssessmentType" />
+    <input type="hidden" id="Email" value="@Model.Email" />
+    <input type="hidden" id="FullName" value="@Model.FullName" />
+    <input type="hidden" id="Gender" value="@Model.Gender" />
+    <input type="hidden" id="BirthDate" value="@Model.BirthDate.ToString("yyyy-MM-dd")" />
+    <input type="hidden" id="SchoolName" value="@Model.SchoolName" />
+    <input type="hidden" id="ClassName" value="@Model.ClassName" />
+    <input type="hidden" id="Major" value="@Model.Major" />
+
+    <div class="mb-3"><label class="form-label text-dark fw-medium small mb-1">Pekerjaan Ayah</label><input type="text" id="FatherJob" class="form-control rounded-4 border-0 py-2.5 bg-input-custom shadow-sm"></div>
+    <div class="mb-3"><label class="form-label text-dark fw-medium small mb-1">Pekerjaan Ibu</label><input type="text" id="MotherJob" class="form-control rounded-4 border-0 py-2.5 bg-input-custom shadow-sm"></div>
+    <div class="mb-3"><label class="form-label text-dark fw-medium small mb-1">Hobi</label><input type="text" id="Hobby" class="form-control rounded-4 border-0 py-2.5 bg-input-custom shadow-sm"></div>
+    <div class="mb-3"><label class="form-label text-dark fw-medium small mb-1">Cita-cita</label><input type="text" id="Goals" class="form-control rounded-4 border-0 py-2.5 bg-input-custom shadow-sm"></div>
+
+    <div class="mb-3">
+        <label class="form-label text-dark fw-medium small mb-2">3 Mata Pelajaran yang Paling Disukai</label>
+        <div class="d-flex gap-3">
+            <input type="text" id="L1" class="form-control rounded-4 border-0 py-2.5 text-center bg-input-custom shadow-sm">
+            <input type="text" id="L2" class="form-control rounded-4 border-0 py-2.5 text-center bg-input-custom shadow-sm">
+            <input type="text" id="L3" class="form-control rounded-4 border-0 py-2.5 text-center bg-input-custom shadow-sm">
+        </div>
+    </div>
+    <div class="mb-4">
+        <label class="form-label text-dark fw-medium small mb-2">3 Mata Pelajaran yang Paling Tidak Disukai</label>
+        <div class="d-flex gap-3">
+            <input type="text" id="D1" class="form-control rounded-4 border-0 py-2.5 text-center bg-input-custom shadow-sm">
+            <input type="text" id="D2" class="form-control rounded-4 border-0 py-2.5 text-center bg-input-custom shadow-sm">
+            <input type="text" id="D3" class="form-control rounded-4 border-0 py-2.5 text-center bg-input-custom shadow-sm">
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <button type="button" onclick="history.back()" class="btn btn-outline-dark rounded-pill px-4 py-2.5 fw-medium">Kembali</button>
+        <button type="button" onclick="sendData()" class="btn btn-purple-custom rounded-pill px-5 py-2.5 fw-medium shadow-sm">Mulai Asesmen</button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        async function sendData() {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            const payload = {
+                AssessmentType: document.getElementById('AssessmentType').value,
+                Email: document.getElementById('Email').value,
+                FullName: document.getElementById('FullName').value,
+                Gender: document.getElementById('Gender').value,
+                BirthDate: document.getElementById('BirthDate').value,
+                SchoolName: document.getElementById('SchoolName').value,
+                ClassName: document.getElementById('ClassName').value,
+                Major: document.getElementById('Major').value,
+                FatherJob: document.getElementById('FatherJob').value,
+                MotherJob: document.getElementById('MotherJob').value,
+                Hobby: document.getElementById('Hobby').value,
+                Goals: document.getElementById('Goals').value,
+                LikedSubjects: [document.getElementById('L1').value, document.getElementById('L2').value, document.getElementById('L3').value].filter(Boolean),
+                DislikedSubjects: [document.getElementById('D1').value, document.getElementById('D2').value, document.getElementById('D3').value].filter(Boolean)
+            };
+
+            try {
+                const res = await fetch('/Assessment/SubmitFinal', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+                    body: JSON.stringify(payload)
+                });
+                if(res.ok) alert('Registrasi Berhasil! Menuju ke Ujian.');
+                else alert('Gagal menyimpan.');
+            } catch { alert('Koneksi bermasalah.'); }
+        }
+    </script>
+}

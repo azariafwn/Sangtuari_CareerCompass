@@ -1,0 +1,41 @@
+﻿@model SangtuariCareerCompass.Models.DTOs.AssessmentSubmissionDto
+@{
+    Layout = "~/Views/Shared/_AssessmentLayout.cshtml";
+    ViewData["Title"] = "Data Diri Dasar";
+}
+
+<h3 class="fw-bold text-dark fst-italic mb-4 opacity-75" style="font-size: 1.65rem;">Data diri</h3>
+<form action="@Url.Action("BiodataAdvanced")" method="post" autocomplete="off">
+    <input type="hidden" name="AssessmentType" value="@ViewBag.AssessmentType" />
+
+    <div class="mb-3">
+        <label class="form-label text-dark fw-medium small mb-1">Email</label>
+        <input type="email" name="Email" class="form-control rounded-4 border-0 py-2.5 px-3 shadow-sm bg-input-custom" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label text-dark fw-medium small mb-1">Nama Lengkap</label>
+        <input type="text" name="FullName" class="form-control rounded-4 border-0 py-2.5 px-3 shadow-sm bg-input-custom" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label text-dark fw-medium small mb-2 d-block">Jenis Kelamin</label>
+        <div class="d-flex gap-4">
+            <div class="form-check"><input class="form-check-input" type="radio" name="Gender" id="gP" value="Perempuan" checked><label class="form-check-label text-dark fst-italic" for="gP">Perempuan</label></div>
+            <div class="form-check"><input class="form-check-input" type="radio" name="Gender" id="gL" value="Laki-laki"><label class="form-check-label text-dark fst-italic" for="gL">Laki-laki</label></div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label text-dark fw-medium small mb-1">Tanggal Lahir</label>
+        <input type="date" name="BirthDate" class="form-control rounded-4 border-0 py-2.5 px-3 shadow-sm bg-input-custom" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label text-dark fw-medium small mb-1">Asal Sekolah</label>
+        <input type="text" name="SchoolName" class="form-control rounded-4 border-0 py-2.5 px-3 shadow-sm bg-input-custom" required>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3"><label class="form-label text-dark fw-medium small mb-1">Kelas</label><input type="text" name="ClassName" class="form-control rounded-4 border-0 py-2.5 px-3 shadow-sm bg-input-custom" required></div>
+        <div class="col-md-6 mb-3"><label class="form-label text-dark fw-medium small mb-1">Jurusan</label><input type="text" name="Major" class="form-control rounded-4 border-0 py-2.5 px-3 shadow-sm bg-input-custom" required></div>
+    </div>
+    <div class="text-end mt-4">
+        <button type="submit" class="btn btn-purple-custom rounded-pill px-5 py-2.5 fw-medium shadow-sm">Selanjutnya</button>
+    </div>
+</form>
