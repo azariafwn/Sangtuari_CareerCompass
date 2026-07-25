@@ -1,0 +1,194 @@
+﻿@{
+    Layout = "~/Views/Shared/_QuizLayout.cshtml";
+    ViewData["Title"] = "EAS 1 - Verbal Comprehension";
+    ViewData["SubTestName"] = "EAS 1: Verbal Comprehension";
+}
+
+<style>
+    .eas-word {
+        font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+        color: #4E325A;
+    }
+
+    .btn-option {
+        border: 1.5px solid #EFE8D8;
+        background-color: #FFFDF4;
+        color: #4E325A;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        padding: 0.75rem 0.5rem;
+        font-size: clamp(0.85rem, 1.5vw, 1rem);
+    }
+
+    .btn-check:checked + .btn-option {
+        background-color: #4E325A !important;
+        color: #FFE375 !important;
+        border-color: #4E325A !important;
+    }
+
+    .btn-option:hover {
+        background-color: #F5EBF8;
+        border-color: #9C7BB4;
+    }
+
+    .bg-purple-main {
+        background-color: #4E325A;
+    }
+
+    .btn-purple-custom {
+        background-color: #4E325A;
+        color: #FFE375;
+        border: none;
+    }
+
+        .btn-purple-custom:hover {
+            background-color: #3b2544;
+            color: #ffffff;
+        }
+</style>
+
+<!-- Header & Timer Bar di Kartu Instruksi -->
+<div class="card border-0 shadow-sm rounded-4 p-3 p-md-4 mb-4 bg-white">
+    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+        <h6 class="fw-bold text-dark m-0">Instruksi EAS 1</h6>
+        <div class="d-flex align-items-center gap-2">
+            <span class="text-muted small">Sisa Waktu:</span>
+            <!-- Tambahkan class "timer-text" di sini -->
+            <span class="badge rounded-pill px-3 py-2 fs-6 bg-purple-main text-warning timer-text">05:00</span>
+        </div>
+    </div>
+    <p class="text-muted small mb-0 lh-sm">
+        Pilih satu kata dari 4 pilihan yang memiliki <strong>kesamaan arti/makna</strong> dengan kata utama.
+    </p>
+</div>
+
+<form id="eas1Form">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="UserAssessmentId" value="@ViewBag.UserAssessmentId" />
+
+    <!-- Container Soal Dinamis -->
+    <div id="questionsContainer" class="d-flex flex-column gap-3 mb-4"></div>
+
+    <!-- Submit Button -->
+    <div class="text-end mb-5">
+        <button type="button" id="btnSubmit" onclick="submitEas1()" class="btn btn-purple-custom rounded-pill px-5 py-3 fw-bold shadow-sm w-100 w-md-auto">
+            Kirim & Lanjut ke EAS 2
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        // Menggunakan System.Text.Json via System.Web.HttpUtility untuk mengamankan data dari XSS
+        const rawQuestions = '@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(ViewBag.QuestionsJson ?? "[]"))';
+        const questions = JSON.parse(rawQuestions);
+        const container = document.getElementById('questionsContainer');
+        let isSubmitting = false;
+
+        // Render Soal
+        if (Array.isArray(questions) && questions.length > 0) {
+            questions.forEach((q) => {
+                const card = document.createElement('div');
+                card.className = 'card border-0 shadow-sm rounded-4 p-3 p-md-4 bg-white';
+
+                let optionsHtml = '';
+                q.options.forEach((opt, idx) => {
+                    const optId = `Q_${q.id}_${idx}`;
+                    optionsHtml += `
+                        <div class="col-6 col-md-3">
+                            <input type="radio" class="btn-check" name="Q_${q.id}" id="${optId}" value="${opt}" autocomplete="off">
+                            <label class="btn btn-option w-100 rounded-3 text-truncate" for="${optId}">${opt}</label>
+                        </div>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="fw-bold mb-3 eas-word">${q.id}. ${q.word}</div>
+                    <div class="row g-2">${optionsHtml}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+                // Timer 5 Menit (300 detik)
+        let duration = 300;
+
+        const countdown = setInterval(() => {
+            if (isSubmitting) {
+                clearInterval(countdown);
+                return;
+            }
+
+            let m = Math.floor(duration / 60);
+            let s = duration % 60;
+            const formattedTime = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+
+            // Update timer di header (id="timerDisplay")
+            const headerTimer = document.getElementById('timerDisplay');
+            if (headerTimer) headerTimer.textContent = formattedTime;
+
+            // Update seluruh timer lokal di halaman (class="timer-text")
+            document.querySelectorAll('.timer-text').forEach(el => {
+                el.textContent = formattedTime;
+            });
+
+            if (--duration < 0) {
+                clearInterval(countdown);
+                alert("Waktu pengerjaan EAS 1 habis! Jawaban Anda akan otomatis dikirim.");
+                submitEas1();
+            }
+        }, 1000);
+
+        async function submitEas1() {
+            if (isSubmitting) return; // Prevent Double Submission
+
+            isSubmitting = true;
+            const submitBtn = document.getElementById('btnSubmit');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Memproses...';
+
+            const answers = {};
+            questions.forEach(q => {
+                const selected = document.querySelector(`input[name="Q_${q.id}"]:checked`);
+                answers[`Q${q.id}`] = selected ? selected.value : "";
+            });
+
+            const payload = {
+                UserAssessmentId: document.getElementById('UserAssessmentId').value,
+                SubTestName: "EAS-1",
+                Answers: answers
+            };
+
+            const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+
+            try {
+                const response = await fetch('/Assessment/SubmitSubTest', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': tokenElement ? tokenElement.value : ''
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    window.location.href = result.redirectUrl || `/Quiz/Eas2?userAssessmentId=${payload.UserAssessmentId}`;
+                } else {
+                    alert("Gagal menyimpan jawaban. Silakan coba lagi.");
+                    resetSubmitState();
+                }
+            } catch (e) {
+                alert("Koneksi bermasalah. Periksa jaringan Anda.");
+                resetSubmitState();
+            }
+        }
+
+        function resetSubmitState() {
+            isSubmitting = false;
+            const submitBtn = document.getElementById('btnSubmit');
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'Kirim & Lanjut ke EAS 2';
+        }
+    </script>
+}

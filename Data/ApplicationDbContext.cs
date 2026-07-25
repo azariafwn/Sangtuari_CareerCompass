@@ -8,14 +8,19 @@ namespace SangtuariCareerCompass.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<UserAssessment> UserAssessments { get; set; }
+        public DbSet<UserAnswer> UserAnswers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Memetakan properti JsonDocument menjadi kolom JSONB di PostgreSQL
+            // Pemetaan khusus kolom JSONB PostgreSQL
             modelBuilder.Entity<UserAssessment>()
-                .Property(b => b.AdditionalData)
+                .Property(u => u.AdditionalData)
+                .HasColumnType("jsonb");
+
+            modelBuilder.Entity<UserAnswer>()
+                .Property(a => a.Answers)
                 .HasColumnType("jsonb");
         }
     }

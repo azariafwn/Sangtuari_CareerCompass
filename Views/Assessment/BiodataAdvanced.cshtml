@@ -57,7 +57,7 @@
 
 @section Scripts {
     <script>
-        async function sendData() {
+                async function sendData() {
             const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
             const payload = {
                 AssessmentType: document.getElementById('AssessmentType').value,
@@ -79,12 +79,25 @@
             try {
                 const res = await fetch('/Assessment/SubmitFinal', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': token
+                    },
                     body: JSON.stringify(payload)
                 });
-                if(res.ok) alert('Registrasi Berhasil! Menuju ke Ujian.');
-                else alert('Gagal menyimpan.');
-            } catch { alert('Koneksi bermasalah.'); }
+
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                        localStorage.clear();
+                        // Redirect ke CFIT (Coming Soon) sebagai tes pertama
+                        window.location.href = `/Quiz/Cfit?userAssessmentId=${data.userAssessmentId}`;
+                } else {
+                    alert('Gagal menyimpan biodata: ' + (data.message || 'Terjadi kesalahan.'));
+                }
+            } catch (err) {
+                alert('Koneksi bermasalah.');
+            }
         }
     </script>
 }

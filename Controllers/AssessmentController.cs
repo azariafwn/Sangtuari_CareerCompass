@@ -37,11 +37,21 @@ namespace SangtuariCareerCompass.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SubmitFinal([FromBody] AssessmentSubmissionDto dto)
         {
-            if (!ModelState.IsValid) return BadRequest(new { message = "Data tidak valid." });
+            if (!ModelState.IsValid)
+                return BadRequest(new { success = false, message = "Data tidak valid." });
 
             try
             {
-                var additionalDataObj = new { dto.FatherJob, dto.MotherJob, dto.Hobby, dto.Goals, dto.LikedSubjects, dto.DislikedSubjects };
+                var additionalDataObj = new
+                {
+                    dto.FatherJob,
+                    dto.MotherJob,
+                    dto.Hobby,
+                    dto.Goals,
+                    dto.LikedSubjects,
+                    dto.DislikedSubjects
+                };
+
                 var assessment = new UserAssessment
                 {
                     AssessmentType = dto.AssessmentType,
@@ -57,11 +67,46 @@ namespace SangtuariCareerCompass.Controllers
 
                 _context.UserAssessments.Add(assessment);
                 await _context.SaveChangesAsync();
+
+                // Kembalikan ID assessment yang baru dibuat agar frontend bisa mengarahkannya ke tes pertama
+                return Ok(new { success = true, userAssessmentId = assessment.Id });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SubmitSubTest([FromBody] SubTestSubmissionDto dto)
+        {
+            if (dto == null || dto.UserAssessmentId == Guid.Empty || string.IsNullOrEmpty(dto.SubTestName))
+            {
+                return BadRequest(new { success = false, message = "Payload data tidak valid." });
+            }
+
+            try
+            {
+                // Parse JsonElement DTO ke JsonDocument untuk kolom JSONB PostgreSQL
+                var answersJsonDoc = JsonDocument.Parse(dto.Answers.GetRawText());
+
+                var userAnswer = new UserAnswer
+                {
+                    UserAssessmentId = dto.UserAssessmentId,
+                    SubTestName = dto.SubTestName,
+                    Answers = answersJsonDoc,
+                    SubmittedAt = DateTime.UtcNow
+                };
+
+                _context.UserAnswers.Add(userAnswer);
+                await _context.SaveChangesAsync();
+
                 return Ok(new { success = true });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = ex.Message });
+                return StatusCode(500, new { success = false, message = ex.Message });
             }
         }
     }

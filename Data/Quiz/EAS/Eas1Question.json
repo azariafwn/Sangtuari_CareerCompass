@@ -1,0 +1,152 @@
+﻿[
+  {
+    "id": 1,
+    "word": "TAJAM",
+    "options": [ "rendah", "runcing", "tebal", "tumpul" ]
+  },
+  {
+    "id": 2,
+    "word": "MENENTUKAN",
+    "options": [ "pola", "menunjukkan", "menjual", "alamat" ]
+  },
+  {
+    "id": 3,
+    "word": "JOMPO",
+    "options": [ "orang tua", "tidak berguna", "muda", "berat" ]
+  },
+  {
+    "id": 4,
+    "word": "PENDERMA",
+    "options": [ "kebajikan", "hadiah", "pakan", "pemberi" ]
+  },
+  {
+    "id": 5,
+    "word": "BANYAK",
+    "options": [ "berlimpah", "berguna", "sangsi", "pengharapan" ]
+  },
+  {
+    "id": 6,
+    "word": "SABAR",
+    "options": [ "kesukaan", "bertahan", "tidak suka", "takut" ]
+  },
+  {
+    "id": 7,
+    "word": "TIDAK TAHU ADAT",
+    "options": [ "luwes", "manja", "kasar", "bangga" ]
+  },
+  {
+    "id": 8,
+    "word": "PONDOK",
+    "options": [ "gubuk", "meminta-minta", "pengemis", "peri" ]
+  },
+  {
+    "id": 9,
+    "word": "KAUM FAKIR",
+    "options": [ "murah", "lemah", "miskin", "kotor" ]
+  },
+  {
+    "id": 10,
+    "word": "MENCAKUP",
+    "options": [ "tersembunyi", "melingkupi", "membagi", "pintar" ]
+  },
+  {
+    "id": 11,
+    "word": "MENGEJEK",
+    "options": [ "menggoda", "melukai", "berkelahi", "menghina" ]
+  },
+  {
+    "id": 12,
+    "word": "BERLIKU-LIKU",
+    "options": [ "pengukuran", "bertahan", "menyimpang", "pelari" ]
+  },
+  {
+    "id": 13,
+    "word": "TAKDIR",
+    "options": [ "tidak terelakan", "yang menentukan", "tekun", "bimbang" ]
+  },
+  {
+    "id": 14,
+    "word": "ENCER",
+    "options": [ "kuat", "berlimpah", "berair", "cuka" ]
+  },
+  {
+    "id": 15,
+    "word": "ORTODOK",
+    "options": [ "empat persegi panjang", "konvensional", "tata bahasa", "mencegah" ]
+  },
+  {
+    "id": 16,
+    "word": "GEMAR",
+    "options": [ "menghitamkan", "gelisah", "hasrat", "tidak takut" ]
+  },
+  {
+    "id": 17,
+    "word": "EFISIEN",
+    "options": [ "rajin", "baik", "bernilai", "efektif" ]
+  },
+  {
+    "id": 18,
+    "word": "MENGECAP",
+    "options": [ "mencicipi", "makanan", "kuat", "lunak" ]
+  },
+  {
+    "id": 19,
+    "word": "PENGECOH",
+    "options": [ "kerdil", "rayap", "kikir", "penipu lihai" ]
+  },
+  {
+    "id": 20,
+    "word": "PEDUSUNAN",
+    "options": [ "berbau busuk", "pedesaan", "membingungkan", "lembut" ]
+  },
+  {
+    "id": 21,
+    "word": "KERAM",
+    "options": [ "berkesinambungan", "ayan", "antusias", "kejang" ]
+  },
+  {
+    "id": 22,
+    "word": "SEMBARANG",
+    "options": [ "acak", "berbahaya", "berbahagia", "yang berlalu" ]
+  },
+  {
+    "id": 23,
+    "word": "TERCEMAR",
+    "options": [ "menulari", "warna", "lenyap", "cat" ]
+  },
+  {
+    "id": 24,
+    "word": "PENURUT",
+    "options": [ "tidak setuju", "diam", "patuh", "rebut" ]
+  },
+  {
+    "id": 25,
+    "word": "JAHAT",
+    "options": [ "keji", "tamak", "bersahabat", "membosankan" ]
+  },
+  {
+    "id": 26,
+    "word": "DITANGGUHKAN",
+    "options": [ "kebencian", "kendaraan", "menunda", "kontrol" ]
+  },
+  {
+    "id": 27,
+    "word": "MEMALUKAN",
+    "options": [ "menunda", "meninggalkan", "menghantam", "aib" ]
+  },
+  {
+    "id": 28,
+    "word": "TARIAN KLASIK",
+    "options": [ "dansa", "jarak", "instan", "sindiran" ]
+  },
+  {
+    "id": 29,
+    "word": "DIBEBANKAN",
+    "options": [ "penipuan", "permintaan", "bui", "pajak" ]
+  },
+  {
+    "id": 30,
+    "word": "BERBICARA PANJANG LEBAR",
+    "options": [ "berhasil", "bertele-tele", "gejala", "firasat" ]
+  }
+]
