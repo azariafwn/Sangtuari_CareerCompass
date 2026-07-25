@@ -1,0 +1,418 @@
+[
+  {
+    "id": 1,
+    "question": "Saya ingin mendatangi satu toko yang disarankan teman. Saya akan:",
+    "options": [
+      {
+        "code": "a",
+        "text": "Mencari toko itu berdasarkan tempat lain di sekitar situ yang sudah saya tahu.",
+        "category": "K"
+      },
+      {
+        "code": "b",
+        "text": "Bertanya pada teman yang tahu arah toko itu.",
+        "category": "A"
+      },
+      {
+        "code": "c",
+        "text": "Menuliskan alamat lengkap dan daftar belokan yang harus saya ingat.",
+        "category": "R"
+      },
+      {
+        "code": "d",
+        "text": "Menggunakan peta yang menunjukkan lokasi toko itu.",
+        "category": "V"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "question": "Suatu situs internet memiliki video mengenai cara membuat suatu grafik khusus. Di situs itu ada orang yang bicara, ada daftar langkah pembuatan video, dan ada beberapa diagram. Saya paling mengerti isi situs itu dengan cara:",
+    "options": [
+      {
+        "code": "a",
+        "text": "Mengamati diagram petunjuknya.",
+        "category": "V"
+      },
+      {
+        "code": "b",
+        "text": "Mendengar suara yang menjelaskan.",
+        "category": "A"
+      },
+      {
+        "code": "c",
+        "text": "Membaca instruksi yang tertulis.",
+        "category": "R"
+      },
+      {
+        "code": "d",
+        "text": "Melihat tindakan orangnya.",
+        "category": "K"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "question": "Saya ingin mengetahui lebih dalam mengenai suatu tur wisata yang saya rencanakan. Saya akan:",
+    "options": [
+      {
+        "code": "a",
+        "text": "Melihat detail kegiatan dan aktivitas yang akan dilakukan.",
+        "category": "K"
+      },
+      {
+        "code": "b",
+        "text": "Melihat petanya dan mengamati lokasi-lokasi turnya.",
+        "category": "V"
+      },
+      {
+        "code": "c",
+        "text": "Membaca perincian jadwal kegiatan tur tersebut.",
+        "category": "R"
+      },
+      {
+        "code": "d",
+        "text": "Bicara dengan pengelola atau peserta lain di tur itu.",
+        "category": "A"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "question": "Dalam memilih karir atau jurusan pendidikan, yang penting bagi saya adalah:",
+    "options": [
+      {
+        "code": "a",
+        "text": "Aplikasi ilmu pada kondisi nyata yang dihadapi.",
+        "category": "K"
+      },
+      {
+        "code": "b",
+        "text": "Berkomunikasi dengan orang dengan berdiskusi.",
+        "category": "A"
+      },
+      {
+        "code": "c",
+        "text": "Pekerjaan yang memakai desain, peta, atau bagan.",
+        "category": "V"
+      },
+      {
+        "code": "d",
+        "text": "Penggunaan kata yang tepat dalam komunikasi tertulis.",
+        "category": "R"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "question": "Saat belajar, saya:",
+    "options": [
+      {
+        "code": "a",
+        "text": "Belajar dengan berdiskusi.",
+        "category": "A"
+      },
+      {
+        "code": "b",
+        "text": "Mencari pola tertentu.",
+        "category": "V"
+      },
+      {
+        "code": "c",
+        "text": "Menggunakan contoh dan penerapan.",
+        "category": "K"
+      },
+      {
+        "code": "d",
+        "text": "Membaca buku, artikel dan diktat.",
+        "category": "R"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "question": "Saya ingin menabung lebih banyak dan mempertimbangkan beberapa cara. Saya akan:",
+    "options": [
+      {
+        "code": "a",
+        "text": "Mempertimbangkan contoh dari setiap cara penghematan berdasarkan kondisi keuangan saya.",
+        "category": "K"
+      },
+      {
+        "code": "b",
+        "text": "Membaca brosur tertulis yang menjelaskan cara-cara berhemat secara detail.",
+        "category": "R"
+      },
+      {
+        "code": "c",
+        "text": "Memakai grafik yang menunjukkan variasi pilihan dan jangka waktu yang dibutuhkan.",
+        "category": "V"
+      },
+      {
+        "code": "d",
+        "text": "Bicara dengan ahli keuangan mengenai cara-cara berhemat yang bisa ditempuh.",
+        "category": "A"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "question": "Saya ingin mempelajari suatu jenis permainan kartu yang baru. Saya akan:",
+    "options": [
+      {
+        "code": "a",
+        "text": "Melihat orang lain bermain sebelum saya ikut mencoba.",
+        "category": "K"
+      },
+      {
+        "code": "b",
+        "text": "Mendengar penjelasan orang serta bertanya padanya.",
+        "category": "A"
+      },
+      {
+        "code": "c",
+        "text": "Memakai diagram yang menjelaskan tahap, langkah dan strategi permainannya.",
+        "category": "V"
+      },
+      {
+        "code": "d",
+        "text": "Membaca petunjuk tertulis pada permainan itu.",
+        "category": "R"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "question": "Saya mempunyai masalah jantung. Saya lebih suka dokter yang:",
+    "options": [
+      {
+        "code": "a",
+        "text": "Memberikan bacaan mengenai masalah yang saya hadapi.",
+        "category": "R"
+      },
+      {
+        "code": "b",
+        "text": "Memakai alat peraga jantung untuk menunjukkan masalah yang saya hadapi.",
+        "category": "K"
+      },
+      {
+        "code": "c",
+        "text": "Menguraikan masalah yang saya hadapi.",
+        "category": "A"
+      },
+      {
+        "code": "d",
+        "text": "Menunjukkan diagram mengenai masalah yang saya hadapi.",
+        "category": "V"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "question": "Saya ingin mempelajari suatu program baru di komputer. Saya akan:",
+    "options": [
+      {
+        "code": "a",
+        "text": "Membaca instruksi tertulis pada petunjuknya.",
+        "category": "R"
+      },
+      {
+        "code": "b",
+        "text": "Bicara dengan orang yang paham tentang program itu.",
+        "category": "A"
+      },
+      {
+        "code": "c",
+        "text": "Langsung mencoba dan belajar dari kesalahan.",
+        "category": "K"
+      },
+      {
+        "code": "d",
+        "text": "Mengikuti diagram pada buku petunjuknya.",
+        "category": "V"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "question": "Ketika belajar sesuatu dari internet, saya menyukai:",
+    "options": [
+      {
+        "code": "a",
+        "text": "Video cara melakukan atau membuat sesuatu.",
+        "category": "K"
+      },
+      {
+        "code": "b",
+        "text": "Desain dan fitur visual yang menarik.",
+        "category": "V"
+      },
+      {
+        "code": "c",
+        "text": "Uraian tertulis, daftar dan penjelasan yang menarik.",
+        "category": "R"
+      },
+      {
+        "code": "d",
+        "text": "Situs dengan suara, siaran internet atau wawancara.",
+        "category": "A"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "question": "Saya ingin mempelajari suatu proyek kerja yang baru. Saya akan meminta:",
+    "options": [
+      {
+        "code": "a",
+        "text": "Diagram yang berisi tahap-tahap proyek itu lengkap dengan bagan berisi manfaat dan biayanya.",
+        "category": "V"
+      },
+      {
+        "code": "b",
+        "text": "Laporan tertulis yang menjelaskan bagian utama proyek tersebut.",
+        "category": "R"
+      },
+      {
+        "code": "c",
+        "text": "Kesempatan berdiskusi mengenai proyek tersebut.",
+        "category": "A"
+      },
+      {
+        "code": "d",
+        "text": "Contoh-contoh proyek serupa yang sudah berhasil.",
+        "category": "K"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "question": "Saya ingin belajar cara memotret dengan lebih baik. Saya akan:",
+    "options": [
+      {
+        "code": "a",
+        "text": "Bertanya dan berdiskusi mengenai kamera dan fiturnya.",
+        "category": "A"
+      },
+      {
+        "code": "b",
+        "text": "Membaca instruksi tertulis mengenai cara pemakaian kamera itu.",
+        "category": "R"
+      },
+      {
+        "code": "c",
+        "text": "Melihat diagram yang menunjukkan komponen kamera itu.",
+        "category": "V"
+      },
+      {
+        "code": "d",
+        "text": "Melihat contoh hasil yang baik dan yang jelek dari kamera itu.",
+        "category": "K"
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "question": "Saya lebih suka pembicara yang dalam presentasinya menggunakan:",
+    "options": [
+      {
+        "code": "a",
+        "text": "Peragaan, model peraga, atau kesempatan mencoba langsung.",
+        "category": "K"
+      },
+      {
+        "code": "b",
+        "text": "Kesempatan tanya jawab, diskusi kelompok atau pembicara tamu.",
+        "category": "A"
+      },
+      {
+        "code": "c",
+        "text": "Cetakan diktat, buku atau bacaan lain.",
+        "category": "R"
+      },
+      {
+        "code": "d",
+        "text": "Diagram, bagan, peta atau grafik.",
+        "category": "V"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "question": "Saya baru saja menyelesaikan suatu lomba atau suatu ujian dan saya ingin umpan balik orang lain. Saya mengharapkan:",
+    "options": [
+      {
+        "code": "a",
+        "text": "Umpan balik yang berisi contoh-contoh dari yang saya kerjakan.",
+        "category": "K"
+      },
+      {
+        "code": "b",
+        "text": "Umpan balik berupa penjelasan tertulis mengenai hasil pekerjaan saya.",
+        "category": "R"
+      },
+      {
+        "code": "c",
+        "text": "Umpan balik yang disampaikan langsung kepada saya.",
+        "category": "A"
+      },
+      {
+        "code": "d",
+        "text": "Umpan balik dalam bentuk grafik mengenai hasil pekerjaan saya.",
+        "category": "V"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "question": "Saya tertarik dengan suatu rumah atau apartemen. Sebelum berkunjung, saya ingin:",
+    "options": [
+      {
+        "code": "a",
+        "text": "Melihat video rumah atau apartemen itu.",
+        "category": "K"
+      },
+      {
+        "code": "b",
+        "text": "Berdiskusi dengan pemiliknya.",
+        "category": "A"
+      },
+      {
+        "code": "c",
+        "text": "Keterangan tertulis mengenai kamar-kamar dan fiturnya.",
+        "category": "R"
+      },
+      {
+        "code": "d",
+        "text": "Denah ruangan dan peta area sekitarnya.",
+        "category": "V"
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "question": "Saya ingin merakit satu set meja kayu yang belum jadi. Saya paling mengerti jika:",
+    "options": [
+      {
+        "code": "a",
+        "text": "Mengikuti diagram instruksi yang dilampirkan.",
+        "category": "V"
+      },
+      {
+        "code": "b",
+        "text": "Mendengar saran dari orang yang pernah merakitnya.",
+        "category": "A"
+      },
+      {
+        "code": "c",
+        "text": "Membaca penjelasan tertulis yang dilampirkan.",
+        "category": "R"
+      },
+      {
+        "code": "d",
+        "text": "Menonton video orang merakit meja yang serupa.",
+        "category": "K"
+      }
+    ]
+  }
+]
