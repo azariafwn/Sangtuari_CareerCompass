@@ -88,11 +88,18 @@
 
                 const data = await res.json();
 
-                if (res.ok && data.success) {
-                        localStorage.clear();
-                        // Redirect ke CFIT (Coming Soon) sebagai tes pertama
-                        window.location.href = `/Quiz/Cfit?userAssessmentId=${data.userAssessmentId}`;
+            if (res.ok && data.success) {
+                localStorage.clear();
+
+                // Percabangan Alur Berdasarkan Tipe Asesmen
+                if (type === 'Discovery') {
+                    // SMA: Dimulai dari IST Sub-Test 01 (SE)
+                    window.location.href = `/Quiz/IstSubTest1?userAssessmentId=${data.userAssessmentId}`;
                 } else {
+                    // SMP (Exploration) / Dewasa (Advanced)
+                    window.location.href = `/Quiz/Cfit?userAssessmentId=${data.userAssessmentId}`;
+                }
+            } else {
                     alert('Gagal menyimpan biodata: ' + (data.message || 'Terjadi kesalahan.'));
                 }
             } catch (err) {

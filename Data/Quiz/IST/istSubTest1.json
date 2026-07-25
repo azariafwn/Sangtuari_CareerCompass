@@ -1,0 +1,522 @@
+[
+  {
+    "id": 1,
+    "sentence": "Pengaruh seseorang terhadap orang lain seharusnya bergantung pada ...",
+    "options": [
+      {
+        "code": "a",
+        "text": "kekuasaan"
+      },
+      {
+        "code": "b",
+        "text": "bujukan"
+      },
+      {
+        "code": "c",
+        "text": "kekayaan"
+      },
+      {
+        "code": "d",
+        "text": "keberanian"
+      },
+      {
+        "code": "e",
+        "text": "kewibawaan"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "sentence": "Lawannya \"hemat\" ialah ...",
+    "options": [
+      {
+        "code": "a",
+        "text": "murah"
+      },
+      {
+        "code": "b",
+        "text": "kikir"
+      },
+      {
+        "code": "c",
+        "text": "boros"
+      },
+      {
+        "code": "d",
+        "text": "bernilai"
+      },
+      {
+        "code": "e",
+        "text": "kaya"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "sentence": "... tidak termasuk cuaca.",
+    "options": [
+      {
+        "code": "a",
+        "text": "angin puyuh"
+      },
+      {
+        "code": "b",
+        "text": "halilintar"
+      },
+      {
+        "code": "c",
+        "text": "salju"
+      },
+      {
+        "code": "d",
+        "text": "gempa bumi"
+      },
+      {
+        "code": "e",
+        "text": "kabut"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "sentence": "Lawannya \"setia\" ialah ...",
+    "options": [
+      {
+        "code": "a",
+        "text": "cinta"
+      },
+      {
+        "code": "b",
+        "text": "benci"
+      },
+      {
+        "code": "c",
+        "text": "persahabatan"
+      },
+      {
+        "code": "d",
+        "text": "khianat"
+      },
+      {
+        "code": "e",
+        "text": "permusuhan"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "sentence": "Seekor kuda selalu mempunyai ...",
+    "options": [
+      {
+        "code": "a",
+        "text": "kandang"
+      },
+      {
+        "code": "b",
+        "text": "ladam"
+      },
+      {
+        "code": "c",
+        "text": "pelana"
+      },
+      {
+        "code": "d",
+        "text": "kuku"
+      },
+      {
+        "code": "e",
+        "text": "surai"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "sentence": "Seorang paman ... lebih tua dari kemenakannya.",
+    "options": [
+      {
+        "code": "a",
+        "text": "jarang"
+      },
+      {
+        "code": "b",
+        "text": "biasanya"
+      },
+      {
+        "code": "c",
+        "text": "selalu"
+      },
+      {
+        "code": "d",
+        "text": "tidak pernah"
+      },
+      {
+        "code": "e",
+        "text": "kadang-kadang"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "sentence": "Pada jumlah yang sama, nilai kalori yang tertinggi terdapat pada ...",
+    "options": [
+      {
+        "code": "a",
+        "text": "ikan"
+      },
+      {
+        "code": "b",
+        "text": "daging"
+      },
+      {
+        "code": "c",
+        "text": "lemak"
+      },
+      {
+        "code": "d",
+        "text": "tahu"
+      },
+      {
+        "code": "e",
+        "text": "sayuran"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "sentence": "Pada suatu pertandingan selalu terdapat ...",
+    "options": [
+      {
+        "code": "a",
+        "text": "lawan"
+      },
+      {
+        "code": "b",
+        "text": "wasit"
+      },
+      {
+        "code": "c",
+        "text": "penonton"
+      },
+      {
+        "code": "d",
+        "text": "sorak"
+      },
+      {
+        "code": "e",
+        "text": "kemenangan"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "sentence": "Suatu pernyataan yang belum dipastikan dikatakan sebagai pernyataan yang ...",
+    "options": [
+      {
+        "code": "a",
+        "text": "paradoks"
+      },
+      {
+        "code": "b",
+        "text": "tergesa-gesa"
+      },
+      {
+        "code": "c",
+        "text": "mempunyai arti rangkap"
+      },
+      {
+        "code": "d",
+        "text": "menyesatkan"
+      },
+      {
+        "code": "e",
+        "text": "hipotesis"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "sentence": "Pada sepatu selalu terdapat ...",
+    "options": [
+      {
+        "code": "a",
+        "text": "kulit"
+      },
+      {
+        "code": "b",
+        "text": "sol"
+      },
+      {
+        "code": "c",
+        "text": "tali sepatu"
+      },
+      {
+        "code": "d",
+        "text": "gesper"
+      },
+      {
+        "code": "e",
+        "text": "lidah"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "sentence": "Suatu ... tidak menyangkut persoalan pencegahan kecelakaan.",
+    "options": [
+      {
+        "code": "a",
+        "text": "lampu lalu lintas"
+      },
+      {
+        "code": "b",
+        "text": "kacamata pelindung"
+      },
+      {
+        "code": "c",
+        "text": "kotak PPPK"
+      },
+      {
+        "code": "d",
+        "text": "tanda peringatan"
+      },
+      {
+        "code": "e",
+        "text": "palang kereta api"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "sentence": "Mata uang logam Rp 50,- tahun 1991, garis tengahnya ialah ... mm.",
+    "options": [
+      {
+        "code": "a",
+        "text": "17"
+      },
+      {
+        "code": "b",
+        "text": "29"
+      },
+      {
+        "code": "c",
+        "text": "25"
+      },
+      {
+        "code": "d",
+        "text": "20"
+      },
+      {
+        "code": "e",
+        "text": "15"
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "sentence": "Seseorang yang bersikap menyangsikan setiap kemajuan ialah seorang yang ...",
+    "options": [
+      {
+        "code": "a",
+        "text": "demokratis"
+      },
+      {
+        "code": "b",
+        "text": "radikal"
+      },
+      {
+        "code": "c",
+        "text": "liberal"
+      },
+      {
+        "code": "d",
+        "text": "konservatif"
+      },
+      {
+        "code": "e",
+        "text": "anarkis"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "sentence": "Lawannya \"tidak pernah\" ialah ...",
+    "options": [
+      {
+        "code": "a",
+        "text": "sering"
+      },
+      {
+        "code": "b",
+        "text": "kadang-kadang"
+      },
+      {
+        "code": "c",
+        "text": "jarang"
+      },
+      {
+        "code": "d",
+        "text": "kerap kali"
+      },
+      {
+        "code": "e",
+        "text": "selalu"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "sentence": "Jarak antara Jakarta - Surabaya kira-kira ... Km.",
+    "options": [
+      {
+        "code": "a",
+        "text": "650"
+      },
+      {
+        "code": "b",
+        "text": "1000"
+      },
+      {
+        "code": "c",
+        "text": "800"
+      },
+      {
+        "code": "d",
+        "text": "600"
+      },
+      {
+        "code": "e",
+        "text": "950"
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "sentence": "Untuk dapat membuat nada yang rendah dan mendalam, kita memerlukan banyak ...",
+    "options": [
+      {
+        "code": "a",
+        "text": "kekuatan"
+      },
+      {
+        "code": "b",
+        "text": "peranan"
+      },
+      {
+        "code": "c",
+        "text": "ayunan"
+      },
+      {
+        "code": "d",
+        "text": "berat"
+      },
+      {
+        "code": "e",
+        "text": "suara"
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "sentence": "Ayah ... lebih berpengalaman dari pada anaknya.",
+    "options": [
+      {
+        "code": "a",
+        "text": "selalu"
+      },
+      {
+        "code": "b",
+        "text": "biasanya"
+      },
+      {
+        "code": "c",
+        "text": "jauh"
+      },
+      {
+        "code": "d",
+        "text": "jarang"
+      },
+      {
+        "code": "e",
+        "text": "pada dasarnya"
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "sentence": "Diantara kota-kota berikut ini, maka kota ... letaknya paling selatan.",
+    "options": [
+      {
+        "code": "a",
+        "text": "Jakarta"
+      },
+      {
+        "code": "b",
+        "text": "Bandung"
+      },
+      {
+        "code": "c",
+        "text": "Cirebon"
+      },
+      {
+        "code": "d",
+        "text": "Semarang"
+      },
+      {
+        "code": "e",
+        "text": "Surabaya"
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "sentence": "Jika kita mengetahui jumlah presentase nomor-nomor lotere yang tidak menang, maka kita dapat menghitung ...",
+    "options": [
+      {
+        "code": "a",
+        "text": "jumlah nomor yang menang"
+      },
+      {
+        "code": "b",
+        "text": "pajak lotere"
+      },
+      {
+        "code": "c",
+        "text": "kemungkinan menang"
+      },
+      {
+        "code": "d",
+        "text": "jumlah pengikut"
+      },
+      {
+        "code": "e",
+        "text": "tinggi keuntungan"
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "sentence": "Seorang anak yang berumur 10 tahun tingginya rata-rata ... cm.",
+    "options": [
+      {
+        "code": "a",
+        "text": "150"
+      },
+      {
+        "code": "b",
+        "text": "130"
+      },
+      {
+        "code": "c",
+        "text": "110"
+      },
+      {
+        "code": "d",
+        "text": "105"
+      },
+      {
+        "code": "e",
+        "text": "115"
+      }
+    ]
+  }
+]

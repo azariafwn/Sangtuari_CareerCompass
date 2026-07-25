@@ -82,5 +82,76 @@ namespace SangtuariCareerCompass.Controllers
 
             return View("~/Views/Quiz/SMP/Holland/Index.cshtml");
         }
+
+        // IST Sub-Test 01 (SE) - Aktif
+        public IActionResult IstSubTest1(Guid userAssessmentId)
+        {
+            var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Quiz", "IST", "istSubTest1.json");
+            var questionsJson = System.IO.File.Exists(jsonPath)
+                ? System.IO.File.ReadAllText(jsonPath)
+                : "[]";
+
+            ViewBag.UserAssessmentId = userAssessmentId;
+            ViewBag.QuestionsJson = questionsJson;
+
+            return View("~/Views/Quiz/SMA/IST/SubTest1.cshtml");
+        }
+
+        // IST Sub-Test 02 s.d. 09 - Placeholder Coming Soon
+        public IActionResult IstSubTest2(Guid userAssessmentId)
+        {
+            ViewData["SubTestName"] = "IST 02: WA (Wortauswahl)";
+            ViewBag.UserAssessmentId = userAssessmentId;
+            return View("~/Views/Quiz/ComingSoon.cshtml");
+        }
+
+        public IActionResult IstSubTest3(Guid userAssessmentId)
+        {
+            ViewData["SubTestName"] = "IST 03: AN (Analogien)";
+            ViewBag.UserAssessmentId = userAssessmentId;
+            return View("~/Views/Quiz/ComingSoon.cshtml");
+        }
+
+        public IActionResult IstSubTest4(Guid userAssessmentId)
+        {
+            ViewData["SubTestName"] = "IST 04: GE (Gemeinsamkeiten)";
+            ViewBag.UserAssessmentId = userAssessmentId;
+            return View("~/Views/Quiz/ComingSoon.cshtml");
+        }
+
+        public IActionResult IstSubTest5(Guid userAssessmentId)
+        {
+            ViewData["SubTestName"] = "IST 05: RA (Rechenaufgaben)";
+            ViewBag.UserAssessmentId = userAssessmentId;
+            return View("~/Views/Quiz/ComingSoon.cshtml");
+        }
+
+        public IActionResult IstSubTest6(Guid userAssessmentId)
+        {
+            ViewData["SubTestName"] = "IST 06: ZR (Zahlenreihen)";
+            ViewBag.UserAssessmentId = userAssessmentId;
+            return View("~/Views/Quiz/ComingSoon.cshtml");
+        }
+
+        public IActionResult IstSubTest7(Guid userAssessmentId)
+        {
+            ViewData["SubTestName"] = "IST 07: FA (Figurenauswahl)";
+            ViewBag.UserAssessmentId = userAssessmentId;
+            return View("~/Views/Quiz/ComingSoon.cshtml");
+        }
+
+        public IActionResult IstSubTest8(Guid userAssessmentId)
+        {
+            ViewData["SubTestName"] = "IST 08: WU (Würfelaufgaben)";
+            ViewBag.UserAssessmentId = userAssessmentId;
+            return View("~/Views/Quiz/ComingSoon.cshtml");
+        }
+
+        public IActionResult IstSubTest9(Guid userAssessmentId)
+        {
+            ViewData["SubTestName"] = "IST 09: ME (Merkaufgaben)";
+            ViewBag.UserAssessmentId = userAssessmentId;
+            return View("~/Views/Quiz/ComingSoon.cshtml");
+        }
     }
 }
