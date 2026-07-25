@@ -1,0 +1,260 @@
+﻿@{
+    Layout = "~/Views/Shared/_QuizLayout.cshtml";
+    ViewData["Title"] = "EAS 5 - Space Visualization";
+    ViewData["SubTestName"] = "EAS 5: Space Visualization";
+}
+
+<style>
+    .bg-purple-main {
+        background-color: #4E325A;
+    }
+
+    .text-purple-main {
+        color: #4E325A;
+    }
+
+    .btn-purple-custom {
+        background-color: #4E325A;
+        color: #FFE375;
+        border: none;
+    }
+
+        .btn-purple-custom:hover {
+            background-color: #3b2544;
+            color: #ffffff;
+        }
+
+    .btn-num-eas5 {
+        border: 1.5px solid #EFE8D8;
+        background-color: #FFFDF4;
+        color: #4E325A;
+        font-weight: 600;
+        padding: 0.5rem 0.2rem;
+        font-size: clamp(0.8rem, 1.3vw, 0.95rem);
+        transition: all 0.15s ease;
+    }
+
+    .btn-check:checked + .btn-num-eas5 {
+        background-color: #4E325A !important;
+        color: #FFE375 !important;
+        border-color: #4E325A !important;
+    }
+
+    .btn-num-eas5:hover {
+        background-color: #F5EBF8;
+        border-color: #9C7BB4;
+    }
+
+    .example-box {
+        background-color: #FFFDF4;
+        border-left: 4px solid #4E325A;
+    }
+</style>
+
+<!-- Header & Timer Bar -->
+<div class="card border-0 shadow-sm rounded-4 p-3 p-md-4 mb-4 bg-white">
+    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+        <h6 class="fw-bold text-dark m-0">Instruksi EAS 5: Space Visualization</h6>
+        <div class="d-flex align-items-center gap-2">
+            <span class="text-muted small">Sisa Waktu:</span>
+            <span class="badge rounded-pill px-3 py-2 fs-6 bg-purple-main text-warning timer-text">05:00</span>
+        </div>
+    </div>
+
+    <p class="text-dark small lh-base mb-3">
+        Pada tumpukan balok di bawah ini, <strong>semua balok memiliki ukuran yang sama</strong>. Tugas Anda adalah melihat huruf pada balok target (A, B, C, D, E) dan <strong>menghitung berapa banyak balok lain yang bersentuhan langsung</strong> dengan balok tersebut.
+    </p>
+
+    <!-- KOTAK CONTOH & PENJELASAN DETIL -->
+    <div class="accordion id=" eas5InstructionsAccordion"">
+        <div class="accordion-item border-0">
+            <h2 class="accordion-header">
+                <button class="accordion-button bg-light rounded-3 fw-bold text-purple-main py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample">
+                    📌 Klik untuk Melihat Contoh Pengerjaan Lengkap
+                </button>
+            </h2>
+            <div id="collapseExample" class="accordion-collapse collapse show">
+                <div class="accordion-body p-2 p-md-3">
+
+                    <!-- Contoh 1 -->
+                    <div class="example-box p-3 rounded-3 mb-3">
+                        <div class="row align-items-center">
+                            <div class="col-12 col-md-4 text-center mb-2 mb-md-0">
+                                <img src="/images/eas5/intro_1.jpg" alt="Contoh 1" class="img-fluid rounded border" style="max-height: 180px;">
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <h6 class="fw-bold text-purple-main mb-1">Contoh 1:</h6>
+                                <ul class="small mb-0 text-muted ps-3">
+                                    <li><strong>Balok A</strong> menyentuh <strong>2</strong> balok lain (1 di atas & 1 di bawah). Maka jawabannya = <strong>2</strong>.</li>
+                                    <li><strong>Balok B</strong> menyentuh <strong>1</strong> balok di sebelahnya. Maka jawabannya = <strong>1</strong>.</li>
+                                    <li><strong>Balok C</strong> menyentuh <strong>3</strong> balok disekitarnya. Maka jawabannya = <strong>3</strong>.</li>
+                                    <li><strong>Balok D</strong> menyentuh <strong>4</strong> balok lain. Maka jawabannya = <strong>4</strong>.</li>
+                                    <li><strong>Balok E</strong> menyentuh <strong>4</strong> balok disekitarnya. Maka jawabannya = <strong>4</strong>.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contoh 2 -->
+                    <div class="example-box p-3 rounded-3">
+                        <div class="row align-items-center">
+                            <div class="col-12 col-md-4 text-center mb-2 mb-md-0">
+                                <img src="/images/eas5/intro_2.jpg" alt="Contoh 2" class="img-fluid rounded border" style="max-height: 180px;">
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <h6 class="fw-bold text-purple-main mb-1">Contoh 2:</h6>
+                                <p class="small text-muted mb-0">
+                                    <strong>Balok A</strong> menyentuh <strong>6</strong> balok lain (1 di kiri, 2 di kanan, dan 3 di bawah). Catatan: Balok yang hanya bersentuhan pada sudut/pojong tidak dihitung. Maka jawaban A = <strong>6</strong>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="eas5Form">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="UserAssessmentId" value="@ViewBag.UserAssessmentId" />
+
+    <!-- Container Gambar Tumpukan Balok Dinamis -->
+    <div id="eas5Container" class="d-flex flex-column gap-4 mb-4"></div>
+
+    <div class="text-end mb-5">
+        <button type="button" id="btnSubmit" onclick="submitEas5()" class="btn btn-purple-custom rounded-pill px-5 py-3 fw-bold shadow-sm w-100 w-md-auto">
+            Kirim & Selesaikan EAS
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        const rawJson = '@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(ViewBag.QuestionsJson ?? "[]"))';
+        const groups = JSON.parse(rawJson);
+        const container = document.getElementById('eas5Container');
+        let isSubmitting = false;
+
+        // Render Groups & Questions
+        if (Array.isArray(groups)) {
+            groups.forEach((g) => {
+                const groupCard = document.createElement('div');
+                groupCard.className = 'card border-0 shadow-sm rounded-4 p-3 p-md-4 bg-white';
+
+                let questionsHtml = '';
+                g.questions.forEach((q) => {
+                    let optsHtml = '';
+                    q.options.forEach((opt, idx) => {
+                        const optId = `Q5_${q.id}_${idx}`;
+                        optsHtml += `
+                            <div class="col">
+                                <input type="radio" class="btn-check" name="Q5_${q.id}" id="${optId}" value="${opt}" autocomplete="off">
+                                <label class="btn btn-num-eas5 w-100 rounded-3 text-center" for="${optId}">${opt}</label>
+                            </div>
+                        `;
+                    });
+
+                    questionsHtml += `
+                        <div class="border-bottom pb-3 mb-3">
+                            <div class="fw-bold text-purple-main mb-2">
+                                Soal ${q.id} (Balok ${q.targetBlock}):
+                            </div>
+                            <!-- Display 10 Opsi dalam 2 Baris (5 Per Baris di Mobile) -->
+                            <div class="row row-cols-5 g-1 g-sm-2">${optsHtml}</div>
+                        </div>
+                    `;
+                });
+
+                groupCard.innerHTML = `
+                    <div class="row align-items-center mb-3 border-bottom pb-3">
+                        <div class="col-12 col-md-5 text-center mb-3 mb-md-0">
+                            <img src="${g.imageUrl}" alt="Kelompok ${g.group}" class="img-fluid rounded border shadow-sm" style="max-height: 220px;">
+                            <div class="badge bg-purple-main text-warning mt-2">Kelompok ${g.group} (Soal ${g.questions[0].id} - ${g.questions[g.questions.length - 1].id})</div>
+                        </div>
+                        <div class="col-12 col-md-7">
+                            ${questionsHtml}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(groupCard);
+            });
+        }
+
+        // Timer 5 Menit (300 detik)
+        let duration = 300;
+        const countdown = setInterval(() => {
+            if (isSubmitting) { clearInterval(countdown); return; }
+
+            let m = Math.floor(duration / 60);
+            let s = duration % 60;
+            const formattedTime = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+
+            const headerTimer = document.getElementById('timerDisplay');
+            if (headerTimer) headerTimer.textContent = formattedTime;
+
+            document.querySelectorAll('.timer-text').forEach(el => el.textContent = formattedTime);
+
+            if (--duration < 0) {
+                clearInterval(countdown);
+                alert("Waktu pengerjaan EAS 5 habis! Jawaban otomatis dikirim.");
+                submitEas5();
+            }
+        }, 1000);
+
+        async function submitEas5() {
+            if (isSubmitting) return;
+            isSubmitting = true;
+
+            const submitBtn = document.getElementById('btnSubmit');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Memproses...';
+
+            const answers = {};
+            groups.forEach(g => {
+                g.questions.forEach(q => {
+                    const selected = document.querySelector(`input[name="Q5_${q.id}"]:checked`);
+                    answers[`Q${q.id}_Block${q.targetBlock}`] = selected ? selected.value : "";
+                });
+            });
+
+            const payload = {
+                UserAssessmentId: document.getElementById('UserAssessmentId').value,
+                SubTestName: "EAS-5",
+                Answers: answers
+            };
+
+            const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+
+            try {
+                const response = await fetch('/Assessment/SubmitSubTest', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': tokenElement ? tokenElement.value : ''
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    // Redirect ke tes berikutnya (VARK)
+                    window.location.href = `/Quiz/Vark?userAssessmentId=${payload.UserAssessmentId}`;
+                } else {
+                    alert("Gagal menyimpan jawaban EAS 5.");
+                    resetSubmitState();
+                }
+            } catch (e) {
+                alert("Koneksi bermasalah.");
+                resetSubmitState();
+            }
+        }
+
+        function resetSubmitState() {
+            isSubmitting = false;
+            const submitBtn = document.getElementById('btnSubmit');
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'Kirim & Selesaikan EAS';
+        }
+    </script>
+}
