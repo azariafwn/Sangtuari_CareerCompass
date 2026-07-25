@@ -1,0 +1,542 @@
+[
+  {
+    "id": 1,
+    "statement": "Senang menonton drama",
+    "category": "A"
+  },
+  {
+    "id": 2,
+    "statement": "Senang Melatih Orang",
+    "category": "S"
+  },
+  {
+    "id": 3,
+    "statement": "Mampu bermain dalam drama / berakting",
+    "category": "A"
+  },
+  {
+    "id": 4,
+    "statement": "Suka membaca mengenai topik-topik khusus atas keinginan sendiri",
+    "category": "I"
+  },
+  {
+    "id": 5,
+    "statement": "Mampu melakukan percobaan atau penelitian ilmiah",
+    "category": "I"
+  },
+  {
+    "id": 6,
+    "statement": "Artistik",
+    "category": "A"
+  },
+  {
+    "id": 7,
+    "statement": "Mampu memprogram komputer untuk mempelajari masalah ilmiah",
+    "category": "I"
+  },
+  {
+    "id": 8,
+    "statement": "Tertarik menjadi pengawas konstruksi bangunan",
+    "category": "R"
+  },
+  {
+    "id": 9,
+    "statement": "Suka dalam memecahkan soal eksak",
+    "category": "I"
+  },
+  {
+    "id": 10,
+    "statement": "Mampu melakukan dan menyukai tugas administratif",
+    "category": "C"
+  },
+  {
+    "id": 11,
+    "statement": "Bisa mempengaruhi dan membujuk orang lain",
+    "category": "E"
+  },
+  {
+    "id": 12,
+    "statement": "Prosedural (Mengikuti aturan)",
+    "category": "C"
+  },
+  {
+    "id": 13,
+    "statement": "Suka menggunakan aplikasi pencatatan keuangan",
+    "category": "C"
+  },
+  {
+    "id": 14,
+    "statement": "Suka memperbaiki motor",
+    "category": "R"
+  },
+  {
+    "id": 15,
+    "statement": "Bisa mengekspresikan diri secara kreatif",
+    "category": "A"
+  },
+  {
+    "id": 16,
+    "statement": "Ingin bekerja dibagian Staff keuangan",
+    "category": "C"
+  },
+  {
+    "id": 17,
+    "statement": "Mampu menyebutkan makanan yang memiliki protein tinggi",
+    "category": "I"
+  },
+  {
+    "id": 18,
+    "statement": "Suka melakukan pekerjaan social",
+    "category": "S"
+  },
+  {
+    "id": 19,
+    "statement": "Mampu mengetahui bagaimana menjadi pemimpin yang baik/ berhasil",
+    "category": "E"
+  },
+  {
+    "id": 20,
+    "statement": "Tidak suka menyatakan perasaan",
+    "category": "R"
+  },
+  {
+    "id": 21,
+    "statement": "Percaya diri",
+    "category": "E"
+  },
+  {
+    "id": 22,
+    "statement": "Suka menerapkan matematika dalam masalah praktis",
+    "category": "I"
+  },
+  {
+    "id": 23,
+    "statement": "Emosional",
+    "category": "A"
+  },
+  {
+    "id": 24,
+    "statement": "Menyukai memperbaiki peralatan mekanik",
+    "category": "R"
+  },
+  {
+    "id": 25,
+    "statement": "Mampu menghibur dan menemani orang yang lebih tua dari saya",
+    "category": "S"
+  },
+  {
+    "id": 26,
+    "statement": "Senang memulai proyek baru",
+    "category": "E"
+  },
+  {
+    "id": 27,
+    "statement": "Suka kegiatan akademis",
+    "category": "I"
+  },
+  {
+    "id": 28,
+    "statement": "Ramah",
+    "category": "S"
+  },
+  {
+    "id": 29,
+    "statement": "Efisien dan Terstruktur",
+    "category": "C"
+  },
+  {
+    "id": 30,
+    "statement": "Suka menggunakan perkakas bengkel dan mesin",
+    "category": "R"
+  },
+  {
+    "id": 31,
+    "statement": "Suka menjaga / mengurus mengawasi anak-anak",
+    "category": "S"
+  },
+  {
+    "id": 32,
+    "statement": "Senang menganalisa dan mengevaluasi",
+    "category": "I"
+  },
+  {
+    "id": 33,
+    "statement": "Senang melatih binatang",
+    "category": "R"
+  },
+  {
+    "id": 34,
+    "statement": "Tertarik menjadi aktor/ aktris",
+    "category": "A"
+  },
+  {
+    "id": 35,
+    "statement": "Mampu memainkan alat musik",
+    "category": "A"
+  },
+  {
+    "id": 36,
+    "statement": "Tertarik menjadi konselor masalah pribadi",
+    "category": "S"
+  },
+  {
+    "id": 37,
+    "statement": "Ingin menjadi pemain dalam kelompok musik",
+    "category": "A"
+  },
+  {
+    "id": 38,
+    "statement": "Tertarik menjadi ahli biologi/hayati",
+    "category": "I"
+  },
+  {
+    "id": 39,
+    "statement": "Tertarik menjadi pekerja sosial",
+    "category": "S"
+  },
+  {
+    "id": 40,
+    "statement": "Energetik",
+    "category": "E"
+  },
+  {
+    "id": 41,
+    "statement": "Suka bekerja dalam kelompok",
+    "category": "S"
+  },
+  {
+    "id": 42,
+    "statement": "Suka membaca buku/ majalah ilmiah",
+    "category": "I"
+  },
+  {
+    "id": 43,
+    "statement": "Suka mengutak-atik mesin/alat elektronik",
+    "category": "R"
+  },
+  {
+    "id": 44,
+    "statement": "Suka kegiatan di luar ruangan",
+    "category": "R"
+  },
+  {
+    "id": 45,
+    "statement": "Senang memotret atau videographer",
+    "category": "A"
+  },
+  {
+    "id": 46,
+    "statement": "Suka membuat lukisan/ foto orang",
+    "category": "A"
+  },
+  {
+    "id": 47,
+    "statement": "Senang bekerja di situasi yang bebas",
+    "category": "A"
+  },
+  {
+    "id": 48,
+    "statement": "Membuat Hari Saya Terstruktur",
+    "category": "C"
+  },
+  {
+    "id": 49,
+    "statement": "Mampu menarik perhatian orang untuk menceritakan masalah mereka",
+    "category": "S"
+  },
+  {
+    "id": 50,
+    "statement": "Memperhatikan Detailnya",
+    "category": "C"
+  },
+  {
+    "id": 51,
+    "statement": "Sering diminta mengumpulkan data",
+    "category": "C"
+  },
+  {
+    "id": 52,
+    "statement": "Suka membuat sketsa, Mendesign atau melukis",
+    "category": "A"
+  },
+  {
+    "id": 53,
+    "statement": "Mampu mengajar orang dewasa dengan mudah",
+    "category": "S"
+  },
+  {
+    "id": 54,
+    "statement": "Antusias berparisipasi dalam pencarian dana/ amal",
+    "category": "E"
+  },
+  {
+    "id": 55,
+    "statement": "Mampu mudah berbicara dengan semua orang",
+    "category": "E"
+  },
+  {
+    "id": 56,
+    "statement": "Suka mempelajari teori ilmiah",
+    "category": "I"
+  },
+  {
+    "id": 57,
+    "statement": "Tertarik menjadi pekerja riset ilmiah",
+    "category": "I"
+  },
+  {
+    "id": 58,
+    "statement": "Mampu mengatur pekerjaan orang lain",
+    "category": "E"
+  },
+  {
+    "id": 59,
+    "statement": "Bisa menguasai diri",
+    "category": "C"
+  },
+  {
+    "id": 60,
+    "statement": "Mampu membuat kelompok sosial/ kerja berjalan dengan baik",
+    "category": "S"
+  },
+  {
+    "id": 61,
+    "statement": "Tertarik menjadi insinyur otomotif",
+    "category": "R"
+  },
+  {
+    "id": 62,
+    "statement": "Suka membuat catatan pengeluaran yang terperinci",
+    "category": "C"
+  },
+  {
+    "id": 63,
+    "statement": "Kompleks",
+    "category": "I"
+  },
+  {
+    "id": 64,
+    "statement": "Mampu mengelola usaha kecil",
+    "category": "E"
+  },
+  {
+    "id": 65,
+    "statement": "Rumit",
+    "category": "I"
+  },
+  {
+    "id": 66,
+    "statement": "Tertarik menjadi spesialis perikanan/ margasatwa",
+    "category": "R"
+  },
+  {
+    "id": 67,
+    "statement": "Suka memimpin kelompok dalam meraih tujuan tertentu",
+    "category": "E"
+  },
+  {
+    "id": 68,
+    "statement": "Suka menjual suatu barang",
+    "category": "E"
+  },
+  {
+    "id": 69,
+    "statement": "Tegas",
+    "category": "E"
+  },
+  {
+    "id": 70,
+    "statement": "Mampu mencatat dengan cermat pembayaran/ penjualan",
+    "category": "C"
+  },
+  {
+    "id": 71,
+    "statement": "Suka mengerjakan proyek ilmiah",
+    "category": "I"
+  },
+  {
+    "id": 72,
+    "statement": "Bisa menyatakan perasaan dengan jelas",
+    "category": "A"
+  },
+  {
+    "id": 73,
+    "statement": "Menyusun Sesuatu Atau Merakit Model",
+    "category": "R"
+  },
+  {
+    "id": 74,
+    "statement": "Senang mengamati",
+    "category": "I"
+  },
+  {
+    "id": 75,
+    "statement": "Mampu memengaruhi orang lain supaya melakukan sesuatu dengan caranya",
+    "category": "E"
+  },
+  {
+    "id": 76,
+    "statement": "Senang mengerjakan kerajinan tangan",
+    "category": "R"
+  },
+  {
+    "id": 77,
+    "statement": "Suka bekerja menggunakan tangan",
+    "category": "R"
+  },
+  {
+    "id": 78,
+    "statement": "Suka membantu orang lain dengan masalah pribadinya",
+    "category": "S"
+  },
+  {
+    "id": 79,
+    "statement": "Senang kegiatan fisik",
+    "category": "R"
+  },
+  {
+    "id": 80,
+    "statement": "Tertarik menjadi ahli teknisi laboratorium medis",
+    "category": "I"
+  },
+  {
+    "id": 81,
+    "statement": "Ingin menjadi seniman",
+    "category": "A"
+  },
+  {
+    "id": 82,
+    "statement": "Mampu melakukan perbaikan kecil pada pipa air, kran, dan lain-lain",
+    "category": "R"
+  },
+  {
+    "id": 83,
+    "statement": "Mampu membuat gambar dengan skala",
+    "category": "I"
+  },
+  {
+    "id": 84,
+    "statement": "Prosedural (Suka mengikuti aturan)",
+    "category": "C"
+  },
+  {
+    "id": 85,
+    "statement": "Suka mengarsip surat dan berkas-berkas lain",
+    "category": "C"
+  },
+  {
+    "id": 86,
+    "statement": "Mampu menjadi seorang pembicara di depan umum yang baik",
+    "category": "E"
+  },
+  {
+    "id": 87,
+    "statement": "Mampu memimpin diskusi kelompok",
+    "category": "E"
+  },
+  {
+    "id": 88,
+    "statement": "Suka melakukan pekerjaan surat menyurat/ masalah perkantoran",
+    "category": "C"
+  },
+  {
+    "id": 89,
+    "statement": "Senang bertemu orang baru",
+    "category": "S"
+  },
+  {
+    "id": 90,
+    "statement": "Bisa bekerja dengan baik dalam system /aturan",
+    "category": "C"
+  },
+  {
+    "id": 91,
+    "statement": "Suka merancang perabotan, pakaian atau poster",
+    "category": "A"
+  },
+  {
+    "id": 92,
+    "statement": "Tertarik menjadi pembawa acara / MC",
+    "category": "E"
+  },
+  {
+    "id": 93,
+    "statement": "Tertarik menjadi ilmuwan peneliti",
+    "category": "I"
+  },
+  {
+    "id": 94,
+    "statement": "Suka memperbaiki alat-alat listrik",
+    "category": "R"
+  },
+  {
+    "id": 95,
+    "statement": "Terbuka",
+    "category": "S"
+  },
+  {
+    "id": 96,
+    "statement": "Tertarik menjadi penaksir biaya",
+    "category": "C"
+  },
+  {
+    "id": 97,
+    "statement": "Suka mendamaikan orang",
+    "category": "S"
+  },
+  {
+    "id": 98,
+    "statement": "Suka mengerjakan teka-teki",
+    "category": "I"
+  },
+  {
+    "id": 99,
+    "statement": "Mampu mengajar anak-anak dengan mudah",
+    "category": "S"
+  },
+  {
+    "id": 100,
+    "statement": "Suka membuat daftar inventaris dari persediaan/ produk",
+    "category": "C"
+  },
+  {
+    "id": 101,
+    "statement": "Suka olahraga",
+    "category": "R"
+  },
+  {
+    "id": 102,
+    "statement": "Bisa menulis karya sastra",
+    "category": "A"
+  },
+  {
+    "id": 103,
+    "statement": "Tertarik menjadi konselor kejuruan dan pekerjaan",
+    "category": "S"
+  },
+  {
+    "id": 104,
+    "statement": "Sensitif",
+    "category": "A"
+  },
+  {
+    "id": 105,
+    "statement": "Senang petualangan / mengambil resiko",
+    "category": "E"
+  },
+  {
+    "id": 106,
+    "statement": "Ambisius dan cenderung berbicara apa adanya (Spontan)",
+    "category": "E"
+  },
+  {
+    "id": 107,
+    "statement": "Penurut",
+    "category": "C"
+  },
+  {
+    "id": 108,
+    "statement": "Suka menyusun sistem pengarsipan",
+    "category": "C"
+  }
+]

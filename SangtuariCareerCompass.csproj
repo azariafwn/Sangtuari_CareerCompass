@@ -23,4 +23,13 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Quiz\Holland\" />
+    <Folder Include="Views\Quiz\SMA\IST\" />
+    <Folder Include="Views\Quiz\SMA\SDSHolland\" />
+    <Folder Include="Views\Quiz\SMA\VARK\" />
+    <Folder Include="Views\Quiz\SMA\PapiKostick\" />
+    <Folder Include="Views\Quiz\SMP\CFIT\" />
+  </ItemGroup>
+
 </Project>
