@@ -1,0 +1,502 @@
+[
+  {
+    "id": 21,
+    "options": [
+      {
+        "code": "a",
+        "text": "lingkungan"
+      },
+      {
+        "code": "b",
+        "text": "panah"
+      },
+      {
+        "code": "c",
+        "text": "elips"
+      },
+      {
+        "code": "d",
+        "text": "busur"
+      },
+      {
+        "code": "e",
+        "text": "lengkungan"
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "options": [
+      {
+        "code": "a",
+        "text": "mengetuk"
+      },
+      {
+        "code": "b",
+        "text": "memaki"
+      },
+      {
+        "code": "c",
+        "text": "menjahit"
+      },
+      {
+        "code": "d",
+        "text": "menggergaji"
+      },
+      {
+        "code": "e",
+        "text": "memukul"
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "options": [
+      {
+        "code": "a",
+        "text": "lebar"
+      },
+      {
+        "code": "b",
+        "text": "keliling"
+      },
+      {
+        "code": "c",
+        "text": "luas"
+      },
+      {
+        "code": "d",
+        "text": "isi"
+      },
+      {
+        "code": "e",
+        "text": "panjang"
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "options": [
+      {
+        "code": "a",
+        "text": "mengikat"
+      },
+      {
+        "code": "b",
+        "text": "menyatukan"
+      },
+      {
+        "code": "c",
+        "text": "melepaskan"
+      },
+      {
+        "code": "d",
+        "text": "mengaitkan"
+      },
+      {
+        "code": "e",
+        "text": "melekatkan"
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "options": [
+      {
+        "code": "a",
+        "text": "arah"
+      },
+      {
+        "code": "b",
+        "text": "timur"
+      },
+      {
+        "code": "c",
+        "text": "perjalanan"
+      },
+      {
+        "code": "d",
+        "text": "tujuan"
+      },
+      {
+        "code": "e",
+        "text": "selatan"
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "options": [
+      {
+        "code": "a",
+        "text": "jarak"
+      },
+      {
+        "code": "b",
+        "text": "perpisahan"
+      },
+      {
+        "code": "c",
+        "text": "tugas"
+      },
+      {
+        "code": "d",
+        "text": "batas"
+      },
+      {
+        "code": "e",
+        "text": "perceraian"
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "options": [
+      {
+        "code": "a",
+        "text": "saringan"
+      },
+      {
+        "code": "b",
+        "text": "kelambu"
+      },
+      {
+        "code": "c",
+        "text": "payung"
+      },
+      {
+        "code": "d",
+        "text": "tapisan"
+      },
+      {
+        "code": "e",
+        "text": "jala"
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "options": [
+      {
+        "code": "a",
+        "text": "putih"
+      },
+      {
+        "code": "b",
+        "text": "pucat"
+      },
+      {
+        "code": "c",
+        "text": "buram"
+      },
+      {
+        "code": "d",
+        "text": "kasar"
+      },
+      {
+        "code": "e",
+        "text": "berkilauan"
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "options": [
+      {
+        "code": "a",
+        "text": "otobis"
+      },
+      {
+        "code": "b",
+        "text": "pesawat terbang"
+      },
+      {
+        "code": "c",
+        "text": "sepeda motor"
+      },
+      {
+        "code": "d",
+        "text": "sepeda"
+      },
+      {
+        "code": "e",
+        "text": "kapal api"
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "options": [
+      {
+        "code": "a",
+        "text": "biola"
+      },
+      {
+        "code": "b",
+        "text": "seruling"
+      },
+      {
+        "code": "c",
+        "text": "klarinet"
+      },
+      {
+        "code": "d",
+        "text": "terompet"
+      },
+      {
+        "code": "e",
+        "text": "saxophon"
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "options": [
+      {
+        "code": "a",
+        "text": "bergelombang"
+      },
+      {
+        "code": "b",
+        "text": "kasar"
+      },
+      {
+        "code": "c",
+        "text": "berduri"
+      },
+      {
+        "code": "d",
+        "text": "licin"
+      },
+      {
+        "code": "e",
+        "text": "lurus"
+      }
+    ]
+  },
+  {
+    "id": 32,
+    "options": [
+      {
+        "code": "a",
+        "text": "jam"
+      },
+      {
+        "code": "b",
+        "text": "kompas"
+      },
+      {
+        "code": "c",
+        "text": "penunjuk jalan"
+      },
+      {
+        "code": "d",
+        "text": "bintang pari"
+      },
+      {
+        "code": "e",
+        "text": "arah"
+      }
+    ]
+  },
+  {
+    "id": 33,
+    "options": [
+      {
+        "code": "a",
+        "text": "kebijaksanaan"
+      },
+      {
+        "code": "b",
+        "text": "pendidikan"
+      },
+      {
+        "code": "c",
+        "text": "perencanaan"
+      },
+      {
+        "code": "d",
+        "text": "penempatan"
+      },
+      {
+        "code": "e",
+        "text": "pengerahan"
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "options": [
+      {
+        "code": "a",
+        "text": "bermotor"
+      },
+      {
+        "code": "b",
+        "text": "berjalan"
+      },
+      {
+        "code": "c",
+        "text": "berlayar"
+      },
+      {
+        "code": "d",
+        "text": "bersepeda"
+      },
+      {
+        "code": "e",
+        "text": "berkuda"
+      }
+    ]
+  },
+  {
+    "id": 35,
+    "options": [
+      {
+        "code": "a",
+        "text": "gambar"
+      },
+      {
+        "code": "b",
+        "text": "lukisan"
+      },
+      {
+        "code": "c",
+        "text": "potret"
+      },
+      {
+        "code": "d",
+        "text": "patung"
+      },
+      {
+        "code": "e",
+        "text": "ukiran"
+      }
+    ]
+  },
+  {
+    "id": 36,
+    "options": [
+      {
+        "code": "a",
+        "text": "panjang"
+      },
+      {
+        "code": "b",
+        "text": "lonjong"
+      },
+      {
+        "code": "c",
+        "text": "runcing"
+      },
+      {
+        "code": "d",
+        "text": "bulat"
+      },
+      {
+        "code": "e",
+        "text": "bersudut"
+      }
+    ]
+  },
+  {
+    "id": 37,
+    "options": [
+      {
+        "code": "a",
+        "text": "kunci"
+      },
+      {
+        "code": "b",
+        "text": "palang pintu"
+      },
+      {
+        "code": "c",
+        "text": "gerendel"
+      },
+      {
+        "code": "d",
+        "text": "gunting"
+      },
+      {
+        "code": "e",
+        "text": "obeng"
+      }
+    ]
+  },
+  {
+    "id": 38,
+    "options": [
+      {
+        "code": "a",
+        "text": "jembatan"
+      },
+      {
+        "code": "b",
+        "text": "batas"
+      },
+      {
+        "code": "c",
+        "text": "perkawinan"
+      },
+      {
+        "code": "d",
+        "text": "pagar"
+      },
+      {
+        "code": "e",
+        "text": "masyarakat"
+      }
+    ]
+  },
+  {
+    "id": 39,
+    "options": [
+      {
+        "code": "a",
+        "text": "mengetam"
+      },
+      {
+        "code": "b",
+        "text": "menasehati"
+      },
+      {
+        "code": "c",
+        "text": "mengasah"
+      },
+      {
+        "code": "d",
+        "text": "melicinkan"
+      },
+      {
+        "code": "e",
+        "text": "menggosok"
+      }
+    ]
+  },
+  {
+    "id": 40,
+    "options": [
+      {
+        "code": "a",
+        "text": "batu"
+      },
+      {
+        "code": "b",
+        "text": "baja"
+      },
+      {
+        "code": "c",
+        "text": "bulu"
+      },
+      {
+        "code": "d",
+        "text": "karet"
+      },
+      {
+        "code": "e",
+        "text": "kayu"
+      }
+    ]
+  }
+]
