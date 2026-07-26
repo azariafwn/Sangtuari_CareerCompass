@@ -1,0 +1,522 @@
+[
+  {
+    "id": 41,
+    "premise": "Menemukan : menghilangkan = Mengingat : ?",
+    "options": [
+      {
+        "code": "a",
+        "text": "menghapal"
+      },
+      {
+        "code": "b",
+        "text": "mengenai"
+      },
+      {
+        "code": "c",
+        "text": "melupakan"
+      },
+      {
+        "code": "d",
+        "text": "berpikir"
+      },
+      {
+        "code": "e",
+        "text": "memimpikan"
+      }
+    ]
+  },
+  {
+    "id": 42,
+    "premise": "Bunga : jambangan = Burung : ?",
+    "options": [
+      {
+        "code": "a",
+        "text": "sarang"
+      },
+      {
+        "code": "b",
+        "text": "langit"
+      },
+      {
+        "code": "c",
+        "text": "pagar"
+      },
+      {
+        "code": "d",
+        "text": "pohon"
+      },
+      {
+        "code": "e",
+        "text": "sangkar"
+      }
+    ]
+  },
+  {
+    "id": 43,
+    "premise": "Kereta api : rel = Otobis : ?",
+    "options": [
+      {
+        "code": "a",
+        "text": "roda"
+      },
+      {
+        "code": "b",
+        "text": "poros"
+      },
+      {
+        "code": "c",
+        "text": "ban"
+      },
+      {
+        "code": "d",
+        "text": "jalan raya"
+      },
+      {
+        "code": "e",
+        "text": "kecepatan"
+      }
+    ]
+  },
+  {
+    "id": 44,
+    "premise": "Perak : emas = Cincin : ?",
+    "options": [
+      {
+        "code": "a",
+        "text": "arloji"
+      },
+      {
+        "code": "b",
+        "text": "berlian"
+      },
+      {
+        "code": "c",
+        "text": "permata"
+      },
+      {
+        "code": "d",
+        "text": "gelang"
+      },
+      {
+        "code": "e",
+        "text": "platina"
+      }
+    ]
+  },
+  {
+    "id": 45,
+    "premise": "Lingkaran : bola = Bujur sangkar : ?",
+    "options": [
+      {
+        "code": "a",
+        "text": "bentuk"
+      },
+      {
+        "code": "b",
+        "text": "gambar"
+      },
+      {
+        "code": "c",
+        "text": "segi empat"
+      },
+      {
+        "code": "d",
+        "text": "kubus"
+      },
+      {
+        "code": "e",
+        "text": "piramida"
+      }
+    ]
+  },
+  {
+    "id": 46,
+    "premise": "Saran : kepustakaan = Merundingkan : ?",
+    "options": [
+      {
+        "code": "a",
+        "text": "menawarkan"
+      },
+      {
+        "code": "b",
+        "text": "menentukan"
+      },
+      {
+        "code": "c",
+        "text": "menilai"
+      },
+      {
+        "code": "d",
+        "text": "menimbang"
+      },
+      {
+        "code": "e",
+        "text": "merenungkan"
+      }
+    ]
+  },
+  {
+    "id": 47,
+    "premise": "Lidah : asam = Hidung : ?",
+    "options": [
+      {
+        "code": "a",
+        "text": "mencium"
+      },
+      {
+        "code": "b",
+        "text": "bernapas"
+      },
+      {
+        "code": "c",
+        "text": "mengecap"
+      },
+      {
+        "code": "d",
+        "text": "tengik"
+      },
+      {
+        "code": "e",
+        "text": "asin"
+      }
+    ]
+  },
+  {
+    "id": 48,
+    "premise": "Darah : pembuluh = Air : ?",
+    "options": [
+      {
+        "code": "a",
+        "text": "pintu air"
+      },
+      {
+        "code": "b",
+        "text": "sungai"
+      },
+      {
+        "code": "c",
+        "text": "talang"
+      },
+      {
+        "code": "d",
+        "text": "hujan"
+      },
+      {
+        "code": "e",
+        "text": "ember"
+      }
+    ]
+  },
+  {
+    "id": 49,
+    "premise": "Saraf : penyalur = Pupil : ?",
+    "options": [
+      {
+        "code": "a",
+        "text": "penyinaran"
+      },
+      {
+        "code": "b",
+        "text": "mata"
+      },
+      {
+        "code": "c",
+        "text": "melihat"
+      },
+      {
+        "code": "d",
+        "text": "cahaya"
+      },
+      {
+        "code": "e",
+        "text": "pelindung"
+      }
+    ]
+  },
+  {
+    "id": 50,
+    "premise": "Pengantar surat : pengantar telegram = Pandai besi : ?",
+    "options": [
+      {
+        "code": "a",
+        "text": "palu godam"
+      },
+      {
+        "code": "b",
+        "text": "pedagang besi"
+      },
+      {
+        "code": "c",
+        "text": "api"
+      },
+      {
+        "code": "d",
+        "text": "tukang emas"
+      },
+      {
+        "code": "e",
+        "text": "besi tempa"
+      }
+    ]
+  },
+  {
+    "id": 51,
+    "premise": "Buta : warna = Tuli : ?",
+    "options": [
+      {
+        "code": "a",
+        "text": "pendengaran"
+      },
+      {
+        "code": "b",
+        "text": "mendengar"
+      },
+      {
+        "code": "c",
+        "text": "nada"
+      },
+      {
+        "code": "d",
+        "text": "kata"
+      },
+      {
+        "code": "e",
+        "text": "telinga"
+      }
+    ]
+  },
+  {
+    "id": 52,
+    "premise": "Makanan : bumbu = Ceramah : ?",
+    "options": [
+      {
+        "code": "a",
+        "text": "penghinaan"
+      },
+      {
+        "code": "b",
+        "text": "pidato"
+      },
+      {
+        "code": "c",
+        "text": "kelakar"
+      },
+      {
+        "code": "d",
+        "text": "kesan"
+      },
+      {
+        "code": "e",
+        "text": "ayat"
+      }
+    ]
+  },
+  {
+    "id": 53,
+    "premise": "Marah : emosi = Duka cita : ?",
+    "options": [
+      {
+        "code": "a",
+        "text": "suka cita"
+      },
+      {
+        "code": "b",
+        "text": "sakit hati"
+      },
+      {
+        "code": "c",
+        "text": "suasana hati"
+      },
+      {
+        "code": "d",
+        "text": "sedih"
+      },
+      {
+        "code": "e",
+        "text": "rindu"
+      }
+    ]
+  },
+  {
+    "id": 54,
+    "premise": "Mantel : jubah = Wool : ?",
+    "options": [
+      {
+        "code": "a",
+        "text": "bahan sandang"
+      },
+      {
+        "code": "b",
+        "text": "domba"
+      },
+      {
+        "code": "c",
+        "text": "sutra"
+      },
+      {
+        "code": "d",
+        "text": "jas"
+      },
+      {
+        "code": "e",
+        "text": "tekstil"
+      }
+    ]
+  },
+  {
+    "id": 55,
+    "premise": "Ketinggian puncak : tekanan udara = Ketinggian nada : ?",
+    "options": [
+      {
+        "code": "a",
+        "text": "garpu tala"
+      },
+      {
+        "code": "b",
+        "text": "sopran"
+      },
+      {
+        "code": "c",
+        "text": "nyanyian"
+      },
+      {
+        "code": "d",
+        "text": "panjang senar"
+      },
+      {
+        "code": "e",
+        "text": "suara"
+      }
+    ]
+  },
+  {
+    "id": 56,
+    "premise": "Negara : revolusi = Hidup : ?",
+    "options": [
+      {
+        "code": "a",
+        "text": "biologi"
+      },
+      {
+        "code": "b",
+        "text": "khatulistiwa"
+      },
+      {
+        "code": "c",
+        "text": "mutasi"
+      },
+      {
+        "code": "d",
+        "text": "seleksi"
+      },
+      {
+        "code": "e",
+        "text": "ilmu hewan"
+      }
+    ]
+  },
+  {
+    "id": 57,
+    "premise": "Kekurangan : penemuan = Panas : ?",
+    "options": [
+      {
+        "code": "a",
+        "text": "haus"
+      },
+      {
+        "code": "b",
+        "text": "keturunan"
+      },
+      {
+        "code": "c",
+        "text": "es"
+      },
+      {
+        "code": "d",
+        "text": "matahari"
+      },
+      {
+        "code": "e",
+        "text": "dingin"
+      }
+    ]
+  },
+  {
+    "id": 58,
+    "premise": "Kayu : diketam = Besi : ?",
+    "options": [
+      {
+        "code": "a",
+        "text": "dipalu"
+      },
+      {
+        "code": "b",
+        "text": "digergaji"
+      },
+      {
+        "code": "c",
+        "text": "dituang"
+      },
+      {
+        "code": "d",
+        "text": "dikikir"
+      },
+      {
+        "code": "e",
+        "text": "ditempa"
+      }
+    ]
+  },
+  {
+    "id": 59,
+    "premise": "Olahragawan : lembing = Cendekiawan : ?",
+    "options": [
+      {
+        "code": "a",
+        "text": "perpustakaan"
+      },
+      {
+        "code": "b",
+        "text": "penelitian"
+      },
+      {
+        "code": "c",
+        "text": "karya"
+      },
+      {
+        "code": "d",
+        "text": "studi"
+      },
+      {
+        "code": "e",
+        "text": "mikroskop"
+      }
+    ]
+  },
+  {
+    "id": 60,
+    "premise": "Keledai : kuda pacuan = Pembakaran : ?",
+    "options": [
+      {
+        "code": "a",
+        "text": "pemadam api"
+      },
+      {
+        "code": "b",
+        "text": "obor"
+      },
+      {
+        "code": "c",
+        "text": "letupan"
+      },
+      {
+        "code": "d",
+        "text": "korek api"
+      },
+      {
+        "code": "e",
+        "text": "lautan api"
+      }
+    ]
+  }
+]
