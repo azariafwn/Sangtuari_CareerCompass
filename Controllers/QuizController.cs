@@ -86,6 +86,13 @@ namespace SangtuariCareerCompass.Controllers
         // IST Sub-Test 01 (SE) - Aktif
         public IActionResult IstSubTest1(Guid userAssessmentId)
         {
+
+            if (userAssessmentId == Guid.Empty)
+            {
+                // Fail-safe jika ID tidak terbawa di URL
+                return RedirectToAction("Index", "Assessment");
+            }
+
             var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Quiz", "IST", "istSubTest1.json");
             var questionsJson = System.IO.File.Exists(jsonPath)
                 ? System.IO.File.ReadAllText(jsonPath)
@@ -100,16 +107,34 @@ namespace SangtuariCareerCompass.Controllers
         // IST Sub-Test 02 s.d. 09 - Placeholder Coming Soon
         public IActionResult IstSubTest2(Guid userAssessmentId)
         {
-            ViewData["SubTestName"] = "IST 02: WA (Wortauswahl)";
-            ViewBag.UserAssessmentId = userAssessmentId;
-            return View("~/Views/Quiz/ComingSoon.cshtml");
-        }
 
+            if (userAssessmentId == Guid.Empty)
+            {
+                // Fail-safe jika ID tidak terbawa di URL
+                return RedirectToAction("Index", "Assessment");
+            }
+
+            var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Quiz", "IST", "istSubTest2.json");
+            var questionsJson = System.IO.File.Exists(jsonPath)
+                ? System.IO.File.ReadAllText(jsonPath)
+                : "[]";
+
+            ViewBag.UserAssessmentId = userAssessmentId;
+            ViewBag.QuestionsJson = questionsJson;
+
+            return View("~/Views/Quiz/SMA/IST/SubTest2.cshtml");
+        }
         public IActionResult IstSubTest3(Guid userAssessmentId)
         {
-            ViewData["SubTestName"] = "IST 03: AN (Analogien)";
+            var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Quiz", "IST", "istSubTest3.json");
+            var questionsJson = System.IO.File.Exists(jsonPath)
+                ? System.IO.File.ReadAllText(jsonPath)
+                : "[]";
+
             ViewBag.UserAssessmentId = userAssessmentId;
-            return View("~/Views/Quiz/ComingSoon.cshtml");
+            ViewBag.QuestionsJson = questionsJson;
+
+            return View("~/Views/Quiz/SMA/IST/SubTest3.cshtml");
         }
 
         public IActionResult IstSubTest4(Guid userAssessmentId)

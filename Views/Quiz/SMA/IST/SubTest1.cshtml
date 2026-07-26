@@ -56,7 +56,7 @@
         </div>
     </div>
     <p class="text-muted small mb-0 lh-sm">
-        Soal 01–20 terdiri atas kalimat-kalimat. Pada setiap kalimat, satu kata hilang. Pilihlah kata yang tepat untuk menyempurnakan kalimat tersebut[cite: 3].
+        Soal 01–20 terdiri atas kalimat-kalimat. Pada setiap kalimat, satu kata hilang. Pilihlah kata yang tepat untuk menyempurnakan kalimat tersebut.
     </p>
 </div>
 
@@ -133,13 +133,19 @@
             }
         }, 1000);
 
-        async function submitIst1() {
+                async function submitIst1() {
             if (isSubmitting) return;
-            isSubmitting = true;
 
-            const submitBtn = document.getElementById('btnSubmit');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Memproses...';
+            const userAssessmentId = document.getElementById('UserAssessmentId').value;
+
+            // Sanity check sebelum melakukan fetch
+            if (!userAssessmentId || userAssessmentId === "00000000-0000-0000-0000-000000000000") {
+                alert("Session Assessment ID tidak ditemukan. Mengembalikan ke pendaftaran.");
+                window.location.href = "/Assessment/Index";
+                return;
+            }
+
+            isSubmitting = true;
 
             const answers = {};
             questions.forEach(q => {
@@ -148,7 +154,7 @@
             });
 
             const payload = {
-                UserAssessmentId: document.getElementById('UserAssessmentId').value,
+                UserAssessmentId: userAssessmentId,
                 SubTestName: "IST_SubTest_01",
                 Answers: answers
             };
@@ -166,9 +172,11 @@
                 });
 
                 if (response.ok) {
-                    window.location.href = `/Quiz/IstSubTest2?userAssessmentId=${payload.UserAssessmentId}`;
+                    // Forward ID ke SubTest 2
+                    window.location.href = `/Quiz/IstSubTest2?userAssessmentId=${userAssessmentId}`;
                 } else {
-                    alert("Gagal menyimpan jawaban IST Sub-Test 01.");
+                    const errData = await response.json();
+                    alert("Gagal menyimpan IST 01: " + (errData.message || response.status));
                     resetSubmitState();
                 }
             } catch (e) {

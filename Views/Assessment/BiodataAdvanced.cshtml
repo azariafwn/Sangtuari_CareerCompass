@@ -49,7 +49,7 @@
         <button type="button" onclick="history.back()" class="btn btn-outline-dark rounded-pill fw-medium fluid-btn order-2 order-sm-1 w-100 w-sm-auto">
             Kembali
         </button>
-        <button type="button" onclick="sendData()" class="btn btn-purple-custom rounded-pill fw-medium shadow-sm fluid-btn order-1 order-sm-2 w-100 w-sm-auto">
+        <button type="button" id="btnSubmit" onclick="sendData()" class="btn btn-purple-custom rounded-pill fw-medium shadow-sm fluid-btn order-1 order-sm-2 w-100 w-sm-auto">
             Mulai Asesmen
         </button>
     </div>
@@ -57,10 +57,18 @@
 
 @section Scripts {
     <script>
-                async function sendData() {
-            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+        async function sendData() {
+            const btn = document.getElementById('btnSubmit');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerText = 'Memproses...';
+            }
+
+            const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+            const type = document.getElementById('AssessmentType').value || localStorage.getItem('assessment_type') || "";
+
             const payload = {
-                AssessmentType: document.getElementById('AssessmentType').value,
+                AssessmentType: type,
                 Email: document.getElementById('Email').value,
                 FullName: document.getElementById('FullName').value,
                 Gender: document.getElementById('Gender').value,
@@ -72,8 +80,16 @@
                 MotherJob: document.getElementById('MotherJob').value,
                 Hobby: document.getElementById('Hobby').value,
                 Goals: document.getElementById('Goals').value,
-                LikedSubjects: [document.getElementById('L1').value, document.getElementById('L2').value, document.getElementById('L3').value].filter(Boolean),
-                DislikedSubjects: [document.getElementById('D1').value, document.getElementById('D2').value, document.getElementById('D3').value].filter(Boolean)
+                LikedSubjects: [
+                    document.getElementById('L1').value,
+                    document.getElementById('L2').value,
+                    document.getElementById('L3').value
+                ].filter(Boolean),
+                DislikedSubjects: [
+                    document.getElementById('D1').value,
+                    document.getElementById('D2').value,
+                    document.getElementById('D3').value
+                ].filter(Boolean)
             };
 
             try {
@@ -81,29 +97,38 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'RequestVerificationToken': token
+                        'RequestVerificationToken': tokenElement ? tokenElement.value : ''
                     },
                     body: JSON.stringify(payload)
                 });
 
                 const data = await res.json();
 
-            if (res.ok && data.success) {
-                localStorage.clear();
+                if (res.ok && data.success) {
+                    localStorage.clear();
 
-                // Percabangan Alur Berdasarkan Tipe Asesmen
-                if (type === 'Discovery') {
-                    // SMA: Dimulai dari IST Sub-Test 01 (SE)
-                    window.location.href = `/Quiz/IstSubTest1?userAssessmentId=${data.userAssessmentId}`;
+                    // Percabangan Alur Berdasarkan Tipe Asesmen
+                    if (type === 'Discovery') {
+                        // SMA: Dimulai dari IST Sub-Test 01 (SE)
+                        window.location.href = `/Quiz/IstSubTest1?userAssessmentId=${data.userAssessmentId}`;
+                    } else {
+                        // SMP (Exploration) / Dewasa (Advanced)
+                        window.location.href = `/Quiz/Cfit?userAssessmentId=${data.userAssessmentId}`;
+                    }
                 } else {
-                    // SMP (Exploration) / Dewasa (Advanced)
-                    window.location.href = `/Quiz/Cfit?userAssessmentId=${data.userAssessmentId}`;
-                }
-            } else {
                     alert('Gagal menyimpan biodata: ' + (data.message || 'Terjadi kesalahan.'));
+                    resetBtn(btn);
                 }
             } catch (err) {
                 alert('Koneksi bermasalah.');
+                resetBtn(btn);
+            }
+        }
+
+        function resetBtn(btn) {
+            if (btn) {
+                btn.disabled = false;
+                btn.innerText = 'Mulai Asesmen';
             }
         }
     </script>
