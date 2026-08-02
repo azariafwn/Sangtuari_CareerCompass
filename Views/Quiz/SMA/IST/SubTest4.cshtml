@@ -1,5 +1,187 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    Layout = "~/Views/Shared/_QuizLayout.cshtml";
+    ViewData["Title"] = "IST 04 - GE (Gemeinsamkeiten)";
+    ViewData["SubTestName"] = "IST 04: GE (Gemeinsamkeiten)";
+}
+
+<style>
+    .bg-purple-main {
+        background-color: #4E325A;
+    }
+
+    .text-purple-main {
+        color: #4E325A;
+    }
+
+    .btn-purple-custom {
+        background-color: #4E325A;
+        color: #FFE375;
+        border: none;
+    }
+
+        .btn-purple-custom:hover {
+            background-color: #3b2544;
+            color: #ffffff;
+        }
+
+    .input-ge-custom {
+        border: 1.5px solid #EFE8D8;
+        background-color: #FFFDF4;
+        color: #4E325A;
+        font-weight: 600;
+        border-radius: 12px;
+        padding: 0.65rem 1rem;
+        transition: all 0.2s ease;
+    }
+
+        .input-ge-custom:focus {
+            border-color: #4E325A;
+            background-color: #FFFFFF;
+            box-shadow: 0 0 0 0.25rem rgba(78, 50, 90, 0.15);
+            outline: none;
+        }
+</style>
+
+<!-- Header & Timer Bar -->
+<div class="card border-0 shadow-sm rounded-4 p-3 p-md-4 mb-4 bg-white">
+    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+        <h6 class="fw-bold text-dark m-0">Instruksi IST Kelompok Soal 04 (GE)</h6>
+        <div class="d-flex align-items-center gap-2">
+            <span class="text-muted small">Sisa Waktu:</span>
+            <span class="badge rounded-pill px-3 py-2 fs-6 bg-purple-main text-warning timer-text">08:00</span>
+        </div>
+    </div>
+    <p class="text-muted small mb-0 lh-sm">
+        Ditentukan dua kata pada setiap nomor. Carilah <strong>satu perkataan</strong> yang meliputi pengertian kedua kata tersebut, lalu ketikkan jawaban Anda pada kolom yang tersedia.
+    </p>
+</div>
+
+<form id="ist4Form">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="UserAssessmentId" value="@ViewBag.UserAssessmentId" />
+
+    <div id="questionsContainer" class="d-flex flex-column gap-3 mb-4"></div>
+
+    <div class="text-end mb-5">
+        <button type="button" id="btnSubmit" onclick="submitIst4()" class="btn btn-purple-custom rounded-pill px-5 py-3 fw-bold shadow-sm w-100 w-md-auto">
+            Kirim & Lanjut ke IST Sub-Test 05
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        const rawJson = '@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(ViewBag.QuestionsJson ?? "[]"))';
+        let questions = [];
+
+        try {
+            questions = JSON.parse(rawJson);
+        } catch (e) {
+            console.error("Gagal parsing JSON IST 4:", e);
+        }
+
+        const container = document.getElementById('questionsContainer');
+        let isSubmitting = false;
+
+        // Render Soal
+        if (Array.isArray(questions) && questions.length > 0) {
+            questions.forEach((q) => {
+                const card = document.createElement('div');
+                card.className = 'card border-0 shadow-sm rounded-4 p-3 p-md-4 bg-white';
+
+                card.innerHTML = `
+                    <div class="row align-items-center g-3">
+                        <div class="col-12 col-md-6">
+                            <span class="fw-bold text-purple-main me-2">${q.id}.</span>
+                            <span class="fw-semibold text-dark fs-6">${q.words}</span>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <input type="text" class="form-control input-ge-custom" id="IST4_Q${q.id}" placeholder="Ketik satu kata pengikat..." autocomplete="off">
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Timer 8 Menit (480 detik)
+        let duration = 480;
+        const countdown = setInterval(() => {
+            if (isSubmitting) { clearInterval(countdown); return; }
+
+            let m = Math.floor(duration / 60);
+            let s = duration % 60;
+            const formattedTime = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+
+            const headerTimer = document.getElementById('timerDisplay');
+            if (headerTimer) headerTimer.textContent = formattedTime;
+
+            document.querySelectorAll('.timer-text').forEach(el => el.textContent = formattedTime);
+
+            if (--duration < 0) {
+                clearInterval(countdown);
+                alert("Waktu pengerjaan IST Sub-Test 04 habis! Jawaban otomatis dikirim.");
+                submitIst4();
+            }
+        }, 1000);
+
+        async function submitIst4() {
+            if (isSubmitting) return;
+
+            const userAssessmentId = document.getElementById('UserAssessmentId').value;
+            if (!userAssessmentId || userAssessmentId === "00000000-0000-0000-0000-000000000000") {
+                alert("Session Assessment ID tidak terdeteksi.");
+                return;
+            }
+
+            isSubmitting = true;
+
+            const submitBtn = document.getElementById('btnSubmit');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Memproses...';
+
+            const answers = {};
+            questions.forEach(q => {
+                const inputEl = document.getElementById(`IST4_Q${q.id}`);
+                answers[`Q${q.id}`] = inputEl ? inputEl.value.trim() : "";
+            });
+
+            const payload = {
+                UserAssessmentId: userAssessmentId,
+                SubTestName: "IST_SubTest_04",
+                Answers: answers
+            };
+
+            const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+
+            try {
+                const response = await fetch('/Assessment/SubmitSubTest', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': tokenElement ? tokenElement.value : ''
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    window.location.href = `/Quiz/IstSubTest5?userAssessmentId=${userAssessmentId}`;
+                } else {
+                    const errData = await response.json().catch(() => ({}));
+                    alert("Gagal menyimpan IST 04: " + (errData.message || response.status));
+                    resetSubmitState();
+                }
+            } catch (e) {
+                alert("Koneksi bermasalah.");
+                resetSubmitState();
+            }
+        }
+
+        function resetSubmitState() {
+            isSubmitting = false;
+            const submitBtn = document.getElementById('btnSubmit');
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'Kirim & Lanjut ke IST Sub-Test 05';
+        }
+    </script>
 }
