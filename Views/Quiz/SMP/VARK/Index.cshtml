@@ -132,6 +132,15 @@
 
                 async function submitVark() {
             if (isSubmitting) return;
+
+            // AMBIL USER ASSESSMENT ID DI AWAL FUNGSI
+            const userAssessmentId = document.getElementById('UserAssessmentId').value;
+            if (!userAssessmentId || userAssessmentId === "00000000-0000-0000-0000-000000000000") {
+                alert("Session Assessment ID tidak terdeteksi. Mengembalikan ke pendaftaran.");
+                window.location.href = "/Assessment/Index";
+                return;
+            }
+
             isSubmitting = true;
 
             const submitBtn = document.getElementById('btnSubmit');
@@ -157,7 +166,7 @@
             });
 
             const payload = {
-                UserAssessmentId: document.getElementById('UserAssessmentId').value,
+                UserAssessmentId: userAssessmentId,
                 SubTestName: "VARK",
                 Answers: {
                     UserResponses: answers,
@@ -178,18 +187,18 @@
                 });
 
                 if (response.ok) {
-                    const userAssessmentId = payload.UserAssessmentId;
+                    // TRANSIT KE HALAMAN JEDA INSTRUKSI SDS HOLLAND
                     window.location.href = `/Quiz/SdsHolland?userAssessmentId=${userAssessmentId}`;
                 } else {
                     alert("Gagal menyimpan jawaban VARK. Status: " + response.status);
                     resetSubmitState();
                 }
             } catch (e) {
-                alert("Koneksi bermasalah.");
+                console.error("Submit VARK Error Detail:", e);
+                alert("Terjadi kesalahan teknis saat mengirim data: " + e.message);
                 resetSubmitState();
             }
         }
-
         function resetSubmitState() {
             isSubmitting = false;
             const submitBtn = document.getElementById('btnSubmit');

@@ -178,23 +178,59 @@ namespace SangtuariCareerCompass.Controllers
 
         public IActionResult IstSubTest7(Guid userAssessmentId)
         {
-            ViewData["SubTestName"] = "IST 07: FA (Figurenauswahl)";
+            var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Quiz", "IST", "istSubTest7.json");
+            var questionsJson = System.IO.File.Exists(jsonPath)
+                ? System.IO.File.ReadAllText(jsonPath)
+                : "[]";
+
             ViewBag.UserAssessmentId = userAssessmentId;
-            return View("~/Views/Quiz/ComingSoon.cshtml");
+            ViewBag.QuestionsJson = questionsJson;
+
+            return View("~/Views/Quiz/SMA/IST/SubTest7.cshtml");
         }
 
         public IActionResult IstSubTest8(Guid userAssessmentId)
         {
-            ViewData["SubTestName"] = "IST 08: WU (Würfelaufgaben)";
+            var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Quiz", "IST", "istSubTest8.json");
+            var questionsJson = System.IO.File.Exists(jsonPath)
+                ? System.IO.File.ReadAllText(jsonPath)
+                : "[]";
+
             ViewBag.UserAssessmentId = userAssessmentId;
-            return View("~/Views/Quiz/ComingSoon.cshtml");
+            ViewBag.QuestionsJson = questionsJson;
+
+            return View("~/Views/Quiz/SMA/IST/SubTest8.cshtml");
         }
 
         public IActionResult IstSubTest9(Guid userAssessmentId)
         {
-            ViewData["SubTestName"] = "IST 09: ME (Merkaufgaben)";
+            var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Quiz", "IST", "istSubTest9.json");
+            var questionsJson = System.IO.File.Exists(jsonPath)
+                ? System.IO.File.ReadAllText(jsonPath)
+                : "{}";
+
             ViewBag.UserAssessmentId = userAssessmentId;
-            return View("~/Views/Quiz/ComingSoon.cshtml");
+            ViewBag.QuestionsJson = questionsJson;
+
+            return View("~/Views/Quiz/SMA/IST/SubTest9.cshtml");
+        }
+
+        public IActionResult PapiKostick(Guid userAssessmentId)
+        {
+            if (userAssessmentId == Guid.Empty)
+            {
+                return RedirectToAction("Index", "Assessment");
+            }
+
+            var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Quiz", "PapiKostick", "papiKostick.json");
+            var questionsJson = System.IO.File.Exists(jsonPath)
+                ? System.IO.File.ReadAllText(jsonPath)
+                : "[]";
+
+            ViewBag.UserAssessmentId = userAssessmentId;
+            ViewBag.QuestionsJson = questionsJson;
+
+            return View("~/Views/Quiz/SMA/PapiKostick/Index.cshtml");
         }
     }
 }
