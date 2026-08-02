@@ -1,5 +1,252 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    Layout = "~/Views/Shared/_QuizLayout.cshtml";
+    ViewData["Title"] = "IST 07 - FA (Figurenauswahl)";
+    ViewData["SubTestName"] = "IST 07: FA (Figurenauswahl)";
+}
+
+<style>
+    .bg-purple-main {
+        background-color: #4E325A;
+    }
+
+    .text-purple-main {
+        color: #4E325A;
+    }
+
+    .btn-purple-custom {
+        background-color: #4E325A;
+        color: #FFE375;
+        border: none;
+    }
+
+        .btn-purple-custom:hover {
+            background-color: #3b2544;
+            color: #ffffff;
+        }
+
+    .btn-fa-option {
+        border: 1.5px solid #EFE8D8;
+        background-color: #FFFDF4;
+        color: #4E325A;
+        font-weight: 700;
+        transition: all 0.15s ease;
+        padding: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .btn-check:checked + .btn-fa-option {
+        background-color: #4E325A !important;
+        color: #FFE375 !important;
+        border-color: #4E325A !important;
+    }
+
+    .btn-fa-option:hover {
+        background-color: #F5EBF8;
+        border-color: #9C7BB4;
+    }
+
+    .reference-box {
+        border: 2px dashed #4E325A;
+        background-color: #FAF6FF;
+    }
+
+    .intro-img {
+        max-height: 65px;
+        object-fit: contain;
+    }
+
+    /* Kontainer pembatas agar sticky header terisolasi per section */
+    .fa-section {
+        position: relative;
+    }
+</style>
+
+<!-- Header & Timer -->
+<div class="card border-0 shadow-sm rounded-4 p-3 p-md-4 mb-3 bg-white">
+    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+        <h6 class="fw-bold text-dark m-0">Instruksi IST Kelompok Soal 07 (FA)</h6>
+        <div class="d-flex align-items-center gap-2">
+            <span class="text-muted small">Sisa Waktu:</span>
+            <span class="badge rounded-pill px-3 py-2 fs-6 bg-purple-main text-warning timer-text">07:00</span>
+        </div>
+    </div>
+    <p class="text-muted small mb-0 lh-sm">
+        Pilihlah bentuk utuh <strong>(a, b, c, d, e)</strong> yang dibangun dari penggabungan potongan-potongan bentuk pada setiap nomor.
+    </p>
+</div>
+
+<form id="ist7Form">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="UserAssessmentId" value="@ViewBag.UserAssessmentId" />
+
+    <!-- SECTION FA-1 (117-128) -->
+    <div class="fa-section mb-5">
+        <div class="card border-0 shadow-sm rounded-4 p-3 mb-3 reference-box sticky-top" style="top: 70px; z-index: 1020;">
+            <h6 class="fw-bold text-purple-main mb-2 text-center small text-uppercase">Bentuk Acuan Soal 117 - 128</h6>
+            <div class="d-flex justify-content-around align-items-center flex-wrap gap-2">
+                <div class="text-center"><img src="/images/IST-7/FA-1/intro-1-a.png" class="intro-img d-block mb-1" /><span class="fw-bold small">a</span></div>
+                <div class="text-center"><img src="/images/IST-7/FA-1/intro-1-b.png" class="intro-img d-block mb-1" /><span class="fw-bold small">b</span></div>
+                <div class="text-center"><img src="/images/IST-7/FA-1/intro-1-c.png" class="intro-img d-block mb-1" /><span class="fw-bold small">c</span></div>
+                <div class="text-center"><img src="/images/IST-7/FA-1/intro-1-d.png" class="intro-img d-block mb-1" /><span class="fw-bold small">d</span></div>
+                <div class="text-center"><img src="/images/IST-7/FA-1/intro-1-e.png" class="intro-img d-block mb-1" /><span class="fw-bold small">e</span></div>
+            </div>
+        </div>
+        <div id="containerFA1" class="row g-3"></div>
+    </div>
+
+    <!-- SECTION FA-2 (129-136) -->
+    <div class="fa-section mb-5">
+        <div class="card border-0 shadow-sm rounded-4 p-3 mb-3 reference-box sticky-top" style="top: 70px; z-index: 1020;">
+            <h6 class="fw-bold text-purple-main mb-2 text-center small text-uppercase">Bentuk Acuan Soal 129 - 136</h6>
+            <div class="d-flex justify-content-around align-items-center flex-wrap gap-2">
+                <div class="text-center"><img src="/images/IST-7/FA-2/intro-2-a.png" class="intro-img d-block mb-1" /><span class="fw-bold small">a</span></div>
+                <div class="text-center"><img src="/images/IST-7/FA-2/intro-2-b.png" class="intro-img d-block mb-1" /><span class="fw-bold small">b</span></div>
+                <div class="text-center"><img src="/images/IST-7/FA-2/intro-2-c.png" class="intro-img d-block mb-1" /><span class="fw-bold small">c</span></div>
+                <div class="text-center"><img src="/images/IST-7/FA-2/intro-2-d.png" class="intro-img d-block mb-1" /><span class="fw-bold small">d</span></div>
+                <div class="text-center"><img src="/images/IST-7/FA-2/intro-2-e.png" class="intro-img d-block mb-1" /><span class="fw-bold small">e</span></div>
+            </div>
+        </div>
+        <div id="containerFA2" class="row g-3"></div>
+    </div>
+
+    <div class="text-end mb-5">
+        <button type="button" id="btnSubmit" onclick="submitIst7()" class="btn btn-purple-custom rounded-pill px-5 py-3 fw-bold shadow-sm w-100 w-md-auto">
+            Kirim & Lanjut ke IST Sub-Test 08
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        const rawJson = '@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(ViewBag.QuestionsJson ?? "[]"))';
+        let questions = [];
+
+        try {
+            questions = JSON.parse(rawJson);
+        } catch (e) {
+            console.error("Gagal parsing JSON IST 7:", e);
+        }
+
+        const containerFA1 = document.getElementById('containerFA1');
+        const containerFA2 = document.getElementById('containerFA2');
+        let isSubmitting = false;
+
+        const options = ['a', 'b', 'c', 'd', 'e'];
+
+        if (Array.isArray(questions) && questions.length > 0) {
+            questions.forEach((q) => {
+                const cardCol = document.createElement('div');
+                cardCol.className = 'col-12 col-md-6';
+
+                let optionsHtml = '';
+                options.forEach((opt) => {
+                    const optId = `IST7_Q${q.id}_${opt}`;
+                    optionsHtml += `
+                        <div class="col">
+                            <input type="radio" class="btn-check" name="IST7_Q${q.id}" id="${optId}" value="${opt}" autocomplete="off">
+                            <label class="btn btn-fa-option w-100 rounded-3 text-center text-uppercase" for="${optId}">${opt}</label>
+                        </div>
+                    `;
+                });
+
+                cardCol.innerHTML = `
+                    <div class="card border-0 shadow-sm rounded-4 p-3 bg-white h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="fw-bold text-purple-main mb-2">${q.id}. Potongan:</div>
+                            <div class="text-center my-2 bg-light rounded-3 p-2 border">
+                                <img src="${q.imagePath}" alt="Soal ${q.id}" class="img-fluid" style="max-height: 120px; object-fit: contain;" />
+                            </div>
+                        </div>
+                        <div class="row g-2 mt-2">${optionsHtml}</div>
+                    </div>
+                `;
+
+                if (q.section === "FA-1") {
+                    containerFA1.appendChild(cardCol);
+                } else {
+                    containerFA2.appendChild(cardCol);
+                }
+            });
+        }
+
+        // Timer 7 Menit (420 detik)
+        let duration = 420;
+        const countdown = setInterval(() => {
+            if (isSubmitting) { clearInterval(countdown); return; }
+
+            let m = Math.floor(duration / 60);
+            let s = duration % 60;
+            const formattedTime = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+
+            const headerTimer = document.getElementById('timerDisplay');
+            if (headerTimer) headerTimer.textContent = formattedTime;
+
+            document.querySelectorAll('.timer-text').forEach(el => el.textContent = formattedTime);
+
+            if (--duration < 0) {
+                clearInterval(countdown);
+                alert("Waktu pengerjaan IST Sub-Test 07 habis! Jawaban otomatis dikirim.");
+                submitIst7();
+            }
+        }, 1000);
+
+        async function submitIst7() {
+            if (isSubmitting) return;
+
+            const userAssessmentId = document.getElementById('UserAssessmentId').value;
+            if (!userAssessmentId || userAssessmentId === "00000000-0000-0000-0000-000000000000") {
+                alert("Session Assessment ID tidak terdeteksi.");
+                return;
+            }
+
+            isSubmitting = true;
+
+            const submitBtn = document.getElementById('btnSubmit');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Memproses...';
+
+            const answers = {};
+            questions.forEach(q => {
+                const selected = document.querySelector(`input[name="IST7_Q${q.id}"]:checked`);
+                answers[`Q${q.id}`] = selected ? selected.value : "";
+            });
+
+            const payload = {
+                UserAssessmentId: userAssessmentId,
+                SubTestName: "IST_SubTest_07",
+                Answers: answers
+            };
+
+            const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+
+            try {
+                const response = await fetch('/Assessment/SubmitSubTest', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': tokenElement ? tokenElement.value : ''
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    window.location.href = `/Quiz/IstSubTest8?userAssessmentId=${userAssessmentId}`;
+                } else {
+                    const errData = await response.json().catch(() => ({}));
+                    alert("Gagal menyimpan IST 07: " + (errData.message || response.status));
+                    resetSubmitState();
+                }
+            } catch (e) {
+                alert("Koneksi bermasalah.");
+                resetSubmitState();
+            }
+        }
+
+        function resetSubmitState() {
+            isSubmitting = false;
+            const submitBtn = document.getElementById('btnSubmit');
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'Kirim & Lanjut ke IST Sub-Test 08';
+        }
+    </script>
 }
