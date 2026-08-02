@@ -3,3 +3,269 @@
 *@
 @{
 }
+@{
+    Layout = "~/Views/Shared/_QuizLayout.cshtml";
+    ViewData["Title"] = "IST 09 - ME (Merkaufgaben)";
+    ViewData["SubTestName"] = "IST 09: ME (Merkaufgaben)";
+}
+
+<style>
+    .bg-purple-main {
+        background-color: #4E325A;
+    }
+
+    .text-purple-main {
+        color: #4E325A;
+    }
+
+    .btn-purple-custom {
+        background-color: #4E325A;
+        color: #FFE375;
+        border: none;
+    }
+
+        .btn-purple-custom:hover {
+            background-color: #3b2544;
+            color: #ffffff;
+        }
+
+    .btn-ist-option {
+        border: 1.5px solid #EFE8D8;
+        background-color: #FFFDF4;
+        color: #4E325A;
+        font-weight: 500;
+        transition: all 0.15s ease;
+        padding: 0.75rem 0.5rem;
+        font-size: clamp(0.85rem, 1.4vw, 1rem);
+    }
+
+    .btn-check:checked + .btn-ist-option {
+        background-color: #4E325A !important;
+        color: #FFE375 !important;
+        border-color: #4E325A !important;
+    }
+
+    .btn-ist-option:hover {
+        background-color: #F5EBF8;
+        border-color: #9C7BB4;
+    }
+
+    .memorize-card {
+        background-color: #FFFDF4;
+        border: 2px dashed #4E325A;
+    }
+</style>
+
+<!-- HEADER TAHAP 1: FASE HAFALAN -->
+<div id="headerMemorize" class="card border-0 shadow-sm rounded-4 p-3 p-md-4 mb-4 bg-white">
+    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+        <h6 class="fw-bold text-dark m-0">Fase Hafalan Kata (3 Menit)</h6>
+        <div class="d-flex align-items-center gap-2">
+            <span class="text-muted small">Sisa Waktu Hafalan:</span>
+            <span class="badge rounded-pill px-3 py-2 fs-6 bg-purple-main text-warning" id="memorizeTimer">03:00</span>
+        </div>
+    </div>
+    <p class="text-muted small mb-0 lh-sm">
+        Hafalkan kelompok kata di bawah ini selama 3 menit. Setelah waktu habis atau Anda menekan tombol mulai, daftar ini akan disembunyikan dan soal akan ditampilkan!
+    </p>
+</div>
+
+<!-- CONTAINER FASE HAFALAN -->
+<div id="memorizePhase" class="card border-0 shadow-sm rounded-4 p-4 mb-4 memorize-card">
+    <h5 class="fw-bold text-purple-main mb-3 text-center">DAFTAR KATA HAFALAN</h5>
+    <div id="memorizeList" class="d-flex flex-column gap-2 mb-4"></div>
+    <div class="text-center">
+        <button type="button" onclick="startTestPhase()" class="btn btn-purple-custom rounded-pill px-5 py-2.5 fw-bold shadow-sm">
+            Saya Sudah Hafal, Mulai Pengerjaan Soal
+        </button>
+    </div>
+</div>
+
+<!-- HEADER TAHAP 2: FASE PENGERJAAN SOAL (HIDDEN AWAL) -->
+<div id="headerTest" class="card border-0 shadow-sm rounded-4 p-3 p-md-4 mb-4 bg-white d-none">
+    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+        <h6 class="fw-bold text-dark m-0">Instruksi IST Kelompok Soal 09 (ME)</h6>
+        <div class="d-flex align-items-center gap-2">
+            <span class="text-muted small">Sisa Waktu:</span>
+            <span class="badge rounded-pill px-3 py-2 fs-6 bg-purple-main text-warning timer-text">06:00</span>
+        </div>
+    </div>
+    <p class="text-muted small mb-0 lh-sm">
+        Tentukan kategori kata yang diawali dengan huruf yang diberikan sesuai kata-kata yang telah Anda hafalkan sebelumnya.
+    </p>
+</div>
+
+<!-- FORM SOAL (HIDDEN AWAL) -->
+<form id="ist9Form" class="d-none">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="UserAssessmentId" value="@ViewBag.UserAssessmentId" />
+
+    <div id="questionsContainer" class="d-flex flex-column gap-3 mb-4"></div>
+
+    <div class="text-end mb-5">
+        <button type="button" id="btnSubmit" onclick="submitIst9()" class="btn btn-purple-custom rounded-pill px-5 py-3 fw-bold shadow-sm w-100 w-md-auto">
+            Kirim & Lanjut ke PAPI Kostick
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        const rawJson = '@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(ViewBag.QuestionsJson ?? "{}"))';
+        let data = {};
+
+        try {
+            data = JSON.parse(rawJson);
+        } catch (e) {
+            console.error("Gagal parsing JSON IST 9:", e);
+        }
+
+        let isSubmitting = false;
+        let testCountdownInterval = null;
+
+        // Render Daftar Hafalan
+        const memorizeList = document.getElementById('memorizeList');
+        if (data.categories && Array.isArray(data.categories)) {
+            data.categories.forEach(c => {
+                const row = document.createElement('div');
+                row.className = 'd-flex flex-column flex-md-row justify-content-start align-items-start align-items-md-center border-bottom pb-2';
+                row.innerHTML = `
+                    <div class="fw-bold text-purple-main" style="min-width: 140px;">${c.name}</div>
+                    <div class="fw-semibold text-dark">: ${c.words.join(', ')}</div>
+                `;
+                memorizeList.appendChild(row);
+            });
+        }
+
+        // Timer Hafalan 3 Menit (180 detik)
+        let memorizeDuration = 180;
+        const memorizeCountdown = setInterval(() => {
+            let m = Math.floor(memorizeDuration / 60);
+            let s = memorizeDuration % 60;
+            const timeStr = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+            document.getElementById('memorizeTimer').textContent = timeStr;
+
+            if (--memorizeDuration < 0) {
+                clearInterval(memorizeCountdown);
+                startTestPhase();
+            }
+        }, 1000);
+
+        // Render Soal Pilihan Ganda
+        const container = document.getElementById('questionsContainer');
+        if (data.questions && Array.isArray(data.questions)) {
+            data.questions.forEach(q => {
+                const card = document.createElement('div');
+                card.className = 'card border-0 shadow-sm rounded-4 p-3 p-md-4 bg-white';
+
+                let optionsHtml = '';
+                data.options.forEach(opt => {
+                    const optId = `IST9_Q${q.id}_${opt.code}`;
+                    optionsHtml += `
+                        <div class="col-12 col-md">
+                            <input type="radio" class="btn-check" name="IST9_Q${q.id}" id="${optId}" value="${opt.code}" autocomplete="off">
+                            <label class="btn btn-ist-option w-100 rounded-3 text-truncate" for="${optId}">${opt.code.toUpperCase()}) ${opt.text}</label>
+                        </div>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="fw-bold text-purple-main mb-3 fs-6">${q.id}. Kata yang mempunyai huruf permulaan - <strong>${q.letter}</strong> - adalah suatu ...</div>
+                    <div class="row g-2">${optionsHtml}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function startTestPhase() {
+            clearInterval(memorizeCountdown);
+            document.getElementById('headerMemorize').classList.add('d-none');
+            document.getElementById('memorizePhase').classList.add('d-none');
+
+            document.getElementById('headerTest').classList.remove('d-none');
+            document.getElementById('ist9Form').classList.remove('d-none');
+
+            // Timer Pengerjaan Soal 6 Menit (360 detik)
+            let duration = 360;
+            testCountdownInterval = setInterval(() => {
+                if (isSubmitting) { clearInterval(testCountdownInterval); return; }
+
+                let m = Math.floor(duration / 60);
+                let s = duration % 60;
+                const formattedTime = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+
+                const headerTimer = document.getElementById('timerDisplay');
+                if (headerTimer) headerTimer.textContent = formattedTime;
+
+                document.querySelectorAll('.timer-text').forEach(el => el.textContent = formattedTime);
+
+                if (--duration < 0) {
+                    clearInterval(testCountdownInterval);
+                    alert("Waktu pengerjaan IST Sub-Test 09 habis! Jawaban otomatis dikirim.");
+                    submitIst9();
+                }
+            }, 1000);
+        }
+
+        async function submitIst9() {
+            if (isSubmitting) return;
+
+            const userAssessmentId = document.getElementById('UserAssessmentId').value;
+            if (!userAssessmentId || userAssessmentId === "00000000-0000-0000-0000-000000000000") {
+                alert("Session Assessment ID tidak terdeteksi.");
+                return;
+            }
+
+            isSubmitting = true;
+
+            const submitBtn = document.getElementById('btnSubmit');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Memproses...';
+
+            const answers = {};
+            if (data.questions) {
+                data.questions.forEach(q => {
+                    const selected = document.querySelector(`input[name="IST9_Q${q.id}"]:checked`);
+                    answers[`Q${q.id}`] = selected ? selected.value : "";
+                });
+            }
+
+            const payload = {
+                UserAssessmentId: userAssessmentId,
+                SubTestName: "IST_SubTest_09",
+                Answers: answers
+            };
+
+            const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+
+            try {
+                const response = await fetch('/Assessment/SubmitSubTest', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': tokenElement ? tokenElement.value : ''
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    window.location.href = `/Quiz/PapiKostick?userAssessmentId=${userAssessmentId}`;
+                }else {
+                    const errData = await response.json().catch(() => ({}));
+                    alert("Gagal menyimpan IST 09: " + (errData.message || response.status));
+                    resetSubmitState();
+                }
+            } catch (e) {
+                alert("Koneksi bermasalah.");
+                resetSubmitState();
+            }
+        }
+
+        function resetSubmitState() {
+            isSubmitting = false;
+            const submitBtn = document.getElementById('btnSubmit');
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'Kirim & Lanjut ke PAPI Kostick';
+        }
+    </script>
+}

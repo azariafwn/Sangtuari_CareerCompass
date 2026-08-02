@@ -1,0 +1,128 @@
+{
+  "categories": [
+    {
+      "name": "BUNGA",
+      "words": [ "SOKA", "LARAT", "FLAMBOYAN", "YASMIN", "DAHLIA" ]
+    },
+    {
+      "name": "PERKAKAS",
+      "words": [ "WAJAN", "JARUM", "KIKIR", "CANGKUL", "PALU" ]
+    },
+    {
+      "name": "BURUNG",
+      "words": [ "ITIK", "ELANG", "WALET", "TEKUKUR", "NURI" ]
+    },
+    {
+      "name": "KESENIAN",
+      "words": [ "QUINTET", "ARCA", "OPERA", "UKIRAN", "GAMELAN" ]
+    },
+    {
+      "name": "BINATANG",
+      "words": [ "RUSA", "MUSANG", "BERUANG", "HARIMAU", "ZEBRA" ]
+    }
+  ],
+  "options": [
+    {
+      "code": "a",
+      "text": "bunga"
+    },
+    {
+      "code": "b",
+      "text": "perkakas"
+    },
+    {
+      "code": "c",
+      "text": "burung"
+    },
+    {
+      "code": "d",
+      "text": "kesenian"
+    },
+    {
+      "code": "e",
+      "text": "binatang"
+    }
+  ],
+  "questions": [
+    {
+      "id": 157,
+      "letter": "A"
+    },
+    {
+      "id": 158,
+      "letter": "B"
+    },
+    {
+      "id": 159,
+      "letter": "C"
+    },
+    {
+      "id": 160,
+      "letter": "D"
+    },
+    {
+      "id": 161,
+      "letter": "E"
+    },
+    {
+      "id": 162,
+      "letter": "F"
+    },
+    {
+      "id": 163,
+      "letter": "G"
+    },
+    {
+      "id": 164,
+      "letter": "H"
+    },
+    {
+      "id": 165,
+      "letter": "I"
+    },
+    {
+      "id": 166,
+      "letter": "J"
+    },
+    {
+      "id": 167,
+      "letter": "K"
+    },
+    {
+      "id": 168,
+      "letter": "L"
+    },
+    {
+      "id": 169,
+      "letter": "M"
+    },
+    {
+      "id": 170,
+      "letter": "N"
+    },
+    {
+      "id": 171,
+      "letter": "O"
+    },
+    {
+      "id": 172,
+      "letter": "P"
+    },
+    {
+      "id": 173,
+      "letter": "R"
+    },
+    {
+      "id": 174,
+      "letter": "S"
+    },
+    {
+      "id": 175,
+      "letter": "T"
+    },
+    {
+      "id": 176,
+      "letter": "U"
+    }
+  ]
+}
