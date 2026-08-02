@@ -139,23 +139,41 @@ namespace SangtuariCareerCompass.Controllers
 
         public IActionResult IstSubTest4(Guid userAssessmentId)
         {
-            ViewData["SubTestName"] = "IST 04: GE (Gemeinsamkeiten)";
+            var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Quiz", "IST", "istSubTest4.json");
+            var questionsJson = System.IO.File.Exists(jsonPath)
+                ? System.IO.File.ReadAllText(jsonPath)
+                : "[]";
+
             ViewBag.UserAssessmentId = userAssessmentId;
-            return View("~/Views/Quiz/ComingSoon.cshtml");
+            ViewBag.QuestionsJson = questionsJson;
+
+            return View("~/Views/Quiz/SMA/IST/SubTest4.cshtml");
         }
 
         public IActionResult IstSubTest5(Guid userAssessmentId)
         {
-            ViewData["SubTestName"] = "IST 05: RA (Rechenaufgaben)";
+            var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Quiz", "IST", "istSubTest5.json");
+            var questionsJson = System.IO.File.Exists(jsonPath)
+                ? System.IO.File.ReadAllText(jsonPath)
+                : "[]";
+
             ViewBag.UserAssessmentId = userAssessmentId;
-            return View("~/Views/Quiz/ComingSoon.cshtml");
+            ViewBag.QuestionsJson = questionsJson;
+
+            return View("~/Views/Quiz/SMA/IST/SubTest5.cshtml");
         }
 
         public IActionResult IstSubTest6(Guid userAssessmentId)
         {
-            ViewData["SubTestName"] = "IST 06: ZR (Zahlenreihen)";
+            var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Quiz", "IST", "istSubTest6.json");
+            var questionsJson = System.IO.File.Exists(jsonPath)
+                ? System.IO.File.ReadAllText(jsonPath)
+                : "[]";
+
             ViewBag.UserAssessmentId = userAssessmentId;
-            return View("~/Views/Quiz/ComingSoon.cshtml");
+            ViewBag.QuestionsJson = questionsJson;
+
+            return View("~/Views/Quiz/SMA/IST/SubTest6.cshtml");
         }
 
         public IActionResult IstSubTest7(Guid userAssessmentId)
