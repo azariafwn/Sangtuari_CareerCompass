@@ -1,0 +1,217 @@
+﻿@{
+    Layout = "~/Views/Shared/_QuizLayout.cshtml";
+    ViewData["Title"] = "PAPI Kostick Test";
+    ViewData["SubTestName"] = "PAPI Kostick (Perception & Preference Inventory)";
+}
+
+<style>
+    .bg-purple-main {
+        background-color: #4E325A;
+    }
+
+    .text-purple-main {
+        color: #4E325A;
+    }
+
+    .btn-purple-custom {
+        background-color: #4E325A;
+        color: #FFE375;
+        border: none;
+    }
+
+        .btn-purple-custom:hover {
+            background-color: #3b2544;
+            color: #ffffff;
+        }
+
+    .papi-option-btn {
+        border: 1.5px solid #EFE8D8;
+        background-color: #FFFDF4;
+        color: #4E325A;
+        font-weight: 500;
+        padding: 0.85rem 1.25rem;
+        border-radius: 12px;
+        transition: all 0.2s ease;
+        text-align: left;
+        cursor: pointer;
+        width: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .btn-check:checked + .papi-option-btn {
+        background-color: #4E325A !important;
+        color: #FFE375 !important;
+        border-color: #4E325A !important;
+        font-weight: 600;
+    }
+
+    .papi-option-btn:hover {
+        background-color: #F5EBF8;
+        border-color: #9C7BB4;
+    }
+
+    .option-badge {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background-color: #EFE8D8;
+        color: #4E325A;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-right: 12px;
+        flex-shrink: 0;
+    }
+
+    .btn-check:checked + .papi-option-btn .option-badge {
+        background-color: #FFE375;
+        color: #4E325A;
+    }
+</style>
+
+<!-- Instruction Header -->
+<div class="card border-0 shadow-sm rounded-4 p-3 p-md-4 mb-4 bg-white">
+    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+        <h6 class="fw-bold text-dark m-0">Instruksi PAPI Kostick</h6>
+        <span class="badge rounded-pill bg-purple-main text-warning px-3 py-2">Tanpa Batas Waktu</span>
+    </div>
+    <p class="text-muted small mb-0 lh-sm">
+        Di bawah ini terdapat 90 pasang pernyataan. Pilihlah <strong>satu pernyataan (A atau B)</strong> dari setiap pasang yang paling mendekati gambaran diri Anda atau paling menunjukkan perasaan Anda. Bekerjalah dengan cepat dan pastikan tidak ada nomor yang terlewat!
+    </p>
+</div>
+
+<form id="papiForm">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="UserAssessmentId" value="@ViewBag.UserAssessmentId" />
+
+    <div id="questionsContainer" class="d-flex flex-column gap-3 mb-4"></div>
+
+    <div class="text-end mb-5">
+        <button type="button" id="btnSubmit" onclick="submitPapi()" class="btn btn-purple-custom rounded-pill px-5 py-3 fw-bold shadow-sm w-100 w-md-auto">
+            Kirim & Lanjut ke VARK Test
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        const rawJson = '@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(ViewBag.QuestionsJson ?? "[]"))';
+        let questions = [];
+
+        try {
+            questions = JSON.parse(rawJson);
+        } catch (e) {
+            console.error("Gagal parsing JSON PAPI Kostick:", e);
+        }
+
+        const container = document.getElementById('questionsContainer');
+        let isSubmitting = false;
+
+        // Render 90 Soal PAPI Kostick
+        if (Array.isArray(questions) && questions.length > 0) {
+            questions.forEach((q) => {
+                const card = document.createElement('div');
+                card.className = 'card border-0 shadow-sm rounded-4 p-3 p-md-4 bg-white';
+
+                const optA = `PAPI_Q${q.id}_A`;
+                const optB = `PAPI_Q${q.id}_B`;
+
+                card.innerHTML = `
+                    <div class="fw-bold text-purple-main mb-3 fs-6">${q.id}. Pilih salah satu pernyataan yang paling menggambarkan diri Anda:</div>
+                    <div class="d-flex flex-column gap-2">
+                        <div>
+                            <input type="radio" class="btn-check" name="PAPI_Q${q.id}" id="${optA}" value="A" autocomplete="off">
+                            <label class="papi-option-btn" for="${optA}">
+                                <span class="option-badge">A</span>
+                                <span>${q.statementA}</span>
+                            </label>
+                        </div>
+                        <div>
+                            <input type="radio" class="btn-check" name="PAPI_Q${q.id}" id="${optB}" value="B" autocomplete="off">
+                            <label class="papi-option-btn" for="${optB}">
+                                <span class="option-badge">B</span>
+                                <span>${q.statementB}</span>
+                            </label>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        async function submitPapi() {
+            if (isSubmitting) return;
+
+            const userAssessmentId = document.getElementById('UserAssessmentId').value;
+            if (!userAssessmentId || userAssessmentId === "00000000-0000-0000-0000-000000000000") {
+                alert("Session Assessment ID tidak terdeteksi.");
+                return;
+            }
+
+            // Validasi kelengkapan pengisian
+            let unanswered = 0;
+            questions.forEach(q => {
+                const selected = document.querySelector(`input[name="PAPI_Q${q.id}"]:checked`);
+                if (!selected) unanswered++;
+            });
+
+            if (unanswered > 0) {
+                if (!confirm(`Terdapat ${unanswered} nomor yang belum diisi. Yakin ingin melanjutkan?`)) {
+                    return;
+                }
+            }
+
+            isSubmitting = true;
+
+            const submitBtn = document.getElementById('btnSubmit');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Memproses...';
+
+            const answers = {};
+            questions.forEach(q => {
+                const selected = document.querySelector(`input[name="PAPI_Q${q.id}"]:checked`);
+                answers[`Q${q.id}`] = selected ? selected.value : "";
+            });
+
+            const payload = {
+                UserAssessmentId: userAssessmentId,
+                SubTestName: "PAPI_Kostick",
+                Answers: answers
+            };
+
+            const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+
+            try {
+                const response = await fetch('/Assessment/SubmitSubTest', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': tokenElement ? tokenElement.value : ''
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    // Alihkan peserta ke VARK Test
+                    window.location.href = `/Quiz/Vark?userAssessmentId=${userAssessmentId}`;
+                } else {
+                    const errData = await response.json().catch(() => ({}));
+                    alert("Gagal menyimpan PAPI Kostick: " + (errData.message || response.status));
+                    resetSubmitState();
+                }
+            } catch (e) {
+                alert("Koneksi bermasalah.");
+                resetSubmitState();
+            }
+        }
+
+        function resetSubmitState() {
+            isSubmitting = false;
+            const submitBtn = document.getElementById('btnSubmit');
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'Kirim & Lanjut ke VARK Test';
+        }
+    </script>
+}

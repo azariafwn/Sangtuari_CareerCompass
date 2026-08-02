@@ -1,0 +1,452 @@
+[
+  {
+    "id": 1,
+    "statementA": "Saya seorang pekerja \"keras\"",
+    "statementB": "Saya bukan seorang pemurung"
+  },
+  {
+    "id": 2,
+    "statementA": "Saya suka bekerja lebih baik dari orang lain",
+    "statementB": "Saya suka mengerjakan apa yang sedang saya kerjakan, sampai selesai"
+  },
+  {
+    "id": 3,
+    "statementA": "Saya suka menunjukkan caranya melaksanakan sesuatu hal",
+    "statementB": "Saya ingin bekerja sebaik mungkin"
+  },
+  {
+    "id": 4,
+    "statementA": "Saya suka berkelakar",
+    "statementB": "Saya senang mengatakan kepada orang lain, apa yang harus dilakukannya"
+  },
+  {
+    "id": 5,
+    "statementA": "Saya suka menggabungkan diri dengan kelompok-kelompok",
+    "statementB": "Saya suka diperhatikan oleh kelompok-kelompok"
+  },
+  {
+    "id": 6,
+    "statementA": "Saya senang bersahabat intim dengan seseorang",
+    "statementB": "Saya senang bersahabat dengan sekelompok orang"
+  },
+  {
+    "id": 7,
+    "statementA": "Saya cepat berubah bila hal itu diperlukan",
+    "statementB": "Saya berusaha untuk intim dengan teman-teman"
+  },
+  {
+    "id": 8,
+    "statementA": "Saya suka \"membalas dendam\" bila saya benar-benar disakiti",
+    "statementB": "Saya suka melakukan hal-hal yang baru dan berbeda"
+  },
+  {
+    "id": 9,
+    "statementA": "Saya ingin atasan saya menyukai saya",
+    "statementB": "Saya suka mengatakan kepada orang lain, bila mereka salah"
+  },
+  {
+    "id": 10,
+    "statementA": "Saya suka mengikuti perintah-perintah yang diberikan kepada saya",
+    "statementB": "Saya suka menyenangkan hati orang yang memimpin saya"
+  },
+  {
+    "id": 11,
+    "statementA": "Saya mencoba sekuat tenaga",
+    "statementB": "Saya seorang yang tertib. Saya meletakkan segala sesuatu pada tempatnya"
+  },
+  {
+    "id": 12,
+    "statementA": "Saya membuat orang lain melakukan apa yang saya inginkan",
+    "statementB": "Saya bukan orang yang cepat gusar"
+  },
+  {
+    "id": 13,
+    "statementA": "Saya suka mengatakan kepada kelompok, apa yang harus dilakukan",
+    "statementB": "Saya menekuni satu pekerjaan sampai selesai"
+  },
+  {
+    "id": 14,
+    "statementA": "Saya ingin tampak bersemangat dan menarik",
+    "statementB": "Saya ingin menjadi sangat sukses"
+  },
+  {
+    "id": 15,
+    "statementA": "Saya suka menyelaraskan diri dengan kelompok",
+    "statementB": "Saya suka membantu orang lain menentukan pendapatnya"
+  },
+  {
+    "id": 16,
+    "statementA": "Saya cemas kalau orang lain tidak menyukai saya",
+    "statementB": "Saya senang kalau orang-orang memperhatikan saya"
+  },
+  {
+    "id": 17,
+    "statementA": "Saya suka mencoba sesuatu yang baru",
+    "statementB": "Saya lebih suka bekerja bersama orang-orang daripada bekerja sendiri"
+  },
+  {
+    "id": 18,
+    "statementA": "Kadang-kadang saya menyalahkan orang lain bila terjadi sesuatu kesalahan",
+    "statementB": "Saya cemas bila seseorang tidak menyukai saya"
+  },
+  {
+    "id": 19,
+    "statementA": "Saya suka menyenangkan hati orang yang memimpin saya",
+    "statementB": "Saya suka mencoba pekerjaan-pekerjaan yang baru dan berbeda"
+  },
+  {
+    "id": 20,
+    "statementA": "Saya menyukai petunjuk yang terinci untuk melakukan sesuatu pekerjaan",
+    "statementB": "Saya suka mengatakan kepada orang lain bila mereka mengganggu saya"
+  },
+  {
+    "id": 21,
+    "statementA": "Saya selalu mencoba sekuat tenaga",
+    "statementB": "Saya senang bekerja dengan sangat cermat dan hati-hati"
+  },
+  {
+    "id": 22,
+    "statementA": "Saya adalah seorang pemimpin yang baik",
+    "statementB": "Saya mengorganisir tugas-tugas secara baik"
+  },
+  {
+    "id": 23,
+    "statementA": "Saya mudah menjadi gusar",
+    "statementB": "Saya seorang yang lambat dalam membuat keputusan"
+  },
+  {
+    "id": 24,
+    "statementA": "Saya senang mengerjakan beberapa pekerjaan pada waktu yang bersamaan",
+    "statementB": "Bila dalam kelompok, saya lebih suka diam"
+  },
+  {
+    "id": 25,
+    "statementA": "Saya senang bila diundang",
+    "statementB": "Saya ingin melakukan sesuatu lebih baik dari orang lain"
+  },
+  {
+    "id": 26,
+    "statementA": "Saya suka berteman intim dengan teman-teman saya",
+    "statementB": "Saya suka memberi nasihat kepada orang lain"
+  },
+  {
+    "id": 27,
+    "statementA": "Saya suka melakukan hal-hal yang baru dan berbeda",
+    "statementB": "Saya suka menceritakan keberhasilan saya dalam mengerjakan tugas"
+  },
+  {
+    "id": 28,
+    "statementA": "Bila saya benar, saya suka mempertahankannya \"mati-matian\"",
+    "statementB": "Saya suka bergabung ke dalam suatu kelompok"
+  },
+  {
+    "id": 29,
+    "statementA": "Saya tidak mau berbeda dengan orang lain",
+    "statementB": "Saya berusaha untuk sangat intim dengan orang-orang"
+  },
+  {
+    "id": 30,
+    "statementA": "Saya suka diajari mengenai caranya mengerjakan suatu pekerjaan",
+    "statementB": "Saya mudah merasa jemu (bosan)"
+  },
+  {
+    "id": 31,
+    "statementA": "Saya bekerja \"keras\"",
+    "statementB": "Saya banyak berpikir dan berencana"
+  },
+  {
+    "id": 32,
+    "statementA": "Saya memimpin kelompok",
+    "statementB": "Hal-hal yang kecil (detail) menarik hati saya"
+  },
+  {
+    "id": 33,
+    "statementA": "Saya cepat dan mudah mengambil keputusan",
+    "statementB": "Saya meletakkan segala sesuatu secara rapi dan teratur"
+  },
+  {
+    "id": 34,
+    "statementA": "Tugas-tugas saya kerjakan secara cepat",
+    "statementB": "Saya jarang marah atau sedih"
+  },
+  {
+    "id": 35,
+    "statementA": "Saya ingin menjadi bagian dari kelompok",
+    "statementB": "Pada suatu waktu tertentu, saya hanya ingin mengerjakan satu tugas saja"
+  },
+  {
+    "id": 36,
+    "statementA": "Saya berusaha untuk intim dengan teman-teman saya",
+    "statementB": "Saya berusaha keras untuk menjadi yang terbaik"
+  },
+  {
+    "id": 37,
+    "statementA": "Saya menyukai mode baju baru dan tipe-tipe mobil baru",
+    "statementB": "Saya ingin menjadi penanggung jawab bagi orang-orang lain"
+  },
+  {
+    "id": 38,
+    "statementA": "Saya suka berdebat",
+    "statementB": "Saya ingin diperhatikan"
+  },
+  {
+    "id": 39,
+    "statementA": "Saya suka menyenangkan hati orang yang memimpin saya",
+    "statementB": "Saya tertarik menjadi anggota dari suatu kelompok"
+  },
+  {
+    "id": 40,
+    "statementA": "Saya senang mengikuti aturan secara tertib",
+    "statementB": "Saya suka orang-orang mengenal saya benar-benar"
+  },
+  {
+    "id": 41,
+    "statementA": "Saya mencoba sekuat tenaga",
+    "statementB": "Saya sangat menyenangkan"
+  },
+  {
+    "id": 42,
+    "statementA": "Orang lain beranggapan bahwa saya adalah seorang pemimpin yang baik",
+    "statementB": "Saya berpikir jauh ke depan dan terinci"
+  },
+  {
+    "id": 43,
+    "statementA": "Seringkali saya memanfaatkan peluang",
+    "statementB": "Saya senang memperhatikan hal-hal sampai sekecil-kecilnya"
+  },
+  {
+    "id": 44,
+    "statementA": "Orang lain menganggap saya bekerja cepat",
+    "statementB": "Orang lain menganggap saya dapat melakukan penataan yang rapi dan teratur"
+  },
+  {
+    "id": 45,
+    "statementA": "Saya menyukai permainan-permainan dan olahraga",
+    "statementB": "Saya sangat menyenangkan"
+  },
+  {
+    "id": 46,
+    "statementA": "Saya senang bila orang-orang dapat intim dan bersahabat",
+    "statementB": "Saya selalu berusaha menyelesaikan apa yang telah saya mulai"
+  },
+  {
+    "id": 47,
+    "statementA": "Saya suka bereksperimen dan mencoba sesuatu yang baru",
+    "statementB": "Saya suka mengerjakan pekerjaan-pekerjaan yang sulit dengan baik"
+  },
+  {
+    "id": 48,
+    "statementA": "Saya senang diperlakukan secara adil",
+    "statementB": "Saya senang mengajari orang lain bagaimana caranya mengerjakan sesuatu"
+  },
+  {
+    "id": 49,
+    "statementA": "Saya suka mengerjakan apa yang diharapkan dari saya",
+    "statementB": "Saya suka menarik perhatian"
+  },
+  {
+    "id": 50,
+    "statementA": "Saya suka petunjuk-petunjuk terinci dalam melaksanakan pekerjaan",
+    "statementB": "Saya senang berada bersama dengan orang lain"
+  },
+  {
+    "id": 51,
+    "statementA": "Saya selalu berusaha mengerjakan tugas secara sempurna",
+    "statementB": "Orang lain menganggap, saya tidak mengenal lelah, dalam kerja sehari-hari"
+  },
+  {
+    "id": 52,
+    "statementA": "Saya tergolong tipe pemimpin",
+    "statementB": "Saya mudah berteman"
+  },
+  {
+    "id": 53,
+    "statementA": "Saya memanfaatkan peluang-peluang",
+    "statementB": "Saya banyak berpikir"
+  },
+  {
+    "id": 54,
+    "statementA": "Saya bekerja dengan kecepatan yang mantap dan cepat",
+    "statementB": "Saya senang mengerjakan hal-hal yang detail"
+  },
+  {
+    "id": 55,
+    "statementA": "Saya memiliki banyak energi untuk permainan-permainan dan olahraga",
+    "statementB": "Saya menempatkan segala sesuatunya secara rapi dan teratur"
+  },
+  {
+    "id": 56,
+    "statementA": "Saya bergaul baik dengan semua orang",
+    "statementB": "Saya \"pandai mengendalikan diri\""
+  },
+  {
+    "id": 57,
+    "statementA": "Saya ingin berkenalan dengan orang-orang baru dan mengerjakan hal baru",
+    "statementB": "Saya selalu ingin menyelesaikan pekerjaan yang sudah saya mulai"
+  },
+  {
+    "id": 58,
+    "statementA": "Biasanya saya bersikeras mengenai apa yang saya yakini",
+    "statementB": "Biasanya saya suka bekerja \"keras\""
+  },
+  {
+    "id": 59,
+    "statementA": "Saya menyukai saran-saran dari orang-orang yang saya kagumi",
+    "statementB": "Saya senang mengatur orang lain"
+  },
+  {
+    "id": 60,
+    "statementA": "Saya biarkan orang-orang lain mempengaruhi saya",
+    "statementB": "Saya suka menerima banyak perhatian"
+  },
+  {
+    "id": 61,
+    "statementA": "Biasanya saya bekerja sangat \"keras\"",
+    "statementB": "Biasanya saya bekerja cepat"
+  },
+  {
+    "id": 62,
+    "statementA": "Bila saya berbicara, kelompok akan mendengarkan",
+    "statementB": "Saya terampil mempergunakan alat-alat kerja"
+  },
+  {
+    "id": 63,
+    "statementA": "Saya lambat membina persahabatan",
+    "statementB": "Saya lambat dalam mengambil keputusan"
+  },
+  {
+    "id": 64,
+    "statementA": "Biasanya saya makan secara cepat",
+    "statementB": "Saya suka membaca"
+  },
+  {
+    "id": 65,
+    "statementA": "Saya menyukai pekerjaan yang memungkinkan saya \"berkeliling\"",
+    "statementB": "Saya menyukai pekerjaan yang harus dilakukan secara teliti"
+  },
+  {
+    "id": 66,
+    "statementA": "Saya berteman sebanyak mungkin",
+    "statementB": "Saya dapat menemukan hal-hal yang telah saya pindahkan"
+  },
+  {
+    "id": 67,
+    "statementA": "Perencanaan saya jauh ke masa depan",
+    "statementB": "Saya selalu menyenangkan"
+  },
+  {
+    "id": 68,
+    "statementA": "Saya merasa bangga akan nama baik saya",
+    "statementB": "Saya tetap menekuni satu permasalahan sampai ia terselesaikan"
+  },
+  {
+    "id": 69,
+    "statementA": "Saya suka menyenangkan hati orang-orang yang saya kagumi",
+    "statementB": "Saya suka menjadi seorang yang berhasil"
+  },
+  {
+    "id": 70,
+    "statementA": "Saya senang bila orang-orang lain mengambil keputusan untuk kelompok",
+    "statementB": "Saya suka mengambil keputusan untuk kelompok"
+  },
+  {
+    "id": 71,
+    "statementA": "Saya selalu berusaha sangat \"keras\"",
+    "statementB": "Saya cepat dan mudah mengambil keputusan"
+  },
+  {
+    "id": 72,
+    "statementA": "Biasanya kelompok saya mengerjakan hal-hal yang saya inginkan",
+    "statementB": "Biasanya saya tergesa-gesa"
+  },
+  {
+    "id": 73,
+    "statementA": "Saya seringkali merasa lelah",
+    "statementB": "Saya lambat di dalam mengambil keputusan"
+  },
+  {
+    "id": 74,
+    "statementA": "Saya bekerja secara cepat",
+    "statementB": "Saya mudah mendapat kawan"
+  },
+  {
+    "id": 75,
+    "statementA": "Biasanya saya bersemangat atau bergairah",
+    "statementB": "Sebagian besar waktu saya untuk berpikir"
+  },
+  {
+    "id": 76,
+    "statementA": "Saya sangat hangat kepada orang-orang",
+    "statementB": "Saya menyukai pekerjaan yang menuntut ketepatan"
+  },
+  {
+    "id": 77,
+    "statementA": "Saya banyak berpikir dan merencana",
+    "statementB": "Saya meletakkan segala sesuatu pada tempatnya"
+  },
+  {
+    "id": 78,
+    "statementA": "Saya suka tugas yang perlu ditekuni sampai kepada hal sedetilnya",
+    "statementB": "Saya tidak cepat marah"
+  },
+  {
+    "id": 79,
+    "statementA": "Saya senang mengikuti orang-orang yang saya kagumi",
+    "statementB": "Saya selalu menyelesaikan pekerjaan yang saya mulai"
+  },
+  {
+    "id": 80,
+    "statementA": "Saya menyukai petunjuk-petunjuk yang jelas",
+    "statementB": "Saya suka bekerja \"keras\""
+  },
+  {
+    "id": 81,
+    "statementA": "Saya mengejar apa yang saya inginkan",
+    "statementB": "Saya adalah seorang pemimpin yang baik"
+  },
+  {
+    "id": 82,
+    "statementA": "Saya membuat orang lain bekerja keras",
+    "statementB": "Saya adalah seorang yang \"gampangan\" (tak banyak pertimbangan)"
+  },
+  {
+    "id": 83,
+    "statementA": "Saya membuat keputusan-keputusan secara cepat",
+    "statementB": "Bicara saya cepat"
+  },
+  {
+    "id": 84,
+    "statementA": "Biasanya saya bekerja tergesa-gesa",
+    "statementB": "Secara teratur saya berolahraga"
+  },
+  {
+    "id": 85,
+    "statementA": "Saya tidak suka bertemu dengan orang-orang",
+    "statementB": "Saya cepat lelah"
+  },
+  {
+    "id": 86,
+    "statementA": "Saya mempunyai banyak sekali teman",
+    "statementB": "Banyak waktu saya untuk berpikir"
+  },
+  {
+    "id": 87,
+    "statementA": "Saya suka bekerja dengan teori",
+    "statementB": "Saya suka bekerja sedetil-detilnya"
+  },
+  {
+    "id": 88,
+    "statementA": "Saya suka bekerja sampai sedetil-detilnya",
+    "statementB": "Saya suka mengorganisir pekerjaan saya"
+  },
+  {
+    "id": 89,
+    "statementA": "Saya meletakkan segala sesuatu pada tempatnya",
+    "statementB": "Saya selalu menyenangkan"
+  },
+  {
+    "id": 90,
+    "statementA": "Saya senang diberi petunjuk mengenai apa yang harus saya lakukan",
+    "statementB": "Saya harus menyelesaikan apa yang sudah saya mulai"
+  }
+]
