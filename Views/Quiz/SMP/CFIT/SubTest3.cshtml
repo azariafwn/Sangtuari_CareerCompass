@@ -1,0 +1,190 @@
+﻿@{
+    Layout = "~/Views/Shared/_QuizLayout.cshtml";
+    ViewData["Title"] = "CFIT Sub-Test 3 (Matrices)";
+    ViewData["SubTestName"] = "CFIT Sub-Test 3: Matrices";
+}
+
+<style>
+    .bg-purple-main {
+        background-color: #4E325A;
+    }
+
+    .text-purple-main {
+        color: #4E325A;
+    }
+
+    .btn-purple-custom {
+        background-color: #4E325A;
+        color: #FFE375;
+        border: none;
+    }
+
+        .btn-purple-custom:hover {
+            background-color: #3b2544;
+            color: #ffffff;
+        }
+
+    .btn-cfit-option {
+        border: 1.5px solid #EFE8D8;
+        background-color: #FFFDF4;
+        color: #4E325A;
+        font-weight: 700;
+        transition: all 0.15s ease;
+        padding: 0.4rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-check:checked + .btn-cfit-option {
+        background-color: #4E325A !important;
+        color: #FFE375 !important;
+        border-color: #4E325A !important;
+    }
+
+    .btn-cfit-option:hover {
+        background-color: #F5EBF8;
+        border-color: #9C7BB4;
+    }
+
+    .option-img {
+        max-height: 50px;
+        object-fit: contain;
+    }
+</style>
+
+<div class="card border-0 shadow-sm rounded-4 p-3 p-md-4 mb-3 bg-white">
+    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+        <h6 class="fw-bold text-dark m-0">Instruksi CFIT Sub-Test 3 (Matrices)</h6>
+        <div class="d-flex align-items-center gap-2">
+            <span class="text-muted small">Sisa Waktu:</span>
+            <span class="badge rounded-pill px-3 py-2 fs-6 bg-purple-main text-warning timer-text">03:00</span>
+        </div>
+    </div>
+    <p class="text-muted small mb-0 lh-sm">
+        Pilihlah satu gambar pilihan <strong>(a, b, c, d, e)</strong> yang tepat untuk mengisi kotak matriks yang masih kosong.
+    </p>
+</div>
+
+<form id="cfit3Form">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="UserAssessmentId" value="@ViewBag.UserAssessmentId" />
+
+    <div id="questionsContainer" class="row g-3 mb-4"></div>
+
+    <div class="text-end mb-5">
+        <button type="button" id="btnSubmit" onclick="submitCfit3()" class="btn btn-purple-custom rounded-pill px-5 py-3 fw-bold shadow-sm w-100 w-md-auto">
+            Kirim & Lanjut ke CFIT Sub-Test 4
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        const rawJson = '@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(ViewBag.QuestionsJson ?? "[]"))';
+        let questions = [];
+
+        try { questions = JSON.parse(rawJson); } catch (e) { console.error("Parsing error:", e); }
+
+        const container = document.getElementById('questionsContainer');
+        let isSubmitting = false;
+
+        if (Array.isArray(questions) && questions.length > 0) {
+            questions.forEach((q) => {
+                const cardCol = document.createElement('div');
+                cardCol.className = 'col-12 col-md-6';
+
+                let optionsHtml = '';
+                if (Array.isArray(q.options)) {
+                    q.options.forEach((opt) => {
+                        const optId = `CFIT3_Q${q.id}_${opt.code}`;
+                        optionsHtml += `
+                            <div class="col">
+                                <input type="radio" class="btn-check" name="CFIT3_Q${q.id}" id="${optId}" value="${opt.code}" autocomplete="off">
+                                <label class="btn btn-cfit-option w-100 rounded-3 text-center" for="${optId}">
+                                    <span class="text-uppercase mb-1 small">${opt.code}</span>
+                                    <img src="${opt.imagePath}" alt="Opsi ${opt.code}" class="option-img img-fluid" />
+                                </label>
+                            </div>
+                        `;
+                    });
+                }
+
+                cardCol.innerHTML = `
+                    <div class="card border-0 shadow-sm rounded-4 p-3 bg-white h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="fw-bold text-purple-main mb-2">${q.id}. Soal:</div>
+                            <div class="text-center my-2 bg-light rounded-3 p-2 border">
+                                <img src="${q.imagePath}" alt="Soal ${q.id}" class="img-fluid" style="max-height: 120px; object-fit: contain;" />
+                            </div>
+                        </div>
+                        <div class="row g-2 mt-2">${optionsHtml}</div>
+                    </div>
+                `;
+                container.appendChild(cardCol);
+            });
+        }
+
+        // Timer 3 Menit (180 detik)
+        let duration = 180;
+        const countdown = setInterval(() => {
+            if (isSubmitting) { clearInterval(countdown); return; }
+
+            let m = Math.floor(duration / 60);
+            let s = duration % 60;
+            const timeStr = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+
+            // PERBAIKAN: Perbarui ID header utama dan semua elemen class timer
+            const headerTimer = document.getElementById('timerDisplay');
+            if (headerTimer) {
+                headerTimer.textContent = timeStr;
+            }
+
+            document.querySelectorAll('.timer-text').forEach(el => el.textContent = timeStr);
+
+            if (--duration < 0) {
+                clearInterval(countdown);
+                alert("Waktu CFIT Sub-Test 1 habis! Jawaban otomatis dikirim.");
+                submitCfit1();
+            }
+        }, 1000);
+
+        async function submitCfit3() {
+            if (isSubmitting) return;
+            const userAssessmentId = document.getElementById('UserAssessmentId').value;
+            if (!userAssessmentId) return;
+
+            isSubmitting = true;
+            const submitBtn = document.getElementById('btnSubmit');
+            submitBtn.disabled = true;
+
+            const answers = {};
+            questions.forEach(q => {
+                const selected = document.querySelector(`input[name="CFIT3_Q${q.id}"]:checked`);
+                answers[`Q${q.id}`] = selected ? selected.value : "";
+            });
+
+            const payload = { UserAssessmentId: userAssessmentId, SubTestName: "CFIT_SubTest_03", Answers: answers };
+            const token = document.querySelector('input[name="__RequestVerificationToken"]');
+
+            try {
+                const res = await fetch('/Assessment/SubmitSubTest', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token ? token.value : '' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    window.location.href = `/Quiz/CfitSubTest4?userAssessmentId=${userAssessmentId}`;
+                } else {
+                    alert("Gagal menyimpan jawaban.");
+                    isSubmitting = false; submitBtn.disabled = false;
+                }
+            } catch (e) {
+                alert("Kesalahan koneksi.");
+                isSubmitting = false; submitBtn.disabled = false;
+            }
+        }
+    </script>
+}

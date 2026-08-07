@@ -1,0 +1,210 @@
+[
+  {
+    "id": 1,
+    "imagePath": "/images/CFIT/soal/CFIT_4/1/1.png",
+    "options": [
+      {
+        "code": "a",
+        "imagePath": "/images/CFIT/soal/CFIT_4/1/1_a.png"
+      },
+      {
+        "code": "b",
+        "imagePath": "/images/CFIT/soal/CFIT_4/1/1_b.png"
+      },
+      {
+        "code": "c",
+        "imagePath": "/images/CFIT/soal/CFIT_4/1/1_c.png"
+      },
+      {
+        "code": "d",
+        "imagePath": "/images/CFIT/soal/CFIT_4/1/1_d.png"
+      },
+      {
+        "code": "e",
+        "imagePath": "/images/CFIT/soal/CFIT_4/1/1_e.png"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "imagePath": "/images/CFIT/soal/CFIT_4/2/2.png",
+    "options": [
+      {
+        "code": "a",
+        "imagePath": "/images/CFIT/soal/CFIT_4/2/2_a.png"
+      },
+      {
+        "code": "b",
+        "imagePath": "/images/CFIT/soal/CFIT_4/2/2_b.png"
+      },
+      {
+        "code": "c",
+        "imagePath": "/images/CFIT/soal/CFIT_4/2/2_c.png"
+      },
+      {
+        "code": "d",
+        "imagePath": "/images/CFIT/soal/CFIT_4/2/2_d.png"
+      },
+      {
+        "code": "e",
+        "imagePath": "/images/CFIT/soal/CFIT_4/2/2_e.png"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "imagePath": "/images/CFIT/soal/CFIT_4/3/3.png",
+    "options": [
+      {
+        "code": "a",
+        "imagePath": "/images/CFIT/soal/CFIT_4/3/3_a.png"
+      },
+      {
+        "code": "b",
+        "imagePath": "/images/CFIT/soal/CFIT_4/3/3_b.png"
+      },
+      {
+        "code": "c",
+        "imagePath": "/images/CFIT/soal/CFIT_4/3/3_c.png"
+      },
+      {
+        "code": "d",
+        "imagePath": "/images/CFIT/soal/CFIT_4/3/3_d.png"
+      },
+      {
+        "code": "e",
+        "imagePath": "/images/CFIT/soal/CFIT_4/3/3_e.png"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "imagePath": "/images/CFIT/soal/CFIT_4/4/4.png",
+    "options": [
+      {
+        "code": "a",
+        "imagePath": "/images/CFIT/soal/CFIT_4/4/4_a.png"
+      },
+      {
+        "code": "b",
+        "imagePath": "/images/CFIT/soal/CFIT_4/4/4_b.png"
+      },
+      {
+        "code": "c",
+        "imagePath": "/images/CFIT/soal/CFIT_4/4/4_c.png"
+      },
+      {
+        "code": "d",
+        "imagePath": "/images/CFIT/soal/CFIT_4/4/4_d.png"
+      },
+      {
+        "code": "e",
+        "imagePath": "/images/CFIT/soal/CFIT_4/4/4_e.png"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "imagePath": "/images/CFIT/soal/CFIT_4/5/5.png",
+    "options": [
+      {
+        "code": "a",
+        "imagePath": "/images/CFIT/soal/CFIT_4/5/5_a.png"
+      },
+      {
+        "code": "b",
+        "imagePath": "/images/CFIT/soal/CFIT_4/5/5_b.png"
+      },
+      {
+        "code": "c",
+        "imagePath": "/images/CFIT/soal/CFIT_4/5/5_c.png"
+      },
+      {
+        "code": "d",
+        "imagePath": "/images/CFIT/soal/CFIT_4/5/5_d.png"
+      },
+      {
+        "code": "e",
+        "imagePath": "/images/CFIT/soal/CFIT_4/5/5_e.png"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "imagePath": "/images/CFIT/soal/CFIT_4/6/6.png",
+    "options": [
+      {
+        "code": "a",
+        "imagePath": "/images/CFIT/soal/CFIT_4/6/6_a.png"
+      },
+      {
+        "code": "b",
+        "imagePath": "/images/CFIT/soal/CFIT_4/6/6_b.png"
+      },
+      {
+        "code": "c",
+        "imagePath": "/images/CFIT/soal/CFIT_4/6/6_c.png"
+      },
+      {
+        "code": "d",
+        "imagePath": "/images/CFIT/soal/CFIT_4/6/6_d.png"
+      },
+      {
+        "code": "e",
+        "imagePath": "/images/CFIT/soal/CFIT_4/6/6_e.png"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "imagePath": "/images/CFIT/soal/CFIT_4/7/7.png",
+    "options": [
+      {
+        "code": "a",
+        "imagePath": "/images/CFIT/soal/CFIT_4/7/7_a.png"
+      },
+      {
+        "code": "b",
+        "imagePath": "/images/CFIT/soal/CFIT_4/7/7_b.png"
+      },
+      {
+        "code": "c",
+        "imagePath": "/images/CFIT/soal/CFIT_4/7/7_c.png"
+      },
+      {
+        "code": "d",
+        "imagePath": "/images/CFIT/soal/CFIT_4/7/7_d.png"
+      },
+      {
+        "code": "e",
+        "imagePath": "/images/CFIT/soal/CFIT_4/7/7_e.png"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "imagePath": "/images/CFIT/soal/CFIT_4/8/8.png",
+    "options": [
+      {
+        "code": "a",
+        "imagePath": "/images/CFIT/soal/CFIT_4/8/8_a.png"
+      },
+      {
+        "code": "b",
+        "imagePath": "/images/CFIT/soal/CFIT_4/8/8_b.png"
+      },
+      {
+        "code": "c",
+        "imagePath": "/images/CFIT/soal/CFIT_4/8/8_c.png"
+      },
+      {
+        "code": "d",
+        "imagePath": "/images/CFIT/soal/CFIT_4/8/8_d.png"
+      },
+      {
+        "code": "e",
+        "imagePath": "/images/CFIT/soal/CFIT_4/8/8_e.png"
+      }
+    ]
+  }
+]

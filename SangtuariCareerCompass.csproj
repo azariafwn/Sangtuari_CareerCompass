@@ -28,7 +28,6 @@
     <Folder Include="Views\Quiz\SMA\SDSHolland\" />
     <Folder Include="Views\Quiz\SMA\VARK\" />
     <Folder Include="Views\Quiz\SMA\PapiKostick\" />
-    <Folder Include="Views\Quiz\SMP\CFIT\" />
   </ItemGroup>
 
 </Project>

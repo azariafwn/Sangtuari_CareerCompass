@@ -49,10 +49,52 @@ namespace SangtuariCareerCompass.Controllers
         }
 
         // CFIT - Placeholder
-        public IActionResult Cfit(Guid userAssessmentId)
+        // CFIT Sub-Test 1 (Series - 3 Menit)
+        public IActionResult CfitSubTest1(Guid userAssessmentId)
         {
-            ViewData["SubTestName"] = "CFIT (Culture Fair Intelligence Test)";
-            return View("~/Views/Quiz/ComingSoon.cshtml");
+            if (userAssessmentId == Guid.Empty) return RedirectToAction("Index", "Assessment");
+
+            var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Quiz", "CFIT", "cfitSubTest1.json");
+            ViewBag.UserAssessmentId = userAssessmentId;
+            ViewBag.QuestionsJson = System.IO.File.Exists(jsonPath) ? System.IO.File.ReadAllText(jsonPath) : "[]";
+
+            return View("~/Views/Quiz/SMP/CFIT/SubTest1.cshtml");
+        }
+
+        // CFIT Sub-Test 2 (Classification - 4 Menit)
+        public IActionResult CfitSubTest2(Guid userAssessmentId)
+        {
+            if (userAssessmentId == Guid.Empty) return RedirectToAction("Index", "Assessment");
+
+            var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Quiz", "CFIT", "cfitSubTest2.json");
+            ViewBag.UserAssessmentId = userAssessmentId;
+            ViewBag.QuestionsJson = System.IO.File.Exists(jsonPath) ? System.IO.File.ReadAllText(jsonPath) : "[]";
+
+            return View("~/Views/Quiz/SMP/CFIT/SubTest2.cshtml");
+        }
+
+        // CFIT Sub-Test 3 (Matrices - 3 Menit)
+        public IActionResult CfitSubTest3(Guid userAssessmentId)
+        {
+            if (userAssessmentId == Guid.Empty) return RedirectToAction("Index", "Assessment");
+
+            var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Quiz", "CFIT", "cfitSubTest3.json");
+            ViewBag.UserAssessmentId = userAssessmentId;
+            ViewBag.QuestionsJson = System.IO.File.Exists(jsonPath) ? System.IO.File.ReadAllText(jsonPath) : "[]";
+
+            return View("~/Views/Quiz/SMP/CFIT/SubTest3.cshtml");
+        }
+
+        // CFIT Sub-Test 4 (Conditions/Topology - 2.5 Menit)
+        public IActionResult CfitSubTest4(Guid userAssessmentId)
+        {
+            if (userAssessmentId == Guid.Empty) return RedirectToAction("Index", "Assessment");
+
+            var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Quiz", "CFIT", "cfitSubTest4.json");
+            ViewBag.UserAssessmentId = userAssessmentId;
+            ViewBag.QuestionsJson = System.IO.File.Exists(jsonPath) ? System.IO.File.ReadAllText(jsonPath) : "[]";
+
+            return View("~/Views/Quiz/SMP/CFIT/SubTest4.cshtml");
         }
 
         // VARK - Placeholder

@@ -109,11 +109,11 @@
 
                     // Percabangan Alur Berdasarkan Tipe Asesmen
                     if (type === 'Discovery') {
-                        // SMA: Dimulai dari IST Sub-Test 01 (SE)
+                        // SMA
                         window.location.href = `/Quiz/IstSubTest1?userAssessmentId=${data.userAssessmentId}`;
                     } else {
-                        // SMP (Exploration) / Dewasa (Advanced)
-                        window.location.href = `/Quiz/Cfit?userAssessmentId=${data.userAssessmentId}`;
+                        // SMP
+                        window.location.href = `/Quiz/CfitSubTest1?userAssessmentId=${data.userAssessmentId}`;
                     }
                 } else {
                     alert('Gagal menyimpan biodata: ' + (data.message || 'Terjadi kesalahan.'));
