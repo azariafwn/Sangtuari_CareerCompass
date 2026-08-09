@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/Views/Shared/_QuizLayout.cshtml";
-    ViewData["Title"] = "Holland Interest Test (RIASEC)";
+    ViewData["Title"] = "SDS Holland Interest Test (RIASEC)";
     ViewData["SubTestName"] = "SDS Holland Interest Test";
 }
 
@@ -60,17 +60,6 @@
         border-color: #9C7BB4;
     }
 </style>
-
-<!-- Header Instruksi -->
-<div class="card border-0 shadow-sm rounded-4 p-3 p-md-4 mb-4 bg-white">
-    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
-        <h6 class="fw-bold text-dark m-0">Instruksi Holland Test (RIASEC)</h6>
-        <span class="badge rounded-pill px-3 py-2 fs-6 bg-purple-main text-warning">Tanpa Batas Waktu</span>
-    </div>
-    <p class="text-muted small mb-0 lh-sm">
-        Bacalah setiap pernyataan di bawah ini. Pilih <strong>YA</strong> jika Anda setuju dengan pernyataan tersebut, atau <strong>TIDAK</strong> jika tidak setuju[cite: 2]. Tidak ada jawaban yang benar atau salah[cite: 2].
-    </p>
-</div>
 
 <form id="hollandForm">
     @Html.AntiForgeryToken()

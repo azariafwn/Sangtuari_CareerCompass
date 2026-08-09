@@ -1,9 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@{
+﻿@{
     Layout = "~/Views/Shared/_QuizLayout.cshtml";
     ViewData["Title"] = "IST 06 - ZR (Zahlenreihen)";
     ViewData["SubTestName"] = "IST 06: ZR (Zahlenreihen)";
@@ -51,20 +46,6 @@
         letter-spacing: 1px;
     }
 </style>
-
-<!-- Header & Timer Bar -->
-<div class="card border-0 shadow-sm rounded-4 p-3 p-md-4 mb-4 bg-white">
-    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
-        <h6 class="fw-bold text-dark m-0">Instruksi IST Kelompok Soal 06 (ZR)</h6>
-        <div class="d-flex align-items-center gap-2">
-            <span class="text-muted small">Sisa Waktu:</span>
-            <span class="badge rounded-pill px-3 py-2 fs-6 bg-purple-main text-warning timer-text">10:00</span>
-        </div>
-    </div>
-    <p class="text-muted small mb-0 lh-sm">
-        Pada persoalan berikut diberikan deret angka. Setiap deret tersusun menurut aturan tertentu. Analisis polanya dan <strong>ketikkan angka berikutnya</strong> pada kolom yang disediakan.
-    </p>
-</div>
 
 <form id="ist6Form">
     @Html.AntiForgeryToken()

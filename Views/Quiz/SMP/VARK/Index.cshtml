@@ -50,17 +50,6 @@
     }
 </style>
 
-<!-- Card Instruksi VARK -->
-<div class="card border-0 shadow-sm rounded-4 p-3 p-md-4 mb-4 bg-white">
-    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
-        <h6 class="fw-bold text-dark m-0">Instruksi Kuesioner VARK</h6>
-        <span class="badge rounded-pill px-3 py-2 fs-6 bg-purple-main text-warning">Tanpa Batas Waktu</span>
-    </div>
-    <p class="text-muted small mb-0 lh-sm">
-        Pilihlah jawaban yang paling sesuai dengan kondisi Anda. <strong>Anda boleh memilih lebih dari satu pilihan</strong> jika memang ada lebih dari satu kondisi yang sesuai. Kosongkan pilihan jika tidak ada yang sesuai.
-    </p>
-</div>
-
 <form id="varkForm">
     @Html.AntiForgeryToken()
     <input type="hidden" id="UserAssessmentId" value="@ViewBag.UserAssessmentId" />

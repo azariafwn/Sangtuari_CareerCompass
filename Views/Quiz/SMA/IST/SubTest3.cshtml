@@ -46,20 +46,6 @@
     }
 </style>
 
-<!-- Header & Timer Bar -->
-<div class="card border-0 shadow-sm rounded-4 p-3 p-md-4 mb-4 bg-white">
-    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
-        <h6 class="fw-bold text-dark m-0">Instruksi IST Kelompok Soal 03 (AN)</h6>
-        <div class="d-flex align-items-center gap-2">
-            <span class="text-muted small">Sisa Waktu:</span>
-            <span class="badge rounded-pill px-3 py-2 fs-6 bg-purple-main text-warning timer-text">07:00</span>
-        </div>
-    </div>
-    <p class="text-muted small mb-0 lh-sm">
-        Ditentukan 3 kata. Antara kata pertama dan kedua terdapat hubungan tertentu. Carilah kata dari pilihan (a–e) yang mempunyai <strong>hubungan sepadan dengan kata ketiga</strong>!
-    </p>
-</div>
-
 <form id="ist3Form">
     @Html.AntiForgeryToken()
     <input type="hidden" id="UserAssessmentId" value="@ViewBag.UserAssessmentId" />

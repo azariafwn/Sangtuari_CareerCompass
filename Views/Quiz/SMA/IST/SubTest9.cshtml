@@ -1,9 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@{
+﻿@{
     Layout = "~/Views/Shared/_QuizLayout.cshtml";
     ViewData["Title"] = "IST 09 - ME (Merkaufgaben)";
     ViewData["SubTestName"] = "IST 09: ME (Merkaufgaben)";
@@ -56,21 +51,16 @@
     }
 </style>
 
-<!-- HEADER TAHAP 1: FASE HAFALAN -->
-<div id="headerMemorize" class="card border-0 shadow-sm rounded-4 p-3 p-md-4 mb-4 bg-white">
-    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
-        <h6 class="fw-bold text-dark m-0">Fase Hafalan Kata (3 Menit)</h6>
-        <div class="d-flex align-items-center gap-2">
-            <span class="text-muted small">Sisa Waktu Hafalan:</span>
-            <span class="badge rounded-pill px-3 py-2 fs-6 bg-purple-main text-warning" id="memorizeTimer">03:00</span>
-        </div>
+<!-- STATUS BAR TAHAP 1: HAFALAN KATA -->
+<div id="headerMemorize" class="d-flex justify-content-between align-items-center bg-white rounded-4 p-3 shadow-sm mb-3">
+    <span class="fw-bold text-purple-main fs-6">Tahap 1: Hafalan Kata IST 09</span>
+    <div class="d-flex align-items-center gap-2">
+        <span class="text-muted small">Sisa Waktu Hafalan:</span>
+        <span class="badge rounded-pill px-3 py-2 fs-6 bg-purple-main text-warning" id="memorizeTimer">03:00</span>
     </div>
-    <p class="text-muted small mb-0 lh-sm">
-        Hafalkan kelompok kata di bawah ini selama 3 menit. Setelah waktu habis atau Anda menekan tombol mulai, daftar ini akan disembunyikan dan soal akan ditampilkan!
-    </p>
 </div>
 
-<!-- CONTAINER FASE HAFALAN -->
+<!-- CONTAINER TAHAP 1: KATA HAFALAN -->
 <div id="memorizePhase" class="card border-0 shadow-sm rounded-4 p-4 mb-4 memorize-card">
     <h5 class="fw-bold text-purple-main mb-3 text-center">DAFTAR KATA HAFALAN</h5>
     <div id="memorizeList" class="d-flex flex-column gap-2 mb-4"></div>
@@ -81,18 +71,13 @@
     </div>
 </div>
 
-<!-- HEADER TAHAP 2: FASE PENGERJAAN SOAL (HIDDEN AWAL) -->
-<div id="headerTest" class="card border-0 shadow-sm rounded-4 p-3 p-md-4 mb-4 bg-white d-none">
-    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
-        <h6 class="fw-bold text-dark m-0">Instruksi IST Kelompok Soal 09 (ME)</h6>
-        <div class="d-flex align-items-center gap-2">
-            <span class="text-muted small">Sisa Waktu:</span>
-            <span class="badge rounded-pill px-3 py-2 fs-6 bg-purple-main text-warning timer-text">06:00</span>
-        </div>
+<!-- STATUS BAR TAHAP 2: SOAL (HIDDEN AWAL) -->
+<div id="statusTestBar" class="d-flex justify-content-between align-items-center bg-white rounded-4 p-3 shadow-sm mb-3 d-none">
+    <span class="fw-bold text-purple-main fs-6">Tahap 2: Pengerjaan Soal IST 09</span>
+    <div class="d-flex align-items-center gap-2">
+        <span class="text-muted small">Sisa Waktu:</span>
+        <span class="badge rounded-pill px-3 py-2 fs-6 bg-purple-main text-warning active-test-timer">06:00</span>
     </div>
-    <p class="text-muted small mb-0 lh-sm">
-        Tentukan kategori kata yang diawali dengan huruf yang diberikan sesuai kata-kata yang telah Anda hafalkan sebelumnya.
-    </p>
 </div>
 
 <!-- FORM SOAL (HIDDEN AWAL) -->
@@ -143,6 +128,10 @@
             let m = Math.floor(memorizeDuration / 60);
             let s = memorizeDuration % 60;
             const timeStr = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+
+            // Sync ke Header Utama & Timer Lokal
+            const headerTimer = document.getElementById('timerDisplay');
+            if (headerTimer) headerTimer.textContent = timeStr;
             document.getElementById('memorizeTimer').textContent = timeStr;
 
             if (--memorizeDuration < 0) {
@@ -159,15 +148,17 @@
                 card.className = 'card border-0 shadow-sm rounded-4 p-3 p-md-4 bg-white';
 
                 let optionsHtml = '';
-                data.options.forEach(opt => {
-                    const optId = `IST9_Q${q.id}_${opt.code}`;
-                    optionsHtml += `
-                        <div class="col-12 col-md">
-                            <input type="radio" class="btn-check" name="IST9_Q${q.id}" id="${optId}" value="${opt.code}" autocomplete="off">
-                            <label class="btn btn-ist-option w-100 rounded-3 text-truncate" for="${optId}">${opt.code.toUpperCase()}) ${opt.text}</label>
-                        </div>
-                    `;
-                });
+                if (data.options && Array.isArray(data.options)) {
+                    data.options.forEach(opt => {
+                        const optId = `IST9_Q${q.id}_${opt.code}`;
+                        optionsHtml += `
+                            <div class="col-12 col-md">
+                                <input type="radio" class="btn-check" name="IST9_Q${q.id}" id="${optId}" value="${opt.code}" autocomplete="off">
+                                <label class="btn btn-ist-option w-100 rounded-3 text-truncate" for="${optId}">${opt.code.toUpperCase()}) ${opt.text}</label>
+                            </div>
+                        `;
+                    });
+                }
 
                 card.innerHTML = `
                     <div class="fw-bold text-purple-main mb-3 fs-6">${q.id}. Kata yang mempunyai huruf permulaan - <strong>${q.letter}</strong> - adalah suatu ...</div>
@@ -179,10 +170,13 @@
 
         function startTestPhase() {
             clearInterval(memorizeCountdown);
+
+            // Sembunyikan Komponen Hafalan
             document.getElementById('headerMemorize').classList.add('d-none');
             document.getElementById('memorizePhase').classList.add('d-none');
 
-            document.getElementById('headerTest').classList.remove('d-none');
+            // Tampilkan Baris Soal & Status Pengerjaan
+            document.getElementById('statusTestBar').classList.remove('d-none');
             document.getElementById('ist9Form').classList.remove('d-none');
 
             // Timer Pengerjaan Soal 6 Menit (360 detik)
@@ -194,10 +188,12 @@
                 let s = duration % 60;
                 const formattedTime = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
 
+                // Sync ke Header Layout Utama
                 const headerTimer = document.getElementById('timerDisplay');
                 if (headerTimer) headerTimer.textContent = formattedTime;
 
-                document.querySelectorAll('.timer-text').forEach(el => el.textContent = formattedTime);
+                // Sync ke Badge Lokal
+                document.querySelectorAll('.active-test-timer').forEach(el => el.textContent = formattedTime);
 
                 if (--duration < 0) {
                     clearInterval(testCountdownInterval);
@@ -250,7 +246,7 @@
 
                 if (response.ok) {
                     window.location.href = `/Quiz/Instruction?testKey=PAPI_Kostick&userAssessmentId=${userAssessmentId}`;
-                }else {
+                } else {
                     const errData = await response.json().catch(() => ({}));
                     alert("Gagal menyimpan IST 09: " + (errData.message || response.status));
                     resetSubmitState();
