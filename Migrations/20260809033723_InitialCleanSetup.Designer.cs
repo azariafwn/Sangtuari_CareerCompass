@@ -13,8 +13,8 @@ using SangtuariCareerCompass.Data;
 namespace SangtuariCareerCompass.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260725163129_AddUserAnswersTable")]
-    partial class AddUserAnswersTable
+    [Migration("20260809033723_InitialCleanSetup")]
+    partial class InitialCleanSetup
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
