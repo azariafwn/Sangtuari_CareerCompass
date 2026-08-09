@@ -177,7 +177,7 @@
                 });
 
                 if (response.ok) {
-                    window.location.href = `/Quiz/Eas5?userAssessmentId=${payload.UserAssessmentId}`;
+                    window.location.href = `/Quiz/Instruction?testKey=EAS_5&userAssessmentId=${payload.UserAssessmentId}`;
                 } else {
                     alert("Gagal menyimpan jawaban EAS 2.");
                     resetSubmitState();

@@ -172,7 +172,7 @@
                 });
 
                 if (res.ok) {
-                    window.location.href = `/Quiz/CfitSubTest3?userAssessmentId=${userAssessmentId}`;
+                    window.location.href = `/Quiz/Instruction?testKey=CFIT_SubTest_03&userAssessmentId=${userAssessmentId}`;
                 } else {
                     alert("Gagal menyimpan jawaban.");
                     isSubmitting = false; submitBtn.disabled = false;

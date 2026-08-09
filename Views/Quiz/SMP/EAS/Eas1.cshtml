@@ -173,7 +173,7 @@
 
                 if (response.ok) {
                     const result = await response.json();
-                    window.location.href = result.redirectUrl || `/Quiz/Eas2?userAssessmentId=${payload.UserAssessmentId}`;
+                    window.location.href = result.redirectUrl || `/Quiz/Instruction?testKey=EAS_2&userAssessmentId=${payload.UserAssessmentId}`;
                 } else {
                     alert("Gagal menyimpan jawaban. Silakan coba lagi.");
                     resetSubmitState();

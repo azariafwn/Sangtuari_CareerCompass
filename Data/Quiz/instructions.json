@@ -1,0 +1,623 @@
+{
+  "CFIT_SubTest_01": {
+    "title": "CFIT Sub-Test 1: Series (Deret Gambar)",
+    "category": "Exploration Test (SMP)",
+    "durationMinutes": 3,
+    "description": "Di sebelah kiri terdapat deretan gambar yang membentuk suatu pola berurutan. Pilihlah satu gambar dari 5 pilihan di sebelah kanan (A, B, C, D, E) yang merupakan kelanjutan pola tersebut.",
+    "examples": [
+      {
+        "title": "Contoh 1",
+        "imagePath": "/images/CFIT/contoh/CFIT_1/1/1.png",
+        "options": [
+          {
+            "code": "a",
+            "imagePath": "/images/CFIT/contoh/CFIT_1/1/1_a.png"
+          },
+          {
+            "code": "b",
+            "imagePath": "/images/CFIT/contoh/CFIT_1/1/1_b.png"
+          },
+          {
+            "code": "c",
+            "imagePath": "/images/CFIT/contoh/CFIT_1/1/1_c.png"
+          },
+          {
+            "code": "d",
+            "imagePath": "/images/CFIT/contoh/CFIT_1/1/1_d.png"
+          },
+          {
+            "code": "e",
+            "imagePath": "/images/CFIT/contoh/CFIT_1/1/1_e.png"
+          }
+        ],
+        "answer": "Jawaban: A",
+        "explanation": "Garis hitam tebal ini makin lama makin memanjang secara berurutan, sehingga kelanjutan yang tepat adalah kotak A."
+      },
+      {
+        "title": "Contoh 2",
+        "imagePath": "/images/CFIT/contoh/CFIT_1/2/2.png",
+        "options": [
+          {
+            "code": "a",
+            "imagePath": "/images/CFIT/contoh/CFIT_1/2/2_a.png"
+          },
+          {
+            "code": "b",
+            "imagePath": "/images/CFIT/contoh/CFIT_1/2/2_b.png"
+          },
+          {
+            "code": "c",
+            "imagePath": "/images/CFIT/contoh/CFIT_1/2/2_c.png"
+          },
+          {
+            "code": "d",
+            "imagePath": "/images/CFIT/contoh/CFIT_1/2/2_d.png"
+          },
+          {
+            "code": "e",
+            "imagePath": "/images/CFIT/contoh/CFIT_1/2/2_e.png"
+          }
+        ],
+        "answer": "Jawaban: C",
+        "explanation": "Antena mula-mula melengkung ke kiri, kemudian ke kanan, lalu ke kiri lagi. Kelanjutan berikutnya adalah melengkung ke kanan (C)."
+      },
+      {
+        "title": "Contoh 3",
+        "imagePath": "/images/CFIT/contoh/CFIT_1/3/3.png",
+        "options": [
+          {
+            "code": "a",
+            "imagePath": "/images/CFIT/contoh/CFIT_1/3/3_a.png"
+          },
+          {
+            "code": "b",
+            "imagePath": "/images/CFIT/contoh/CFIT_1/3/3_b.png"
+          },
+          {
+            "code": "c",
+            "imagePath": "/images/CFIT/contoh/CFIT_1/3/3_c.png"
+          },
+          {
+            "code": "d",
+            "imagePath": "/images/CFIT/contoh/CFIT_1/3/3_d.png"
+          },
+          {
+            "code": "e",
+            "imagePath": "/images/CFIT/contoh/CFIT_1/3/3_e.png"
+          }
+        ],
+        "answer": "Jawaban: A",
+        "explanation": "Bagian hitam dalam lingkaran bergerak searah jarum jam. Kelanjutan posisi berikutnya berada di pojok kiri bawah (A)."
+      }
+    ],
+    "nextActionUrl": "/Quiz/CfitSubTest1"
+  },
+  "CFIT_SubTest_02": {
+    "title": "CFIT Sub-Test 2: Classification (Klasifikasi Gambar)",
+    "category": "Exploration Test (SMP)",
+    "durationMinutes": 4,
+    "description": "Pada setiap nomor terdapat 5 buah kotak bergambar. 4 gambar memiliki kesamaan karakteristik, sedangkan 1 gambar berbeda dari yang lain. Pilihlah 1 gambar yang paling berbeda tersebut.",
+    "examples": [
+      {
+        "title": "Contoh 1",
+        "options": [
+          {
+            "code": "a",
+            "imagePath": "/images/CFIT/contoh/CFIT_2/1/1_a.png"
+          },
+          {
+            "code": "b",
+            "imagePath": "/images/CFIT/contoh/CFIT_2/1/1_b.png"
+          },
+          {
+            "code": "c",
+            "imagePath": "/images/CFIT/contoh/CFIT_2/1/1_c.png"
+          },
+          {
+            "code": "d",
+            "imagePath": "/images/CFIT/contoh/CFIT_2/1/1_d.png"
+          },
+          {
+            "code": "e",
+            "imagePath": "/images/CFIT/contoh/CFIT_2/1/1_e.png"
+          }
+        ],
+        "answer": "Jawaban: D",
+        "explanation": "Gambar D berada dalam posisi berdiri/tegak, sedangkan 4 gambar lainnya dalam posisi tidur/melintang."
+      },
+      {
+        "title": "Contoh 2",
+        "options": [
+          {
+            "code": "a",
+            "imagePath": "/images/CFIT/contoh/CFIT_2/2/2_a.png"
+          },
+          {
+            "code": "b",
+            "imagePath": "/images/CFIT/contoh/CFIT_2/2/2_b.png"
+          },
+          {
+            "code": "c",
+            "imagePath": "/images/CFIT/contoh/CFIT_2/2/2_c.png"
+          },
+          {
+            "code": "d",
+            "imagePath": "/images/CFIT/contoh/CFIT_2/2/2_d.png"
+          },
+          {
+            "code": "e",
+            "imagePath": "/images/CFIT/contoh/CFIT_2/2/2_e.png"
+          }
+        ],
+        "answer": "Jawaban: A",
+        "explanation": "Gambar A berupa lingkaran berwarna hitam, sedangkan 4 gambar lainnya berupa lingkaran berwarna putih."
+      }
+    ],
+    "nextActionUrl": "/Quiz/CfitSubTest2"
+  },
+  "CFIT_SubTest_03": {
+    "title": "CFIT Sub-Test 3: Matrices (Matriks Gambar)",
+    "category": "Exploration Test (SMP)",
+    "durationMinutes": 3,
+    "description": "Di sebelah kiri terdapat kotak besar yang berisi kotak-kotak kecil berpola dengan 1 kotak kosong. Pilihlah 1 gambar dari pilihan di sebelah kanan (A-E) yang paling tepat untuk melengkapi kotak kosong tersebut.",
+    "examples": [
+      {
+        "title": "Contoh 1",
+        "imagePath": "/images/CFIT/contoh/CFIT_3/1/1.png",
+        "options": [
+          {
+            "code": "a",
+            "imagePath": "/images/CFIT/contoh/CFIT_3/1/1_a.png"
+          },
+          {
+            "code": "b",
+            "imagePath": "/images/CFIT/contoh/CFIT_3/1/1_b.png"
+          },
+          {
+            "code": "c",
+            "imagePath": "/images/CFIT/contoh/CFIT_3/1/1_c.png"
+          },
+          {
+            "code": "d",
+            "imagePath": "/images/CFIT/contoh/CFIT_3/1/1_d.png"
+          },
+          {
+            "code": "e",
+            "imagePath": "/images/CFIT/contoh/CFIT_3/1/1_e.png"
+          }
+        ],
+        "answer": "Jawaban: C",
+        "explanation": "Setiap kotak berisi 2 titik hitam, sehingga gambar C adalah yang paling tepat melengkapi matriks."
+      },
+      {
+        "title": "Contoh 2",
+        "imagePath": "/images/CFIT/contoh/CFIT_3/2/2.png",
+        "options": [
+          {
+            "code": "a",
+            "imagePath": "/images/CFIT/contoh/CFIT_3/2/2_a.png"
+          },
+          {
+            "code": "b",
+            "imagePath": "/images/CFIT/contoh/CFIT_3/2/2_b.png"
+          },
+          {
+            "code": "c",
+            "imagePath": "/images/CFIT/contoh/CFIT_3/2/2_c.png"
+          },
+          {
+            "code": "d",
+            "imagePath": "/images/CFIT/contoh/CFIT_3/2/2_d.png"
+          },
+          {
+            "code": "e",
+            "imagePath": "/images/CFIT/contoh/CFIT_3/2/2_e.png"
+          }
+        ],
+        "answer": "Jawaban: A",
+        "explanation": "Garis diagonal pada kotak kanan atas berlawanan arah dengan kotak kiri bawah, sehingga kotak kanan bawah diisi oleh gambar A."
+      },
+      {
+        "title": "Contoh 3",
+        "imagePath": "/images/CFIT/contoh/CFIT_3/3/3.png",
+        "options": [
+          {
+            "code": "a",
+            "imagePath": "/images/CFIT/contoh/CFIT_3/3/3_a.png"
+          },
+          {
+            "code": "b",
+            "imagePath": "/images/CFIT/contoh/CFIT_3/3/3_b.png"
+          },
+          {
+            "code": "c",
+            "imagePath": "/images/CFIT/contoh/CFIT_3/3/3_c.png"
+          },
+          {
+            "code": "d",
+            "imagePath": "/images/CFIT/contoh/CFIT_3/3/3_d.png"
+          },
+          {
+            "code": "e",
+            "imagePath": "/images/CFIT/contoh/CFIT_3/3/3_e.png"
+          }
+        ],
+        "answer": "Jawaban: D",
+        "explanation": "Pola segitiga di bawah mengalami pembalikan orientasi dan diarsir penuh, sehingga kelengkapan yang sesuai adalah gambar D."
+      }
+    ],
+    "nextActionUrl": "/Quiz/CfitSubTest3"
+  },
+  "CFIT_SubTest_04": {
+    "title": "CFIT Sub-Test 4: Conditions (Topologi / Kondisi Titik)",
+    "category": "Exploration Test (SMP)",
+    "durationMinutes": 2,
+    "description": "Perhatikan posisi titik pada kotak di sebelah kiri. Pilihlah 1 gambar dari pilihan di sebelah kanan (A-E) yang memungkinkan penempatan titik pada kondisi geometris yang persis sama.",
+    "examples": [
+      {
+        "title": "Contoh 1",
+        "imagePath": "/images/CFIT/contoh/CFIT_4/1/1.png",
+        "options": [
+          {
+            "code": "a",
+            "imagePath": "/images/CFIT/contoh/CFIT_4/1/1_a.png"
+          },
+          {
+            "code": "b",
+            "imagePath": "/images/CFIT/contoh/CFIT_4/1/1_b.png"
+          },
+          {
+            "code": "c",
+            "imagePath": "/images/CFIT/contoh/CFIT_4/1/1_c.png"
+          },
+          {
+            "code": "d",
+            "imagePath": "/images/CFIT/contoh/CFIT_4/1/1_d.png"
+          },
+          {
+            "code": "e",
+            "imagePath": "/images/CFIT/contoh/CFIT_4/1/1_e.png"
+          }
+        ],
+        "answer": "Jawaban: C",
+        "explanation": "Pada contoh, titik berada di dalam lingkaran TETAPI di luar segi empat. Hanya gambar C yang memungkinkan diletakkan titik di dalam lingkaran sekaligus di luar segi empat."
+      },
+      {
+        "title": "Contoh 2",
+        "imagePath": "/images/CFIT/contoh/CFIT_4/2/2.png",
+        "options": [
+          {
+            "code": "a",
+            "imagePath": "/images/CFIT/contoh/CFIT_4/2/2_a.png"
+          },
+          {
+            "code": "b",
+            "imagePath": "/images/CFIT/contoh/CFIT_4/2/2_b.png"
+          },
+          {
+            "code": "c",
+            "imagePath": "/images/CFIT/contoh/CFIT_4/2/2_c.png"
+          },
+          {
+            "code": "d",
+            "imagePath": "/images/CFIT/contoh/CFIT_4/2/2_d.png"
+          },
+          {
+            "code": "e",
+            "imagePath": "/images/CFIT/contoh/CFIT_4/2/2_e.png"
+          }
+        ],
+        "answer": "Jawaban: B",
+        "explanation": "Titik berada di dalam oval TETAPI di bawah garis lurus. Hanya pada gambar B kita dapat meletakkan titik yang posisinya di dalam oval dan di bawah garis."
+      },
+      {
+        "title": "Contoh 3",
+        "imagePath": "/images/CFIT/contoh/CFIT_4/3/3.png",
+        "options": [
+          {
+            "code": "a",
+            "imagePath": "/images/CFIT/contoh/CFIT_4/3/3_a.png"
+          },
+          {
+            "code": "b",
+            "imagePath": "/images/CFIT/contoh/CFIT_4/3/3_b.png"
+          },
+          {
+            "code": "c",
+            "imagePath": "/images/CFIT/contoh/CFIT_4/3/3_c.png"
+          },
+          {
+            "code": "d",
+            "imagePath": "/images/CFIT/contoh/CFIT_4/3/3_d.png"
+          },
+          {
+            "code": "e",
+            "imagePath": "/images/CFIT/contoh/CFIT_4/3/3_e.png"
+          }
+        ],
+        "answer": "Jawaban: C",
+        "explanation": "Titik berada di irisan dua segi empat TETAPI di luar lingkaran. Hanya gambar C yang memungkinkan penempatan titik pada perpotongan dua segi empat tanpa masuk lingkaran."
+      }
+    ],
+    "nextActionUrl": "/Quiz/CfitSubTest4"
+  },
+  "EAS_1": {
+    "title": "EAS 1: Verbal Comprehension",
+    "category": "Exploration Test (SMP)",
+    "durationMinutes": 5,
+    "description": "Setiap kata di bagian kiri diikuti empat kata yang berlainan di bagian kanan. Satu di antara keempat kata tersebut memiliki kesamaan arti atau makna dengan kata yang berada di bagian kiri. Tugas Anda adalah memilih kata tersebut.",
+    "examples": [
+      {
+        "title": "Contoh 1",
+        "answer": "LUAS -> cemerlang | kecil | mainan | [besar]",
+        "explanation": "Kata \"LUAS\" memiliki arti yang sama dengan kata \"besar\"."
+      },
+      {
+        "title": "Contoh 2",
+        "answer": "BERBICARA -> [percakapan] | lari | berdiri | tidur",
+        "explanation": "Kata \"BERBICARA\" memiliki arti yang sama dengan kata \"percakapan\"."
+      },
+      {
+        "title": "Contoh 3",
+        "answer": "CERITA -> topi | bola | hari | [dongeng]",
+        "explanation": "Kata \"CERITA\" memiliki arti yang sama dengan kata \"dongeng\"."
+      },
+      {
+        "title": "Contoh 4",
+        "answer": "TIDAK SEHAT -> baik | dingin | [sakit] | kuat",
+        "explanation": "Kata \"TIDAK SEHAT\" memiliki arti yang sama dengan kata \"sakit\"."
+      }
+    ],
+    "nextActionUrl": "/Quiz/Eas1"
+  },
+  "EAS_2": {
+    "title": "EAS 2: Numerical Ability",
+    "category": "Exploration Test (SMP)",
+    "durationMinutes": 10,
+    "description": "Setiap soal diikuti oleh empat pilihan jawaban dan tanda \"X\". Tugas Anda adalah menghitung dan memilih jawaban yang benar. Jika jawaban yang benar tidak diberikan dalam empat pilihan tersebut, maka pilihlah \"X\". Tes ini terdiri dari 75 soal yang terbagi dalam 3 bagian.",
+    "examples": [
+      {
+        "title": "Contoh 1",
+        "answer": "5 + 5 = (8, 11, 9, 12, X) -> Jawaban: X",
+        "explanation": "Hasil 5 + 5 = 10. Karena angka 10 tidak ada dalam pilihan (8, 11, 9, 12), maka pilihlah X."
+      },
+      {
+        "title": "Contoh 2",
+        "answer": "12 - 6 = (5, 7, 6, 8, X) -> Jawaban: 6",
+        "explanation": "Hasil dari 12 - 6 adalah 6, yang ada pada pilihan angka ke-3."
+      }
+    ],
+    "nextActionUrl": "/Quiz/Eas2"
+  },
+  "EAS_5": {
+    "title": "EAS 5: Space Visualization",
+    "category": "Exploration Test (SMP)",
+    "durationMinutes": 5,
+    "description": "Pada tumpukan balok-balok, semua balok memiliki ukuran yang sama. Tugas Anda adalah melihat huruf yang berada pada balok dan menghitung berapa banyak balok lain yang bersentuhan dengan balok tersebut. Balok yang hanya bersentuhan pada bagian sudut/pojok tidak dihitung.",
+    "examples": [
+      {
+        "title": "Contoh Tumpukan 1",
+        "imagePath": "/images/eas5/intro_1.jpg",
+        "answer": "Balok A = 2, Balok B = 3, Balok C = 3, Balok D = 2, Balok E = 3",
+        "explanation": "Balok A menyentuh 2 balok lain (satu di atas dan satu di bawah). Balok A tidak dihitung bersentuhan dengan Balok D karena hanya bersentuhan di bagian pojok. Balok B menyentuh 3 balok lain (C, D, E)."
+      },
+      {
+        "title": "Contoh Tumpukan 2",
+        "imagePath": "/images/eas5/intro_2.jpg",
+        "answer": "Balok A = 6, Balok B = 1, Balok C = 5, Balok D = 2, Balok E = 6",
+        "explanation": "Balok A menyentuh 6 balok lain (1 di kiri, 2 di kanan, dan 3 di bawah). Jawablah untuk Balok B (1), Balok C (5), Balok D (2), dan Balok E (6)."
+      }
+    ],
+    "nextActionUrl": "/Quiz/Eas5"
+  },
+  "IST_SubTest_01": {
+    "title": "IST 01: SE (Satzergänzung / Melengkapi Kalimat)",
+    "category": "Discovery Test (SMA)",
+    "durationMinutes": 6,
+    "description": "Soal-soal 01-20 terdiri atas kalimat-kalimat. Pada setiap kalimat satu kata hilang dan disediakan 5 kata pilihan (A, B, C, D, E). Pilihlah kata yang tepat untuk menyempurnakan kalimat itu.",
+    "examples": [
+      {
+        "title": "Contoh 01",
+        "answer": "Seekor kuda mempunyai kesamaan terbanyak dengan seekor ... -> a) kucing | b) bajing | c) keledai | d) lembu | e) anjing",
+        "explanation": "Jawaban yang benar ialah: c) keledai. Oleh karena itu, pilih opsi C."
+      },
+      {
+        "title": "Contoh Berikutnya",
+        "answer": "Lawannya \"harapan\" ialah ... -> a) duka | b) putus asa | c) sengsara | d) cinta | e) benci",
+        "explanation": "Jawabannya ialah: b) putus asa. Oleh karena itu, pilih opsi B."
+      }
+    ],
+    "nextActionUrl": "/Quiz/IstSubTest1"
+  },
+  "IST_SubTest_02": {
+    "title": "IST 02: WA (Wortauswahl / Melengkapi Kata)",
+    "category": "Discovery Test (SMA)",
+    "durationMinutes": 6,
+    "description": "Ditentukan 5 kata. Pada 4 dari 5 kata terdapat suatu kesamaan. Carilah kata yang kelima yang tidak memiliki kesamaan dengan keempat kata lainnya.",
+    "examples": [
+      {
+        "title": "Contoh 02",
+        "answer": "a) meja | b) kursi | c) burung | d) lemari | e) tempat tidur",
+        "explanation": "a, b, d, dan e ialah perabot rumah (meubel). c) burung bukan perabot rumah. Maka jawaban yang benar ialah: c) burung."
+      },
+      {
+        "title": "Contoh Berikutnya",
+        "answer": "a) duduk | b) berbaring | c) berdiri | d) berjalan | e) berjongkok",
+        "explanation": "Pada a, b, c, dan e orang berada dalam keadaan tidak bergerak, sedangkan d) orang dalam keadaan bergerak. Maka jawaban yang benar ialah: d) berjalan."
+      }
+    ],
+    "nextActionUrl": "/Quiz/IstSubTest2"
+  },
+  "IST_SubTest_03": {
+    "title": "IST 03: AN (Analogien / Persamaan Kata)",
+    "category": "Discovery Test (SMA)",
+    "durationMinutes": 7,
+    "description": "Ditentukan 3 kata. Antara kata pertama dan kedua terdapat hubungan tertentu. Antara kata ketiga dan salah satu dari 5 kata pilihan harus pula terdapat hubungan yang sama.",
+    "examples": [
+      {
+        "title": "Contoh 03",
+        "answer": "Hutan : pohon = tembok : ? -> a) batu bata | b) rumah | c) semen | d) putih | e) dinding",
+        "explanation": "Hubungan antara hutan dan pohon ialah bahwa hutan terdiri atas pohon-pohon. Maka hubungan antara tembok dan pilihan adalah bahwa tembok terdiri atas batu-batu bata. Jawaban yang benar ialah: a) batu bata."
+      },
+      {
+        "title": "Contoh Berikutnya",
+        "answer": "Gelap : terang = basah : ? -> a) hujan | b) hari | c) lembab | d) angin | e) kering",
+        "explanation": "Gelap ialah lawan dari terang, maka untuk basah lawannya ialah kering. Jawaban yang benar ialah: e) kering."
+      }
+    ],
+    "nextActionUrl": "/Quiz/IstSubTest3"
+  },
+  "IST_SubTest_04": {
+    "title": "IST 04: GE (Gemeinsamkeiten / Sifat Yang Sama)",
+    "category": "Discovery Test (SMA)",
+    "durationMinutes": 8,
+    "description": "Ditentukan dua kata. Carilah satu perkataan yang meliputi pengertian kedua kata tersebut, lalu ketikkan jawaban Anda pada kolom isian.",
+    "examples": [
+      {
+        "title": "Contoh 04",
+        "answer": "Ayam - itik -> Perkataan yang meliputi: \"burung\"",
+        "explanation": "Perkataan \"burung\" dapat meliputi pengertian kedua kata itu. Maka jawabannya ialah \"burung\"."
+      },
+      {
+        "title": "Contoh Berikutnya",
+        "answer": "Gaun - celana -> Perkataan yang meliputi: \"pakaian\"",
+        "explanation": "Perkataan \"pakaian\" meliputi pengertian gaun dan celana. Maka jawabannya ialah \"pakaian\"."
+      }
+    ],
+    "nextActionUrl": "/Quiz/IstSubTest4"
+  },
+  "IST_SubTest_05": {
+    "title": "IST 05: RA (Rechenaufgaben / Berhitung)",
+    "category": "Discovery Test (SMA)",
+    "durationMinutes": 10,
+    "description": "Selesaikan soal-soal hitungan/aritmatika berikut ini. Ketikkan jawaban Anda berupa angka/bilangan pada kolom yang telah disediakan.",
+    "examples": [
+      {
+        "title": "Contoh 05",
+        "answer": "Sebatang pensil harganya 25 rupiah. Berapakah harga 3 batang? -> Jawaban: 75",
+        "explanation": "Hitungan: 3 x 25 = 75. Jawabannya ialah 75."
+      },
+      {
+        "title": "Contoh Berikutnya",
+        "answer": "Dengan sepeda Husin dapat mencapai 15 km dalam waktu 1 jam. Berapa km-kah yang dapat ia capai dalam waktu 4 jam? -> Jawaban: 60",
+        "explanation": "Hitungan: 4 x 15 = 60. Jawabannya ialah 60."
+      }
+    ],
+    "nextActionUrl": "/Quiz/IstSubTest5"
+  },
+  "IST_SubTest_06": {
+    "title": "IST 06: ZR (Zahlenreihen / Deret Angka)",
+    "category": "Discovery Test (SMA)",
+    "durationMinutes": 10,
+    "description": "Diberikan deret angka yang tersusun menurut aturan tertentu. Analisis polanya dan ketikkan angka berikutnya pada kolom yang disediakan.",
+    "examples": [
+      {
+        "title": "Contoh 06",
+        "answer": "2  4  6  8  10  12  14  ? -> Jawaban: 16",
+        "explanation": "Pada deret ini angka berikutnya selalu didapat jika angka di depannya ditambah dengan 2. Maka jawabannya ialah 16."
+      },
+      {
+        "title": "Contoh Berikutnya",
+        "answer": "9  7  10  8  11  9  12  ? -> Jawaban: 10",
+        "explanation": "Pada deret ini berganti-ganti dikurangi 2 lalu ditambah 3. Jawaban contoh ini ialah: 10."
+      }
+    ],
+    "nextActionUrl": "/Quiz/IstSubTest6"
+  },
+  "IST_SubTest_07": {
+    "title": "IST 07: FA (Figurenauswahl / Potongan Gambar)",
+    "category": "Discovery Test (SMA)",
+    "durationMinutes": 7,
+    "description": "Setiap soal memperlihatkan suatu bentuk tertentu yang terpotong menjadi beberapa bagian. Pilihlah bentuk utuh (A, B, C, D, E) yang dibangun dengan menyusun potongan-potongan tersebut tanpa ada kelebihan sudut atau ruang di antaranya.",
+    "referenceImages": [
+      "/images/IST-7/contoh/intro_a.png",
+      "/images/IST-7/contoh/intro_b.png",
+      "/images/IST-7/contoh/intro_c.png",
+      "/images/IST-7/contoh/intro_d.png",
+      "/images/IST-7/contoh/intro_e.png"
+    ],
+    "examples": [
+      {
+        "title": "Contoh 07",
+        "imagePath": "/images/IST-7/contoh/contoh_q7.png",
+        "answer": "Jawaban: A",
+        "explanation": "Jika potongan-potongan pada contoh 07 disusun (digabungkan), maka akan menghasilkan bentuk A (lingkaran utuh)."
+      },
+      {
+        "title": "Contoh Berikutnya (2)",
+        "imagePath": "/images/IST-7/contoh/contoh_q8.png",
+        "answer": "Jawaban: E",
+        "explanation": "Potongan-potongan contoh kedua setelah disusun (digabungkan) menghasilkan bentuk E (sektor/juring lingkaran besar)."
+      },
+      {
+        "title": "Contoh Berikutnya (3)",
+        "imagePath": "/images/IST-7/contoh/contoh_q9.png",
+        "answer": "Jawaban: B",
+        "explanation": "Potongan-potongan contoh ketiga setelah disusun (digabungkan) menghasilkan bentuk B (setengah lingkaran utuh)."
+      },
+      {
+        "title": "Contoh Berikutnya (4)",
+        "imagePath": "/images/IST-7/contoh/contoh_q10.png",
+        "answer": "Jawaban: D",
+        "explanation": "Potongan-potongan contoh keempat setelah disusun (digabungkan) menghasilkan bentuk D (segitiga siku-siku)."
+      }
+    ],
+    "nextActionUrl": "/Quiz/IstSubTest7"
+  },
+  "IST_SubTest_08": {
+    "title": "IST 08: WU (Wurfelaufgaben / Rotasi Kubus 3D)",
+    "category": "Discovery Test (SMA)",
+    "durationMinutes": 9,
+    "description": "Ditentukan 5 buah kubus acuan (A, B, C, D, E) dengan tanda berbeda pada tiap sisinya. Setiap soal memperlihatkan salah satu kubus dalam kedudukan berbeda. Carilah kubus yang dimaksudkan.",
+    "referenceImages": [
+      "/images/IST-8/contoh/contoh-intro-a.png",
+      "/images/IST-8/contoh/contoh-intro-b.png",
+      "/images/IST-8/contoh/contoh-intro-c.png",
+      "/images/IST-8/contoh/contoh-intro-d.png",
+      "/images/IST-8/contoh/contoh-intro-e.png"
+    ],
+    "examples": [
+      {
+        "title": "Contoh 08",
+        "imagePath": "/images/IST-8/contoh/contoh-soal-1.png",
+        "answer": "Jawaban: A",
+        "explanation": "Memperlihatkan kubus A. Mendapatkannya dengan cara menggulingkan kubus ke kiri 1 kali dan diputar ke kiri 1 kali."
+      },
+      {
+        "title": "Contoh berikutnya",
+        "imagePath": "/images/IST-8/contoh/contoh-soal-2.png",
+        "answer": "Jawaban: E",
+        "explanation": "Memperlihatkan kubus E. Cara mendapatkannya dengan digulingkan ke kiri 1 kali dan diputar ke kanan 1 kali."
+      }
+    ],
+    "nextActionUrl": "/Quiz/IstSubTest8"
+  },
+  "IST_SubTest_09": {
+    "title": "IST 09: ME (Merkaufgaben / Mengingat Kata)",
+    "category": "Discovery Test (SMA)",
+    "durationMinutes": 3,
+    "description": "Hafalkan kata-kata yang diberikan selama 3 menit. Setelah itu, tentukan kategori kata yang mempunyai huruf permulaan tertentu sesuai daftar hafalan.",
+    "nextActionUrl": "/Quiz/IstSubTest9"
+  },
+  "PAPI_Kostick": {
+    "title": "PAPI Kostick (Personality Inventory)",
+    "category": "Inventori Kepribadian",
+    "durationMinutes": 0,
+    "description": "Terdapat 90 pasang pernyataan. Pilihlah satu pernyataan (A atau B) dari pasangan pernyataan itu yang Anda rasakan paling mendekati gambaran diri Anda, atau yang paling menunjukkan perasaan Anda. Kadang-kadang Anda merasa bahwa kedua pernyataan itu tidak sesuai benar dengan diri Anda, namun demikian anda diminta tetap memilih satu pernyataan yang paling menunjukkan diri anda.",
+    "nextActionUrl": "/Quiz/PapiKostick"
+  },
+  "VARK": {
+    "title": "Kuesioner VARK (Gaya Belajar)",
+    "category": "Inventori Gaya Belajar",
+    "durationMinutes": 0,
+    "description": "Pilihlah jawaban yang paling sesuai dengan kondisi Anda. Anda boleh memilih lebih dari satu pilihan jika memang ada lebih dari satu kondisi yang sesuai. Kosongkan saja pilihan yang tidak sesuai dengan Anda.",
+    "nextActionUrl": "/Quiz/Vark"
+  },
+  "SDS_Holland": {
+    "title": "HOLLAND TEST (RIASEC)",
+    "category": "Inventori Minat Karir",
+    "durationMinutes": 0,
+    "description": "Bacalah setiap pernyataan. Jika Anda setuju dengan pernyataan tersebut, silakan pilih jawbaan YA. Jika Anda tidak setuju dengan pernyataan tersebut, silakan pilih jawaban TIDAK. Tidak ada jawaban yang benar atau salah.",
+    "nextActionUrl": "/Quiz/SdsHolland"
+  }
+}

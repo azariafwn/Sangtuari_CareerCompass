@@ -274,5 +274,24 @@ namespace SangtuariCareerCompass.Controllers
 
             return View("~/Views/Quiz/SMA/PapiKostick/Index.cshtml");
         }
+
+        public IActionResult Instruction(string testKey, Guid userAssessmentId)
+        {
+            if (userAssessmentId == Guid.Empty || string.IsNullOrEmpty(testKey))
+            {
+                return RedirectToAction("Index", "Assessment");
+            }
+
+            var jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Quiz", "instructions.json");
+            var instructionsJson = System.IO.File.Exists(jsonPath)
+                ? System.IO.File.ReadAllText(jsonPath)
+                : "{}";
+
+            ViewBag.TestKey = testKey;
+            ViewBag.UserAssessmentId = userAssessmentId;
+            ViewBag.InstructionsJson = instructionsJson;
+
+            return View("~/Views/Quiz/Instruction.cshtml");
+        }
     }
 }

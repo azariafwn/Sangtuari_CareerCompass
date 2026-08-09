@@ -110,10 +110,10 @@
                     // Percabangan Alur Berdasarkan Tipe Asesmen
                     if (type === 'Discovery') {
                         // SMA
-                        window.location.href = `/Quiz/IstSubTest1?userAssessmentId=${data.userAssessmentId}`;
+                        window.location.href = `/Quiz/Instruction?testKey=IST_SubTest_01&userAssessmentId=${data.userAssessmentId}`;
                     } else {
                         // SMP
-                        window.location.href = `/Quiz/CfitSubTest1?userAssessmentId=${data.userAssessmentId}`;
+                        window.location.href = `/Quiz/Instruction?testKey=CFIT_SubTest_01&userAssessmentId=${data.userAssessmentId}`;
                     }
                 } else {
                     alert('Gagal menyimpan biodata: ' + (data.message || 'Terjadi kesalahan.'));

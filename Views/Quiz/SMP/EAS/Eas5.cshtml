@@ -239,7 +239,7 @@
 
                 if (response.ok) {
                     // Redirect ke tes berikutnya (VARK)
-                    window.location.href = `/Quiz/Vark?userAssessmentId=${payload.UserAssessmentId}`;
+                    window.location.href = `/Quiz/Instruction?testKey=VARK&userAssessmentId=${payload.UserAssessmentId}`;
                 } else {
                     alert("Gagal menyimpan jawaban EAS 5.");
                     resetSubmitState();

@@ -176,7 +176,7 @@
                 });
 
                 if (res.ok) {
-                    window.location.href = `/Quiz/Eas1?userAssessmentId=${userAssessmentId}`;
+                    window.location.href = `/Quiz/Instruction?testKey=EAS_1&userAssessmentId=${userAssessmentId}`;
                 } else {
                     alert("Gagal menyimpan jawaban.");
                     isSubmitting = false; submitBtn.disabled = false;

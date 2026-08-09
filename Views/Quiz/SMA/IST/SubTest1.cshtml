@@ -173,7 +173,7 @@
 
                 if (response.ok) {
                     // Forward ID ke SubTest 2
-                    window.location.href = `/Quiz/IstSubTest2?userAssessmentId=${userAssessmentId}`;
+                    window.location.href = `/Quiz/Instruction?testKey=IST_SubTest_02&userAssessmentId=${userAssessmentId}`;
                 } else {
                     const errData = await response.json();
                     alert("Gagal menyimpan IST 01: " + (errData.message || response.status));

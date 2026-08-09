@@ -267,7 +267,7 @@
                 });
 
                 if (response.ok) {
-                    window.location.href = `/Quiz/IstSubTest9?userAssessmentId=${userAssessmentId}`;
+                    window.location.href = `/Quiz/Instruction?testKey=IST_SubTest_09&userAssessmentId=${userAssessmentId}`;
                 } else {
                     const errData = await response.json().catch(() => ({}));
                     alert("Gagal menyimpan IST 08: " + (errData.message || response.status));

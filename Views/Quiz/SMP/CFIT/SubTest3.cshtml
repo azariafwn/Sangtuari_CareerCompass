@@ -176,7 +176,7 @@
                 });
 
                 if (res.ok) {
-                    window.location.href = `/Quiz/CfitSubTest4?userAssessmentId=${userAssessmentId}`;
+                    window.location.href = `/Quiz/Instruction?testKey=CFIT_SubTest_04&userAssessmentId=${userAssessmentId}`;
                 } else {
                     alert("Gagal menyimpan jawaban.");
                     isSubmitting = false; submitBtn.disabled = false;
@@ -187,4 +187,4 @@
             }
         }
     </script>
-}
+} 
