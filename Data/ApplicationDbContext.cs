@@ -9,6 +9,7 @@ namespace SangtuariCareerCompass.Data
 
         public DbSet<UserAssessment> UserAssessments { get; set; }
         public DbSet<UserAnswer> UserAnswers { get; set; }
+        public DbSet<UserTestResult> UserTestResults { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
