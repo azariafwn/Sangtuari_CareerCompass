@@ -46,5 +46,33 @@ namespace SangtuariCareerCompass.Controllers
 
             return View("~/Views/Report/IstResult.cshtml", reportVm);
         }
+
+        public async Task<IActionResult> VarkResult(Guid userAssessmentId)
+        {
+            if (userAssessmentId == Guid.Empty) return RedirectToAction("Index", "Assessment");
+
+            // 1. LINQ Fetch via ViewModel Builder
+            var reportVm = await VarkReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
+            if (reportVm == null) return NotFound("Data asesmen VARK tidak ditemukan.");
+
+            // 2. Pure Scoring Engine Execution
+            var varkEngine = new VarkScoringEngine();
+            varkEngine.ProcessScoring(reportVm);
+
+            // 3. Simpan Hasil Akhir ke Tabel UserTestResults
+            var resultEntity = new UserTestResult
+            {
+                UserAssessmentId = userAssessmentId,
+                TestCategory = "VARK",
+                OverallScore = reportVm.CategoryScores.Max(c => c.Score),
+                Classification = reportVm.DominantCategoryText,
+                ResultDetails = JsonDocument.Parse(JsonSerializer.Serialize(reportVm.CategoryScores))
+            };
+
+            _context.UserTestResults.Add(resultEntity);
+            await _context.SaveChangesAsync();
+
+            return View("~/Views/Report/VarkResult.cshtml", reportVm);
+        }
     }
 }

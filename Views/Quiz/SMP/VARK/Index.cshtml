@@ -177,7 +177,7 @@
 
                 if (response.ok) {
                     // TRANSIT KE HALAMAN JEDA INSTRUKSI SDS HOLLAND
-                    window.location.href = `/Quiz/Instruction?testKey=SDS_Holland&userAssessmentId=${userAssessmentId}`;
+                    window.location.href = `/Report/VarkResult?userAssessmentId=${userAssessmentId}`;
                 } else {
                     alert("Gagal menyimpan jawaban VARK. Status: " + response.status);
                     resetSubmitState();
