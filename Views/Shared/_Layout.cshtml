@@ -1,49 +1,124 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SangtuariCareerCompass</title>
+    <title>@ViewData["Title"] - Sangtuari's Career Compass</title>
+
+    <!-- Bootstrap & Icons CSS -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/SangtuariCareerCompass.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <style>
+        :root {
+            --sangtuari-purple: #4E325A;
+            --sangtuari-purple-hover: #3B2544;
+            --sangtuari-yellow: #FFE375;
+            --sangtuari-bg-cream: #FFFDF4;
+            --sangtuari-bg-dark: #1A1A1A;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--sangtuari-bg-cream);
+            color: #212529;
+            min-vh-100;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar Style */
+        .navbar-sangtuari {
+            background-color: var(--sangtuari-purple);
+            border-bottom: 3px solid var(--sangtuari-yellow);
+        }
+
+            .navbar-sangtuari .navbar-brand {
+                color: #FFFFFF;
+                font-weight: 700;
+                font-style: italic;
+            }
+
+                .navbar-sangtuari .navbar-brand:hover {
+                    color: var(--sangtuari-yellow);
+                }
+
+        /* Utility Classes */
+        .bg-purple-main {
+            background-color: var(--sangtuari-purple) !important;
+            color: #FFFFFF !important;
+        }
+
+        .text-purple-main {
+            color: var(--sangtuari-purple) !important;
+        }
+
+        .bg-yellow-accent {
+            background-color: var(--sangtuari-yellow) !important;
+            color: var(--sangtuari-purple) !important;
+        }
+
+        .text-yellow-accent {
+            color: var(--sangtuari-yellow) !important;
+        }
+
+        .btn-purple-custom {
+            background-color: var(--sangtuari-purple);
+            color: var(--sangtuari-yellow);
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+            .btn-purple-custom:hover {
+                background-color: var(--sangtuari-purple-hover);
+                color: #FFFFFF;
+            }
+
+        /* Footer Style */
+        .footer-sangtuari {
+            background-color: var(--sangtuari-purple);
+            color: #FFFFFF;
+            border-top: 3px solid var(--sangtuari-yellow);
+            margin-top: auto;
+        }
+    </style>
 </head>
 <body>
+    <!-- Header Navbar -->
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SangtuariCareerCompass</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+        <nav class="navbar navbar-expand-sm navbar-sangtuari shadow-sm py-2">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand d-flex align-items-center gap-2" asp-controller="Assessment" asp-action="Index">
+                    <img src="~/images/logo-sangtuari.png" alt="Logo" style="height: 36px;" onerror="this.style.display='none'" />
+                    <span class="fw-bold fs-5 fst-italic">
+                        <span class="text-white">Sangtuari's</span>
+                        <span class="text-yellow-accent">Career Compass</span>
+                    </span>
+                </a>
+                <span class="navbar-text text-yellow-accent fw-bold small d-none d-sm-inline">
+                    Platform Psikotes & Asesmen Karir
+                </span>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+    <!-- Main Content Container -->
+    <div class="container-fluid flex-grow-1 p-0">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <!-- Footer -->
+    <footer class="footer-sangtuari py-3 text-center small">
         <div class="container">
-            &copy; 2026 - SangtuariCareerCompass - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <span>&copy; @DateTime.Now.Year <strong>Sangtuari's Career Compass</strong>. All rights reserved.</span>
         </div>
     </footer>
+
+    <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
