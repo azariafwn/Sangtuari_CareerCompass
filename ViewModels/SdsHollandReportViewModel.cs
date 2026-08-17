@@ -10,11 +10,10 @@ namespace SangtuariCareerCompass.ViewModels
 {
     public class RiasecScoreItem
     {
-        public string Code { get; set; } = string.Empty; // R, I, A, S, E, C
+        public string Code { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public int Score { get; set; }
         public double Percentage { get; set; }
-        public string Description { get; set; } = string.Empty;
     }
 
     public class SdsHollandReportViewModel
@@ -24,17 +23,23 @@ namespace SangtuariCareerCompass.ViewModels
         public string SchoolName { get; set; } = string.Empty;
         public string Gender { get; set; } = string.Empty;
 
-        public Dictionary<string, int> ExistingScores { get; set; } = new();
+        public Dictionary<string, string> UserResponses { get; set; } = new();
+        public Dictionary<string, int> CalculatedScores { get; set; } = new();
 
         public List<RiasecScoreItem> RiasecScores { get; set; } = new();
         public string PrimaryCode { get; set; } = string.Empty;
-        public string SummaryCode { get; set; } = string.Empty; // Top 3 codes (misal: "AIC")
+        public string PrimaryCodeName { get; set; } = string.Empty;
+        public string PrimaryDescription { get; set; } = string.Empty;
+        public List<string> PrimaryCareers { get; set; } = new();
+
+        public string SummaryCode { get; set; } = string.Empty;
+        public string ConsistencyDegree { get; set; } = string.Empty;
+        public string ConsistencyDetails { get; set; } = string.Empty;
+
+        // Properti yang diperlukan oleh Engine & Controller
         public int TotalElevationScore { get; set; }
         public string ProfileElevationCategory { get; set; } = string.Empty;
         public string ElevationInterpretation { get; set; } = string.Empty;
-        public string ConsistencyDegree { get; set; } = string.Empty; // Adjacent, Alternate, Opposite
-        public string ConsistencyInterpretation { get; set; } = string.Empty;
-        public List<string> RecommendedCareers { get; set; } = new();
 
         public static async Task<SdsHollandReportViewModel?> BuildFromDatabaseAsync(ApplicationDbContext dbContext, Guid assessmentId)
         {
@@ -48,6 +53,7 @@ namespace SangtuariCareerCompass.ViewModels
                 .AsNoTracking()
                 .FirstOrDefaultAsync(a => a.UserAssessmentId == assessmentId && (a.SubTestName == "SDS_Holland" || a.SubTestName == "SDS-Holland"));
 
+            var userResponses = new Dictionary<string, string>();
             var existingScores = new Dictionary<string, int>();
 
             if (answerRecord?.Answers != null)
@@ -64,6 +70,14 @@ namespace SangtuariCareerCompass.ViewModels
                             existingScores[prop.Name.ToUpper()] = prop.Value.GetInt32();
                         }
                     }
+
+                    if (root.TryGetProperty("UserResponses", out var respObj) && respObj.ValueKind == JsonValueKind.Object)
+                    {
+                        foreach (var prop in respObj.EnumerateObject())
+                        {
+                            userResponses[prop.Name.ToUpper()] = prop.Value.GetString()?.ToUpper() ?? "";
+                        }
+                    }
                 }
                 catch { }
             }
@@ -74,7 +88,8 @@ namespace SangtuariCareerCompass.ViewModels
                 FullName = user.FullName,
                 SchoolName = user.SchoolName,
                 Gender = user.Gender,
-                ExistingScores = existingScores
+                UserResponses = userResponses,
+                CalculatedScores = existingScores
             };
         }
     }

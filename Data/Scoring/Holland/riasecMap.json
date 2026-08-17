@@ -1,51 +1,47 @@
 {
-  "profileElevationNorms": {
-    "Laki-laki": {
-      "HighMin": 151,
-      "AvgMin": 129,
-      "AvgMax": 149
-    },
-    "Perempuan": {
-      "HighMin": 148,
-      "AvgMin": 128,
-      "AvgMax": 146
-    }
+  "itemCategories": {
+    "R": [ 1, 7, 13, 19, 25, 31, 37, 43, 49, 55, 61, 67, 73, 79, 85, 91, 97, 103 ],
+    "I": [ 2, 8, 14, 20, 26, 32, 38, 44, 50, 56, 62, 68, 74, 80, 86, 92, 98, 104 ],
+    "A": [ 3, 9, 15, 21, 27, 33, 39, 45, 51, 57, 63, 69, 75, 81, 87, 93, 99, 105 ],
+    "S": [ 4, 10, 16, 22, 28, 34, 40, 46, 52, 58, 64, 70, 76, 82, 88, 94, 100, 106 ],
+    "E": [ 5, 11, 17, 23, 29, 35, 41, 47, 53, 59, 65, 71, 77, 83, 89, 95, 101, 107 ],
+    "C": [ 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66, 72, 78, 84, 90, 96, 102, 108 ]
   },
   "consistencyRules": {
     "Adjacent": [ "RI", "IR", "IA", "AI", "AS", "SA", "SE", "ES", "EC", "CE", "CR", "RC" ],
     "Alternate": [ "RA", "AR", "IS", "SI", "AE", "EA", "SC", "CS", "ER", "RE", "CI", "IC" ],
     "Opposite": [ "RS", "SR", "IE", "EI", "AC", "CA" ]
   },
-  "careerRecommendations": {
+  "typeMasterData": {
     "R": {
       "Name": "Realistic",
-      "Desc": "Menyukai aktivitas praktis, mekanikal, manipulasi objek/mesin, dan kerja fisik.",
-      "Careers": [ "Teknik Mesin", "Teknik Elektro", "Teknologi Informasi", "Arsitektur", "Penerbangan", "Teknik Sipil", "Mekanik" ]
+      "Description": "Orang dengan minat Realistis menyukai pekerjaan yang mencakup masalah dan jawaban praktis dan langsung. Menyukai kegiatan yang melibatkan keterampilan motorik, peralatan, mesin. Seringkali orang dengan minat Realistis tidak menyukai karier yang melibatkan dokumen atau bekerja sama dengan orang lain.",
+      "Careers": [ "Atlet", "Operator", "Pilot", "Koki", "Mekanik", "Polisi", "Perawat", "Insinyur", "Pengawas Bangunan", "Petani", "Peternak" ]
     },
     "I": {
       "Name": "Investigative",
-      "Desc": "Menyukai pengamatan sistematis, riset ilmiah, pemecahan masalah analitis, dan logika murni.",
-      "Careers": [ "Kedokteran", "Ilmu Komputer/Software Engineering", "Bioteknologi", "Statistika", "Data Science", "Farmasi", "Peneliti" ]
+      "Description": "Orang dengan minat Investigasi menyukai pekerjaan yang berkaitan dengan ide dan pemikiran. Memilih kegiatan penyelidikan yang observasional, simbolis, sistematis dan kreatif atas fenomena fisik, biologis dan kultural dalam usahanya untuk mengerti dan mengendalikan fenomena tersebut. Mereka berprestasi terutama dalam bidang akademik dan ilmiah, serta biasanya kurang menyukai aktivitas fisik atau memimpin orang.",
+      "Careers": [ "Ahli Antropologi", "Astronomi", "Biologi", "Botani", "Kimia", "Editor Penerbitan Ilmiah", "Geologi", "Pekerjaan Penelitian" ]
     },
     "A": {
       "Name": "Artistic",
-      "Desc": "Menyukai ekspresi bebas, kreativitas seni, komunikasi orisinal, desain, dan situasi tanpa struktur kaku.",
-      "Careers": [ "Desain Komunikasi Visual (DKV)", "Arsitektur", "Seni Rupa/Desain Produk", "Jurnalistik", "Periklanan", "Multimedia" ]
+      "Description": "Orang dengan minat Artistik menyukai pekerjaan dan aktivitas yang bebas, tidak sistematis, ambisius dalam usahanya memanipulasi material fisik, verbal dan humanistic untuk tujuan menciptakan bentuk-bentuk atau produk-produk seni. Kecenderungan ini mengantarkannya memiliki kompetensi artistik, bahasa, musik, drama, mengarang. Tetapi mengurangi kompetensi dibidang klerikal dan bisnis.",
+      "Careers": [ "Desainer", "Penulis", "Musisi", "Arsitek", "Wartawan", "Penari", "Translator", "Artis" ]
     },
     "S": {
       "Name": "Social",
-      "Desc": "Menyukai interaksi interpersonal, membantu orang lain, mengajar, konseling, dan pemberdayaan sosial.",
-      "Careers": [ "Psikologi", "Pendidikan/Keguruan", "Ilmu Komunikasi", "Bimbingan Konseling", "Keperawatan", "Hubungan Masyarakat" ]
+      "Description": "Orang dengan minat Sosial menyukai aktivitas yang melibatkan berelasi, berkomunikasi dan mengajar orang. Mereka dilambangkan dengan keterampilan sosial dan kebutuhan untuk interaksi sosial. Pekerjaannya sering melibatkan membantu atau memberikan layanan kepada orang lain. Tetapi mengurangi kompetensi di bidang teknik dan manual.",
+      "Careers": [ "Guru", "Terapis", "Tour Guide", "Perawat", "Hakim", "Konselor", "Psikolog", "Sejarawan", "Misionaris", "Pekerja Sosial", "Ahli Patologi Bicara" ]
     },
     "E": {
       "Name": "Enterprising",
-      "Desc": "Menyukai kepemimpinan, persuasi bisnis, negosiasi, manajemen, dan pencapaian target ekonomi/organisasi.",
-      "Careers": [ "Manajemen Bisnis", "Pemasaran (Marketing)", "Kewirausahaan", "Ilmu Hukum", "Hubungan Internasional", "Finance" ]
+      "Description": "Orang dengan minat Enterprising menghasilkan preferensi yang mendorong individu untuk menikmati memanipulasi kegiatan orang lain dalam usahanya mencapai tujuan organisasi atau keuntungan ekonomi. Kecenderungan ini akan mengarah pada kompetensi kepemimpinan, hubungan timbal balik pribadi dan persuasif, tugas yang menitikberatkan kepada kemampuan verbal yang digunakan untuk mengarahkan dan mempengaruhi orang lain. Tetapi mengurangi kompetensi ilmiah.",
+      "Careers": [ "Pengacara", "Pelobi", "Politikus", "Pegawai Humas", "Manajer Penjualan", "Staf Penjualan", "Perwakilan Dagang" ]
     },
     "C": {
       "Name": "Conventional",
-      "Desc": "Menyukai aktivitas sistematis, keteraturan data/administrasi, akurasi detail, dan prosedur terstruktur.",
-      "Careers": [ "Akuntansi", "Administrasi Niaga", "Sistem Informasi", "Manajemen Keuangan", "Aktuaria", "Perbankan" ]
+      "Description": "Orang dengan minat Conventional menghasilkan preferensi yang membawa individu untuk menyenangi aktivitas yang teratur dan sistematis seperti misalnya mengarsipkan sesuatu, mereproduksi material, mencatat data, mengolah data, menyukai pekerjaan yang mengikuti prosedur dan rutinitas yang ditetapkan. Kecenderungan ini mengantarkan individu memiliki kompetensi klerikal, menghitung dan kompetensi bisnis. Tapi mengurangi kompetensi artistik.",
+      "Careers": [ "Akuntan", "Aktuaris", "Ahli Statistik", "Analis Keuangan", "Operator Komputer", "Pustakawan", "Programmer Bisnis", "Pengarsip", "Administrasi" ]
     }
   }
 }

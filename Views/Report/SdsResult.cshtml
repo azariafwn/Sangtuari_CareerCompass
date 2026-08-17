@@ -28,17 +28,27 @@
     .badge-code {
         background-color: #4E325A;
         color: #FFE375;
-        font-size: 1.5rem;
-        letter-spacing: 3px;
+        font-size: 1.6rem;
+        letter-spacing: 4px;
+    }
+
+    .table-riasec th {
+        background-color: #4E325A;
+        color: #FFE375;
+        font-size: 0.9rem;
+    }
+
+    .table-riasec td {
+        font-size: 0.88rem;
     }
 </style>
 
 <div class="container py-5">
     <div class="card card-report shadow-sm p-4 p-md-5 mb-4">
-        <!-- HEADER IDENTITAS -->
+        <!-- HEADER IDENTITAS PESERTA -->
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center border-bottom pb-4 mb-4 gap-3">
             <div>
-                <span class="badge bg-purple-main rounded-pill px-3 py-2 mb-2">Inventori Minat Karier (Holland RIASEC)</span>
+                <span class="badge bg-purple-main rounded-pill px-3 py-2 mb-2">Inventori Minat & Bakat Karir (Holland RIASEC)</span>
                 <h2 class="fw-bold text-dark mb-1">@Model.FullName</h2>
                 <p class="text-muted mb-0">@Model.SchoolName | Jenis Kelamin: <strong>@Model.Gender</strong></p>
             </div>
@@ -48,7 +58,7 @@
             </div>
         </div>
 
-        <!-- RADAR CHART & TABEL RIASEC -->
+        <!-- RADAR CHART & TABEL DISTRIBUSI SKOR -->
         <div class="row g-4 mb-4">
             <div class="col-md-5 d-flex flex-column align-items-center justify-content-center border-end">
                 <h6 class="fw-bold text-purple-main mb-2">Profil Minat Heksagon RIASEC</h6>
@@ -58,15 +68,15 @@
             </div>
 
             <div class="col-md-7">
-                <h6 class="fw-bold text-purple-main mb-3">Distribusi Skor 6 Tipe Tipologi</h6>
+                <h6 class="fw-bold text-purple-main mb-3">Distribusi Skor 6 Dimensi Tipologi</h6>
                 <div class="table-responsive">
-                    <table class="table table-bordered align-middle bg-white rounded-3">
-                        <thead class="table-light text-center">
+                    <table class="table table-bordered table-riasec align-middle bg-white rounded-3">
+                        <thead class="text-center">
                             <tr>
-                                <th>Kode</th>
+                                <th style="width: 70px;">Kode</th>
                                 <th>Tipologi Holland</th>
-                                <th>Skor</th>
-                                <th>Persentase</th>
+                                <th style="width: 80px;">Skor</th>
+                                <th style="width: 100px;">Persentase</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -85,40 +95,36 @@
             </div>
         </div>
 
-        <!-- ANALISIS PROFILE ELEVATION & KONSISTENSI -->
-        <div class="row g-3 mb-4">
-            <div class="col-md-6">
-                <div class="bg-white p-4 rounded-4 border h-100">
-                    <h6 class="fw-bold text-purple-main mb-2"><i class="bi bi-graph-up-arrow me-2"></i>Profile Elevation: @Model.ProfileElevationCategory (@Model.TotalElevationScore)</h6>
-                    <p class="text-muted small mb-0 lh-base">@Model.ElevationInterpretation</p>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="bg-white p-4 rounded-4 border h-100">
-                    <h6 class="fw-bold text-purple-main mb-2"><i class="bi bi-diagram-3 me-2"></i>Derajat Konsistensi: @Model.ConsistencyDegree</h6>
-                    <p class="text-muted small mb-0 lh-base">@Model.ConsistencyInterpretation</p>
-                </div>
-            </div>
+        <!-- TINGKAT KONSISTENSI -->
+        <div class="bg-white p-4 rounded-4 border mb-4">
+            <h6 class="fw-bold text-purple-main mb-2"><i class="bi bi-diagram-3 me-2"></i>Tingkat Konsistensi: @Model.ConsistencyDegree</h6>
+            <p class="text-muted small mb-0 lh-base">@Model.ConsistencyDetails</p>
         </div>
 
-        <!-- REKOMENDASI BIDANG KARIER & STUDI -->
+        <!-- DESKRIPSI TIPE DOMINAN -->
         <div class="bg-white p-4 rounded-4 border mb-4">
-            <h5 class="fw-bold text-purple-main mb-3"><i class="bi bi-briefcase me-2"></i>Rekomendasi Arah Karier & Program Studi</h5>
+            <h5 class="fw-bold text-purple-main mb-2"><i class="bi bi-person-badge me-2"></i>Deskripsi Tipe Dominan: @Model.PrimaryCodeName (@Model.PrimaryCode)</h5>
+            <p class="text-dark lh-base mb-0">@Model.PrimaryDescription</p>
+        </div>
+
+        <!-- REFERENSI PEKERJAAN BERDASARKAN KODE DOMINAN -->
+        <div class="bg-white p-4 rounded-4 border mb-4">
+            <h5 class="fw-bold text-purple-main mb-3"><i class="bi bi-briefcase me-2"></i>Referensi Pekerjaan (@Model.PrimaryCodeName)</h5>
             <div class="d-flex flex-wrap gap-2">
-                @foreach (var career in Model.RecommendedCareers)
+                @foreach (var career in Model.PrimaryCareers)
                 {
                     <span class="badge bg-purple-main rounded-pill px-3 py-2 fs-6">@career</span>
                 }
             </div>
         </div>
 
-        <!-- AKSI -->
+        <!-- AKSI SELESAI SELURUH RANGKAIAN -->
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center border-top pt-4 gap-3">
             <button onclick="window.print()" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold">
                 <i class="bi bi-printer me-1"></i> Cetak Laporan SDS Holland
             </button>
             <a href="/Assessment/Index" class="btn btn-purple-custom rounded-pill px-5 py-3 fw-bold shadow-sm">
-                <i class="bi bi-house-door-fill me-2"></i> Selesaikan Seluruh Asesmen
+                <i class="bi bi-house-door-fill me-2"></i> Selesai Seluruh Rangkaian & Kembali ke Menu
             </a>
         </div>
     </div>
@@ -155,7 +161,7 @@
                         angleLines: { color: '#EFE8D8' },
                         grid: { color: '#EFE8D8' },
                         suggestedMin: 0,
-                        ticks: { stepSize: 5 }
+                        ticks: { stepSize: 3 }
                     }
                 },
                 plugins: {
