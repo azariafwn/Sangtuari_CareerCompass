@@ -1,0 +1,51 @@
+{
+  "profileElevationNorms": {
+    "Laki-laki": {
+      "HighMin": 151,
+      "AvgMin": 129,
+      "AvgMax": 149
+    },
+    "Perempuan": {
+      "HighMin": 148,
+      "AvgMin": 128,
+      "AvgMax": 146
+    }
+  },
+  "consistencyRules": {
+    "Adjacent": [ "RI", "IR", "IA", "AI", "AS", "SA", "SE", "ES", "EC", "CE", "CR", "RC" ],
+    "Alternate": [ "RA", "AR", "IS", "SI", "AE", "EA", "SC", "CS", "ER", "RE", "CI", "IC" ],
+    "Opposite": [ "RS", "SR", "IE", "EI", "AC", "CA" ]
+  },
+  "careerRecommendations": {
+    "R": {
+      "Name": "Realistic",
+      "Desc": "Menyukai aktivitas praktis, mekanikal, manipulasi objek/mesin, dan kerja fisik.",
+      "Careers": [ "Teknik Mesin", "Teknik Elektro", "Teknologi Informasi", "Arsitektur", "Penerbangan", "Teknik Sipil", "Mekanik" ]
+    },
+    "I": {
+      "Name": "Investigative",
+      "Desc": "Menyukai pengamatan sistematis, riset ilmiah, pemecahan masalah analitis, dan logika murni.",
+      "Careers": [ "Kedokteran", "Ilmu Komputer/Software Engineering", "Bioteknologi", "Statistika", "Data Science", "Farmasi", "Peneliti" ]
+    },
+    "A": {
+      "Name": "Artistic",
+      "Desc": "Menyukai ekspresi bebas, kreativitas seni, komunikasi orisinal, desain, dan situasi tanpa struktur kaku.",
+      "Careers": [ "Desain Komunikasi Visual (DKV)", "Arsitektur", "Seni Rupa/Desain Produk", "Jurnalistik", "Periklanan", "Multimedia" ]
+    },
+    "S": {
+      "Name": "Social",
+      "Desc": "Menyukai interaksi interpersonal, membantu orang lain, mengajar, konseling, dan pemberdayaan sosial.",
+      "Careers": [ "Psikologi", "Pendidikan/Keguruan", "Ilmu Komunikasi", "Bimbingan Konseling", "Keperawatan", "Hubungan Masyarakat" ]
+    },
+    "E": {
+      "Name": "Enterprising",
+      "Desc": "Menyukai kepemimpinan, persuasi bisnis, negosiasi, manajemen, dan pencapaian target ekonomi/organisasi.",
+      "Careers": [ "Manajemen Bisnis", "Pemasaran (Marketing)", "Kewirausahaan", "Ilmu Hukum", "Hubungan Internasional", "Finance" ]
+    },
+    "C": {
+      "Name": "Conventional",
+      "Desc": "Menyukai aktivitas sistematis, keteraturan data/administrasi, akurasi detail, dan prosedur terstruktur.",
+      "Careers": [ "Akuntansi", "Administrasi Niaga", "Sistem Informasi", "Manajemen Keuangan", "Aktuaria", "Perbankan" ]
+    }
+  }
+}
