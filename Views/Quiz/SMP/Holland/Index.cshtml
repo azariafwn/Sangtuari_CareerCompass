@@ -141,6 +141,9 @@
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Memproses...';
 
+            // Ambil assessmentId ke variabel lokal
+            const assessmentId = document.getElementById('UserAssessmentId').value;
+
             const answers = {};
             const scores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
 
@@ -149,7 +152,6 @@
                 const val = selected ? selected.value : "";
                 answers[`Q${q.id}`] = val;
 
-                // Jika pengguna menjawab "YA", tambahkan skor untuk kategori terkait
                 if (val === "YA") {
                     const cat = q.category;
                     if (scores[cat] !== undefined) {
@@ -159,7 +161,7 @@
             });
 
             const payload = {
-                UserAssessmentId: document.getElementById('UserAssessmentId').value,
+                UserAssessmentId: assessmentId,
                 SubTestName: "SDS_Holland",
                 Answers: {
                     UserResponses: answers,
@@ -180,13 +182,13 @@
                 });
 
                 if (response.ok) {
-                    alert("Seluruh rangkaian tes berhasil diselesaikan!");
-                    window.location.href = `/Assessment/Index`;
+                    window.location.href = `/Report/SdsResult?userAssessmentId=${assessmentId}`;
                 } else {
                     alert("Gagal menyimpan jawaban Holland Test.");
                     resetSubmitState();
                 }
             } catch (e) {
+                console.error("Submit Error:", e);
                 alert("Koneksi bermasalah.");
                 resetSubmitState();
             }

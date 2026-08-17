@@ -1,0 +1,167 @@
+﻿@model SangtuariCareerCompass.ViewModels.SdsHollandReportViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Laporan Minat Karier SDS Holland (RIASEC)";
+}
+
+<style>
+    .bg-purple-main {
+        background-color: #4E325A;
+        color: #FFFFFF;
+    }
+
+    .text-purple-main {
+        color: #4E325A;
+    }
+
+    .bg-yellow-accent {
+        background-color: #FFE375;
+        color: #4E325A;
+    }
+
+    .card-report {
+        background-color: #FFFDF4;
+        border-radius: 20px;
+        border: none;
+    }
+
+    .badge-code {
+        background-color: #4E325A;
+        color: #FFE375;
+        font-size: 1.5rem;
+        letter-spacing: 3px;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="card card-report shadow-sm p-4 p-md-5 mb-4">
+        <!-- HEADER IDENTITAS -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center border-bottom pb-4 mb-4 gap-3">
+            <div>
+                <span class="badge bg-purple-main rounded-pill px-3 py-2 mb-2">Inventori Minat Karier (Holland RIASEC)</span>
+                <h2 class="fw-bold text-dark mb-1">@Model.FullName</h2>
+                <p class="text-muted mb-0">@Model.SchoolName | Jenis Kelamin: <strong>@Model.Gender</strong></p>
+            </div>
+            <div class="bg-yellow-accent p-3 rounded-4 text-center min-w-200 shadow-sm">
+                <span class="small fw-bold text-uppercase d-block mb-1">Holland Summary Code</span>
+                <span class="badge badge-code rounded-3 px-3 py-1 fw-bold">@Model.SummaryCode</span>
+            </div>
+        </div>
+
+        <!-- RADAR CHART & TABEL RIASEC -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-5 d-flex flex-column align-items-center justify-content-center border-end">
+                <h6 class="fw-bold text-purple-main mb-2">Profil Minat Heksagon RIASEC</h6>
+                <div style="max-width: 320px; width: 100%; height: 300px;">
+                    <canvas id="riasecRadarChart"></canvas>
+                </div>
+            </div>
+
+            <div class="col-md-7">
+                <h6 class="fw-bold text-purple-main mb-3">Distribusi Skor 6 Tipe Tipologi</h6>
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle bg-white rounded-3">
+                        <thead class="table-light text-center">
+                            <tr>
+                                <th>Kode</th>
+                                <th>Tipologi Holland</th>
+                                <th>Skor</th>
+                                <th>Persentase</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.RiasecScores.OrderByDescending(x => x.Score))
+                            {
+                                <tr>
+                                    <td class="text-center fw-bold text-purple-main">@item.Code</td>
+                                    <td class="fw-semibold">@item.Name</td>
+                                    <td class="text-center fw-bold">@item.Score</td>
+                                    <td class="text-center">@item.Percentage%</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ANALISIS PROFILE ELEVATION & KONSISTENSI -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="bg-white p-4 rounded-4 border h-100">
+                    <h6 class="fw-bold text-purple-main mb-2"><i class="bi bi-graph-up-arrow me-2"></i>Profile Elevation: @Model.ProfileElevationCategory (@Model.TotalElevationScore)</h6>
+                    <p class="text-muted small mb-0 lh-base">@Model.ElevationInterpretation</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="bg-white p-4 rounded-4 border h-100">
+                    <h6 class="fw-bold text-purple-main mb-2"><i class="bi bi-diagram-3 me-2"></i>Derajat Konsistensi: @Model.ConsistencyDegree</h6>
+                    <p class="text-muted small mb-0 lh-base">@Model.ConsistencyInterpretation</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- REKOMENDASI BIDANG KARIER & STUDI -->
+        <div class="bg-white p-4 rounded-4 border mb-4">
+            <h5 class="fw-bold text-purple-main mb-3"><i class="bi bi-briefcase me-2"></i>Rekomendasi Arah Karier & Program Studi</h5>
+            <div class="d-flex flex-wrap gap-2">
+                @foreach (var career in Model.RecommendedCareers)
+                {
+                    <span class="badge bg-purple-main rounded-pill px-3 py-2 fs-6">@career</span>
+                }
+            </div>
+        </div>
+
+        <!-- AKSI -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center border-top pt-4 gap-3">
+            <button onclick="window.print()" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold">
+                <i class="bi bi-printer me-1"></i> Cetak Laporan SDS Holland
+            </button>
+            <a href="/Assessment/Index" class="btn btn-purple-custom rounded-pill px-5 py-3 fw-bold shadow-sm">
+                <i class="bi bi-house-door-fill me-2"></i> Selesaikan Seluruh Asesmen
+            </a>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const scores = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.RiasecScores));
+        const labels = scores.map(s => s.Name + ' (' + s.Code + ')');
+        const values = scores.map(s => s.Score);
+
+        const ctx = document.getElementById('riasecRadarChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Skor RIASEC',
+                    data: values,
+                    backgroundColor: 'rgba(78, 50, 90, 0.25)',
+                    borderColor: '#4E325A',
+                    pointBackgroundColor: '#FFE375',
+                    pointBorderColor: '#4E325A',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#4E325A'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: '#EFE8D8' },
+                        grid: { color: '#EFE8D8' },
+                        suggestedMin: 0,
+                        ticks: { stepSize: 5 }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    });
+</script>
