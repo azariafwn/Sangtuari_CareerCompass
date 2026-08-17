@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SangtuariCareerCompass.Data;
 using SangtuariCareerCompass.Models;
 using SangtuariCareerCompass.Services.Scoring;
@@ -73,6 +74,45 @@ namespace SangtuariCareerCompass.Controllers
             await _context.SaveChangesAsync();
 
             return View("~/Views/Report/VarkResult.cshtml", reportVm);
+        }
+        
+        public async Task<IActionResult> SdsResult(Guid userAssessmentId)
+        {
+            if (userAssessmentId == Guid.Empty) return RedirectToAction("Index", "Assessment");
+
+            // 1. Eksekusi LINQ Fetch di ViewModel Builder
+            var reportVm = await SdsHollandReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
+            if (reportVm == null) return NotFound("Data asesmen SDS Holland tidak ditemukan.");
+
+            // 2. Pure Scoring Engine Execution
+            var sdsEngine = new SdsHollandScoringEngine();
+            sdsEngine.ProcessScoring(reportVm);
+
+            // 3. Simpan Ringkasan Hasil ke Tabel Database UserTestResults
+            var existingResult = await _context.UserTestResults
+                .FirstOrDefaultAsync(r => r.UserAssessmentId == userAssessmentId && r.TestCategory == "SDS_Holland");
+
+            if (existingResult == null)
+            {
+                var resultEntity = new UserTestResult
+                {
+                    UserAssessmentId = userAssessmentId,
+                    TestCategory = "SDS_Holland",
+                    OverallScore = reportVm.TotalElevationScore,
+                    Classification = reportVm.SummaryCode,
+                    ResultDetails = JsonDocument.Parse(JsonSerializer.Serialize(new
+                    {
+                        SummaryCode = reportVm.SummaryCode,
+                        ProfileElevation = reportVm.ProfileElevationCategory,
+                        Consistency = reportVm.ConsistencyDegree,
+                        Scores = reportVm.RiasecScores
+                    }))
+                };
+                _context.UserTestResults.Add(resultEntity);
+                await _context.SaveChangesAsync();
+            }
+
+            return View("~/Views/Report/SdsResult.cshtml", reportVm);
         }
     }
 }
