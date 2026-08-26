@@ -184,7 +184,8 @@
 
                 if (response.ok) {
                     // Alihkan peserta ke VARK Test
-                    window.location.href = `/Quiz/Instruction?testKey=VARK&userAssessmentId=${userAssessmentId}`;
+                    // window.location.href = `/Quiz/Instruction?testKey=VARK&userAssessmentId=${userAssessmentId}`;
+                    window.location.href = `/Report/PapiJudgment?userAssessmentId=${userAssessmentId}`;
                 } else {
                     const errData = await response.json().catch(() => ({}));
                     alert("Gagal menyimpan PAPI Kostick: " + (errData.message || response.status));

@@ -114,5 +114,47 @@ namespace SangtuariCareerCompass.Controllers
 
             return View("~/Views/Report/SdsResult.cshtml", reportVm);
         }
+        [HttpGet]
+        public async Task<IActionResult> PapiJudgment(Guid userAssessmentId)
+        {
+            var vm = await PapiReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
+            if (vm == null) return NotFound("Data tidak ditemukan.");
+
+            if (vm.IsJudged) return RedirectToAction("PapiResult", new { userAssessmentId });
+
+            var engine = new PapiScoringEngine();
+            engine.ProcessRawScoring(vm);
+
+            return View("~/Views/Report/PapiJudgment.cshtml", vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitPapiJudgment([FromBody] SubmitPapiJudgmentDto dto)
+        {
+            var aspectGroups = JsonSerializer.Deserialize<List<PapiAspectGroup>>(dto.JudgmentsJson);
+
+            var resultEntity = new UserTestResult
+            {
+                UserAssessmentId = dto.UserAssessmentId,
+                TestCategory = "PAPI_Kostick",
+                OverallScore = 0,
+                Classification = "Manual Judged",
+                ResultDetails = JsonDocument.Parse(JsonSerializer.Serialize(aspectGroups))
+            };
+
+            _context.UserTestResults.Add(resultEntity);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { success = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> PapiResult(Guid userAssessmentId)
+        {
+            var vm = await PapiReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
+            if (vm == null || !vm.IsJudged) return RedirectToAction("PapiJudgment", new { userAssessmentId });
+
+            return View("~/Views/Report/PapiResult.cshtml", vm);
+        }
     }
 }

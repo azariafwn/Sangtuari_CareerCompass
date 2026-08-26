@@ -1,0 +1,64 @@
+﻿@model SangtuariCareerCompass.ViewModels.PapiReportViewModel
+
+<style>
+    .bg-purple-main {
+        background-color: #4E325A;
+        color: #FFFFFF;
+    }
+
+    .text-purple-main {
+        color: #4E325A;
+    }
+
+    .table-checklist th, .table-checklist td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+        .table-checklist th:first-child, .table-checklist td:first-child {
+            text-align: left;
+        }
+</style>
+
+<div class="container py-5">
+    <div class="card shadow-sm p-4 p-md-5">
+        <h4 class="fw-bold text-purple-main border-bottom pb-3 mb-4">Laporan Sikap Kerja & Kepribadian (PAPI Kostick)</h4>
+        <p class="mb-4">Nama: <strong>@Model.FullName</strong></p>
+
+        <table class="table table-bordered table-checklist">
+            <thead class="bg-purple-main text-white">
+                <tr>
+                    <th rowspan="2">Aspek Psikologis</th>
+                    <th colspan="5">Kategori</th>
+                </tr>
+                <tr>
+                    <th>KS</th>
+                    <th>K</th>
+                    <th>R</th>
+                    <th>B</th>
+                    <th>BS</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var aspect in Model.AspectGroups)
+                {
+                    <tr>
+                        <td class="fw-bold">@aspect.AspectName</td>
+                        <td>@(aspect.FinalJudgment == "KS" ? "☑" : "☐")</td>
+                        <td>@(aspect.FinalJudgment == "K" ? "☑" : "☐")</td>
+                        <td>@(aspect.FinalJudgment == "R" ? "☑" : "☐")</td>
+                        <td>@(aspect.FinalJudgment == "B" ? "☑" : "☐")</td>
+                        <td>@(aspect.FinalJudgment == "BS" ? "☑" : "☐")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="text-end mt-4">
+            <button onclick="window.print()" class="btn btn-outline-secondary"><i class="bi bi-printer"></i> Cetak Laporan</button>
+            <a href="/Quiz/Instruction?testKey=VARK&userAssessmentId=@Model.UserAssessmentId" class="btn btn-purple-custom">
+                Lanjut ke Tes VARK <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</div>
