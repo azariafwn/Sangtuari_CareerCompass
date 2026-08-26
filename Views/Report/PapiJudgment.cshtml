@@ -1,0 +1,76 @@
+﻿@model SangtuariCareerCompass.ViewModels.PapiReportViewModel
+
+<div class="container py-5">
+    <div class="card shadow-sm p-4">
+        <h4 class="text-purple-main fw-bold mb-4">Input Judgment Manual PAPI Kostick</h4>
+        <p>Peserta: <strong>@Model.FullName</strong></p>
+
+        <form id="judgmentForm">
+            <input type="hidden" id="assessmentId" value="@Model.UserAssessmentId" />
+
+            <table class="table table-bordered align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Aspek</th>
+                        <th>Rincian Faktor (Kode: Skor - Kategori)</th>
+                        <th>Judgment Psikolog</th>
+                    </tr>
+                </thead>
+                <tbody id="aspectsContainer">
+                    @foreach (var aspect in Model.AspectGroups)
+                    {
+                        <tr class="aspect-row" data-aspect="@aspect.AspectName">
+                            <td class="fw-bold">@aspect.AspectName</td>
+                            <td>
+                                @foreach (var f in aspect.Factors)
+                                {
+                                    <span class="badge bg-secondary me-1">@f.Code: @f.RawScore (@f.Leveling)</span>
+                                }
+                            </td>
+                            <td>
+                                <select class="form-select judgment-select">
+                                    <option value="">-- Pilih --</option>
+                                    <option value="KS">Kurang Sekali (KS)</option>
+                                    <option value="K">Kurang (K)</option>
+                                    <option value="R">Rata-rata (R)</option>
+                                    <option value="B">Baik (B)</option>
+                                    <option value="BS">Baik Sekali (BS)</option>
+                                </select>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button type="button" onclick="submitJudgment()" class="btn btn-purple-custom">Simpan & Lihat Laporan</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    async function submitJudgment() {
+        const aspectGroups = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.AspectGroups));
+        const rows = document.querySelectorAll('.aspect-row');
+
+        let allFilled = true;
+        rows.forEach((row, index) => {
+            const val = row.querySelector('.judgment-select').value;
+            if (!val) allFilled = false;
+            aspectGroups[index].FinalJudgment = val;
+        });
+
+        if (!allFilled) { alert("Harap isi semua judgment!"); return; }
+
+        const payload = {
+            UserAssessmentId: document.getElementById('assessmentId').value,
+            JudgmentsJson: JSON.stringify(aspectGroups)
+        };
+
+        const res = await fetch('/Report/SubmitPapiJudgment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (res.ok) window.location.href = `/Report/PapiResult?userAssessmentId=${payload.UserAssessmentId}`;
+    }
+</script>
