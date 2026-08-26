@@ -1,0 +1,430 @@
+﻿@model SangtuariCareerCompass.ViewModels.FinalReportViewModel
+@{
+    Layout = null;
+    string formattedDob = Model.BirthDate.HasValue ? Model.BirthDate.Value.ToString("dd MMMM yyyy") : "-";
+}
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Laporan_@Model.FullName</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        :root {
+            --purple-main: #4E325A;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f8f9fa;
+            font-size: 10px;
+            color: #000;
+        }
+
+        /* Container diset fix untuk rasio A4 */
+        .wrapper {
+            width: 800px;
+            height: 1100px;
+            margin: 20px auto;
+            background: white;
+            padding: 25px 35px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header-box {
+            border-bottom: 2px solid #000;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .logo-img {
+            height: 50px;
+        }
+
+        .main-title {
+            background-color: #D9D9D9;
+            font-weight: bold;
+            text-align: center;
+            padding: 4px;
+            border: 1px solid #000;
+            margin-bottom: 10px;
+            font-size: 11px;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+            .info-table td {
+                border: 1px solid #000;
+                padding: 3px 6px;
+                font-weight: bold;
+                font-size: 9.5px;
+            }
+
+                .info-table td.label-col {
+                    background-color: #F2F2F2;
+                    width: 18%;
+                }
+
+        .section-title {
+            font-weight: bold;
+            font-size: 10.5px;
+            background-color: #EBEBEB;
+            padding: 3px 6px;
+            border: 1px solid #000;
+        }
+
+        .iq-box {
+            text-align: center;
+            font-weight: bold;
+            font-size: 10px;
+            padding: 3px;
+            border: 1px solid #000;
+            border-top: none;
+        }
+
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #000;
+        }
+
+            .table-custom th, .table-custom td {
+                border: 1px solid #000;
+                padding: 2.5px;
+                vertical-align: middle;
+            }
+
+            .table-custom th {
+                background-color: #F2F2F2;
+                text-align: center;
+                font-weight: bold;
+                font-size: 9px;
+            }
+
+            .table-custom td {
+                font-size: 8.5px;
+            }
+
+        .def-col {
+            font-style: italic;
+            line-height: 1;
+        }
+
+        .check-box {
+            font-size: 11px;
+            font-weight: bold;
+            text-align: center;
+            color: var(--purple-main);
+        }
+
+        .chart-box {
+            border: 1px solid #000;
+            border-top: none;
+            padding: 5px;
+            text-align: center;
+        }
+        /* Kunci tinggi canvas agar pie chart proporsional dan tidak overlap */
+        .canvas-container {
+            height: 120px;
+            width: 100%;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .no-print {
+            margin: 20px auto;
+            max-width: 800px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="no-print">
+        <!-- Tombol memicu html2pdf, bukan window.print -->
+        <button id="btnDownload" class="btn btn-primary btn-sm px-4">Unduh PDF</button>
+        <a href="/Assessment/Index" class="btn btn-secondary btn-sm px-4">Selesai</a>
+    </div>
+
+    <!-- Area yang ditarik menjadi PDF -->
+    <div class="wrapper" id="pdf-content">
+        <!-- HEADER -->
+        <div class="header-box d-flex align-items-center gap-3">
+            <img src="~/images/logo-sangtuari.png" alt="Sangtuari" class="logo-img" onerror="this.style.display='none'" />
+            <div>
+                <h6 class="fw-bold mb-0" style="font-size: 12px;">SANGTUARI CONSULTING</h6>
+                <div style="font-size: 8.5px; font-style: italic; line-height: 1.2;">
+                    <strong>Psychological Services</strong><br />
+                    PT. Sangtuari Aman Bertumbuh<br />
+                    Prominent Building, Jl Bukit Cimanggu City Raya KD 2 No 16A Tanah Sareal Bogor<br />
+                    Jawa Barat 16167 | 0813 929 8822 | hello.sangtuari@gmail.com
+                </div>
+            </div>
+        </div>
+
+        <div class="main-title">HASIL ASESMEN PSIKOLOGIS</div>
+
+        <!-- IDENTITAS -->
+        <table class="info-table">
+            <tr>
+                <td class="label-col">Nama Lengkap</td>
+                <td>@Model.FullName</td>
+                <td class="label-col">Tanggal Lahir</td>
+                <td>@formattedDob</td>
+            </tr>
+            <tr>
+                <td class="label-col">Jenis Kelamin</td>
+                <td>@Model.Gender</td>
+                <td class="label-col">Tanggal Pemeriksaan</td>
+                <td>@Model.TestedAt.ToString("dd MMMM yyyy")</td>
+            </tr>
+            <tr>
+                <td class="label-col">Pendidikan Terakhir</td>
+                <td>@Model.SchoolName</td>
+                <td class="label-col">No. Pemeriksaan</td>
+                <td>@Model.AssessmentNumber</td>
+            </tr>
+        </table>
+
+        <div class="text-center fw-bold fs-6 mb-2">PSIKOGRAM</div>
+
+        <div class="row g-2">
+            <!-- KOLOM KIRI (A & B) -->
+            <div class="col-7">
+                <div class="section-title">A. KOGNITIF & BAKAT</div>
+                <div class="iq-box">Inteligensi (IQ) = @Model.IstIqScore / @Model.IstIqClassification (IST)</div>
+
+                <table class="table-custom mb-1">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" width="28%">Aspek Psikologis</th>
+                            <th rowspan="2" width="47%">Definisi</th>
+                            <th colspan="5">Kategori</th>
+                        </tr>
+                        <tr>
+                            <th width="5%">KS</th>
+                            <th width="5%">K</th>
+                            <th width="5%">R</th>
+                            <th width="5%">B</th>
+                            <th width="5%">BS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @functions {
+                            string RenderCheck(string val, string target) => val == target ? "✔" : "";
+                            string ConvertIstCat(string cat)
+                            {
+                                return cat switch { "Kurang Sekali" => "KS", "Kurang" => "K", "Rata-rata" => "R", "Baik" => "B", "Baik Sekali" => "BS", _ => "" };
+                            }
+                        }
+                        @{
+                            var istDefs = new Dictionary<string, string> {
+                                {"Kecerdasan Umum", "Kemampuan memahami, mengolah, dan menerapkan informasi dalam menyelesaikan masalah."},
+                                {"Kemampuan Membuat Pertimbangan dan Keputusan", "Kemampuan membuat pertimbangan dan keputusan yang realistis."},
+                                {"Kemampuan Verbal", "Kemampuan memahami dan mengolah informasi verbal."},
+                                {"Kemampuan Analogi dan Hubungan Logis", "Kemampuan berpikir logis melalui hubungan antar konsep."},
+                                {"Kemampuan Abstraksi Verbal", "Kemampuan berpikir abstrak dan membentuk konsep umum."},
+                                {"Kemampuan Memori", "Kemampuan mengingat dan mempertahankan informasi."},
+                                {"Kemampuan Numerik Praktis", "Kemampuan berhitung dan mengolah informasi numerik."},
+                                {"Kemampuan Penalaran Numerik", "Kemampuan menemukan pola dan hubungan logis pada angka."},
+                                {"Kemampuan Analisis Visual", "Kemampuan menganalisis dan menyusun informasi visual."},
+                                {"Kemampuan Spasial", "Kemampuan memahami hubungan ruang dan bentuk tiga dimensi."}
+                            };
+
+                            foreach (var aspect in istDefs)
+                            {
+                                string shortCat = ConvertIstCat(Model.IstAspectCategories.GetValueOrDefault(aspect.Key, "Rata-rata"));
+                                <tr>
+                                    <td class="fw-bold">@aspect.Key</td>
+                                    <td class="def-col">@aspect.Value</td>
+                                    <td class="check-box">@RenderCheck(shortCat, "KS")</td>
+                                    <td class="check-box">@RenderCheck(shortCat, "K")</td>
+                                    <td class="check-box">@RenderCheck(shortCat, "R")</td>
+                                    <td class="check-box">@RenderCheck(shortCat, "B")</td>
+                                    <td class="check-box">@RenderCheck(shortCat, "BS")</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div style="font-size: 7.5px; margin-bottom: 8px;"><strong>Keterangan:</strong> KS=Kurang Sekali, K=Kurang, R=Rata-rata, B=Baik, BS=Baik Sekali</div>
+
+                <div class="section-title">B. SIKAP KERJA & KEPRIBADIAN</div>
+                <table class="table-custom mb-1">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" width="28%">Aspek Psikologis</th>
+                            <th rowspan="2" width="47%">Definisi</th>
+                            <th colspan="5">Kategori</th>
+                        </tr>
+                        <tr>
+                            <th width="5%">KS</th>
+                            <th width="5%">K</th>
+                            <th width="5%">R</th>
+                            <th width="5%">B</th>
+                            <th width="5%">BS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var papiDefs = new Dictionary<string, string> {
+                                {"Motivasi Kerja", "Dorongan untuk mencapai target, menunjukkan usaha, ketekunan, dan orientasi terhadap prestasi."},
+                                {"Kepemimpinan", "Kecenderungan untuk memengaruhi, mengarahkan, mengambil keputusan, dan bertanggung jawab terhadap kelompok."},
+                                {"Gaya Kerja", "Cara mengatur pekerjaan, mematuhi prosedur, bekerja secara sistematis, dan memperhatikan detail."},
+                                {"Hubungan Interpersonal", "Kemampuan menjalin hubungan sosial, bekerja sama, serta berinteraksi dengan lingkungan sekitar."},
+                                {"Stabilitas Emosi", "Kemampuan mengelola tekanan, mengendalikan emosi, dan tetap tenang dalam situasi yang menantang."},
+                                {"Aktivitas kerja", "Kemampuan menyesuaikan diri terhadap perubahan, tantangan baru, dan situasi yang berbeda."},
+                                {"Kepatuhan terhadap Aturan", "Kecenderungan mengikuti aturan, menerima arahan, menghormati otoritas, dan bekerja dalam struktur organisasi."}
+                            };
+
+                            foreach (var aspect in papiDefs)
+                            {
+                                string jud = Model.PapiAspectJudgments.GetValueOrDefault(aspect.Key, "R");
+                                <tr>
+                                    <td class="fw-bold">@aspect.Key</td>
+                                    <td class="def-col">@aspect.Value</td>
+                                    <td class="check-box">@RenderCheck(jud, "KS")</td>
+                                    <td class="check-box">@RenderCheck(jud, "K")</td>
+                                    <td class="check-box">@RenderCheck(jud, "R")</td>
+                                    <td class="check-box">@RenderCheck(jud, "B")</td>
+                                    <td class="check-box">@RenderCheck(jud, "BS")</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div style="font-size: 7.5px;"><strong>Keterangan:</strong> KS=Kurang Sekali, K=Kurang, R=Rata-rata, B=Baik, BS=Baik Sekali</div>
+            </div>
+
+            <!-- KOLOM KANAN (C & D) -->
+            <div class="col-5">
+                <div class="section-title">C. GAYA BELAJAR</div>
+                <div class="chart-box mb-2">
+                    <div class="canvas-container">
+                        <canvas id="varkChart"></canvas>
+                    </div>
+                    <div class="text-start mt-1">
+                        <span class="fw-bold d-block border-top pt-1">Gaya Belajar Dominan:</span>
+                        <span class="fw-bold fst-italic">@Model.VarkDominant</span>
+                    </div>
+                </div>
+
+                <div class="section-title">D. MINAT KARIER</div>
+                <div class="chart-box" style="padding-bottom: 2px;">
+                    <div class="canvas-container">
+                        <canvas id="hollandChart"></canvas>
+                    </div>
+                    <div class="text-start mt-2">
+                        <div class="border-top pt-1 mb-1">
+                            <span class="fw-bold d-block">3 Minat Tertinggi:</span>
+                            <span>@Model.HollandSummaryCode</span>
+                        </div>
+                        <div class="border-top pt-1 mb-1">
+                            <span class="fw-bold d-block">Konsistensi Minat:</span>
+                            <span>@Model.HollandConsistency</span>
+                        </div>
+                        <div class="border-top pt-1 mb-1">
+                            <span class="fw-bold d-block">Rekomendasi Karier:</span>
+                            <ul class="mb-0 ps-3" style="font-size: 8px; line-height: 1.1;">
+                                @foreach (var career in Model.HollandCareers)
+                                {
+                                    <li>@career</li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="border-top pt-1">
+                            <span class="fw-bold d-block">Rekomendasi Pendidikan:</span>
+                            <ul class="mb-0 ps-3" style="font-size: 8px; line-height: 1.1;">
+                                @foreach (var edu in Model.HollandEducation)
+                                {
+                                    <li>@edu</li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Dependensi html2pdf & Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Setup VARK Chart
+            const varkData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.VarkPercentages));
+            new Chart(document.getElementById('varkChart'), {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(varkData),
+                    datasets: [{ data: Object.values(varkData), backgroundColor: ['#E6E6FA', '#FFE375', '#B19CD9', '#EFE8D8'] }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false,
+                    plugins: { legend: { position: 'right', labels: { boxWidth: 8, font: { size: 8 } } } }
+                }
+            });
+
+            // Setup Holland Chart
+            const hollandData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.HollandScores));
+            new Chart(document.getElementById('hollandChart'), {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(hollandData),
+                    datasets: [{ data: Object.values(hollandData), backgroundColor: ['#E6E6FA', '#FFE375', '#B19CD9', '#EFE8D8', '#C3B1E1', '#FDFD96'] }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false,
+                    plugins: { legend: { position: 'right', labels: { boxWidth: 8, font: { size: 8 } } } }
+                }
+            });
+
+            // Eksekusi Unduh PDF menggunakan html2pdf
+            document.getElementById('btnDownload').addEventListener('click', function () {
+                const element = document.getElementById('pdf-content');
+                const btn = this;
+
+                btn.innerText = "Memproses PDF...";
+                btn.disabled = true;
+
+                // 1. Simpan style asli
+                const originalMargin = element.style.margin;
+                const originalBoxShadow = element.style.boxShadow;
+
+                // 2. Hilangkan margin dan shadow sementara agar tidak over-page ke halaman 2
+                element.style.margin = "0";
+                element.style.boxShadow = "none";
+
+                const opt = {
+                    margin:       0,
+                    filename:     `Laporan_Psikotes_Sangtuari_${'@Model.FullName'.replace(/\s+/g, '_')}.pdf`,
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2, useCORS: true },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+
+                html2pdf().set(opt).from(element).save().then(() => {
+                    // 3. Kembalikan style seperti semula untuk tampilan web
+                    element.style.margin = originalMargin;
+                    element.style.boxShadow = originalBoxShadow;
+
+                    btn.innerText = "Unduh PDF";
+                    btn.disabled = false;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

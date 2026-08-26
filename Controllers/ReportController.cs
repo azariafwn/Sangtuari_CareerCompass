@@ -156,5 +156,16 @@ namespace SangtuariCareerCompass.Controllers
 
             return View("~/Views/Report/PapiResult.cshtml", vm);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> FinalReport(Guid userAssessmentId)
+        {
+            if (userAssessmentId == Guid.Empty) return RedirectToAction("Index", "Assessment");
+
+            var reportVm = await FinalReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
+            if (reportVm == null) return NotFound("Data asesmen tidak ditemukan.");
+
+            return View("~/Views/Report/FinalReport.cshtml", reportVm);
+        }
     }
 }
