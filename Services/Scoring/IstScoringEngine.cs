@@ -63,7 +63,12 @@ namespace SangtuariCareerCompass.Services.Scoring
                 var userAns = vm.CleanedAnswers.GetValueOrDefault(item.JsonKey);
 
                 // Subtest 04 (GE) dikosongkan/diberi default karena penilaian kualitatif
-                if (item.Code != "GE" && _answerKeys.TryGetProperty(item.JsonKey, out var keyObj) && userAns != null)
+                if (item.Code == "GE")
+                {
+                    rw = vm.GeRawScore;
+                }
+                // Jika subtes lain, auto-scoring dari json key
+                else if (_answerKeys.TryGetProperty(item.JsonKey, out var keyObj) && userAns != null)
                 {
                     foreach (var prop in keyObj.EnumerateObject())
                     {
