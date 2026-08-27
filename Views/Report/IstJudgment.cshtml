@@ -1,0 +1,196 @@
+﻿@model SangtuariCareerCompass.ViewModels.IstReportViewModel
+
+<style>
+    .bg-purple-main {
+        background-color: #4E325A;
+        color: white;
+    }
+
+    .text-purple-main {
+        color: #4E325A;
+    }
+
+    .bg-yellow-accent {
+        background-color: #FFE375;
+        color: #4E325A;
+    }
+
+    .table-reference th {
+        font-size: 0.85rem;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .table-reference td {
+        font-size: 0.8rem;
+        vertical-align: top;
+    }
+
+    .sticky-panel {
+        position: sticky;
+        top: 20px;
+        height: calc(100vh - 40px);
+        overflow-y: auto;
+    }
+</style>
+
+<div class="container-fluid py-4 px-md-5">
+    <div class="row g-4">
+
+        <!-- PANEL KIRI: Form Input Judgment Psikolog -->
+        <div class="col-lg-5">
+            <div class="card shadow-sm p-4 h-100 border-0 rounded-4">
+                <h5 class="text-purple-main fw-bold mb-3"><i class="bi bi-pencil-square me-2"></i>Form Judgment IST - GE</h5>
+                <div class="mb-4 bg-light p-3 rounded-3 border">
+                    <p class="mb-1 small">Peserta: <strong class="fs-6">@Model.FullName</strong></p>
+                    <p class="mb-0 text-muted small">Beri nilai 0, 1, atau 2 berdasarkan kualitas abstraksi jawaban teks peserta. Gunakan Referensi jawaban yang telah disediakan.</p>
+                </div>
+
+                <form id="judgmentForm">
+                    <input type="hidden" id="assessmentId" value="@Model.UserAssessmentId" />
+
+                    <div class="table-responsive">
+                        <table class="table align-middle table-hover">
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <th width="10%">No.</th>
+                                    <th width="65%">Jawaban Teks Peserta</th>
+                                    <th width="25%">Skor</th>
+                                </tr>
+                            </thead>
+                            <tbody id="answersContainer">
+                                @{
+                                    var soals = new string[] {
+                                                                "Mawar - Melati", "Mata - Telinga", "Gula - Intan", "Salju - Hujan",
+                                                                "Pengantar Surat - Telepon", "Kamera - Kacamata", "Lambung - Usus", "Banyak - Sedikit",
+                                                                "Telur - Benih", "Bendera - Lencana", "Rumput - Gajah", "Ember - Kantong",
+                                                                "Awal - Akhir", "Kikir - Boros", "Penawaran - Permintaan", "Atas - Bawah"
+                                                                };
+                                }
+                                @for (int i = 61; i <= 76; i++)
+                                {
+                                    string qKey = $"Q{i}";
+                                    string ansText = Model.GeAnswers.GetValueOrDefault(qKey, "- Tidak Menjawab -");
+                                    string soalLabel = soals[i - 61];
+
+                                    <tr>
+                                        <td class="text-center fw-bold text-muted">@i</td>
+                                        <td>
+                                            <div class="small fw-bold text-purple-main mb-1">@soalLabel</div>
+                                            <span class="fst-italic text-dark">"@ansText"</span>
+                                        </td>
+                                        <td>
+                                            <select class="form-select form-select-sm score-select border-secondary fw-bold text-center">
+                                                <option value="" selected disabled>-</option>
+                                                <option value="0">0</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <button type="button" onclick="submitIstJudgment()" class="btn bg-purple-main text-white py-2 fw-bold rounded-pill">
+                            Simpan & Kalkulasi IQ
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- PANEL KANAN: Referensi Kunci Jawaban (Sticky) -->
+        <div class="col-lg-7">
+            <div class="card shadow-sm p-4 border-0 rounded-4 sticky-panel bg-white">
+                <h5 class="text-purple-main fw-bold mb-3"><i class="bi bi-journal-text me-2"></i>Referensi Kunci Jawaban</h5>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-reference">
+                        <thead class="bg-purple-main text-white">
+                            <tr>
+                                <th width="5%">No</th>
+                                <th width="20%">Soal</th>
+                                <th width="25%">Skor 2</th>
+                                <th width="25%">Skor 1</th>
+                                <th width="25%">Skor 0</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data diekstrak dari panduan gambar referensi -->
+                            <tr><td>61</td><td class="fw-bold">Mawar - Melati</td><td>Bunga, Kembang, Perdu</td><td>Tumbuh-tumbuhan, Tangkai, Harum</td><td>Pohon</td></tr>
+                            <tr><td>62</td><td class="fw-bold">Mata - Telinga</td><td>Alat indera, Indera, Panca Indera</td><td>Organ, Alat tubuh</td><td>Kepala</td></tr>
+                            <tr><td>63</td><td class="fw-bold">Gula - Intan</td><td>Hablur, Kristal, Zat arang</td><td>Berkilauan, Mengkilat, Bening</td><td>-</td></tr>
+                            <tr><td>64</td><td class="fw-bold">Salju - Hujan</td><td>Musim</td><td>Cuaca</td><td>Iklim</td></tr>
+                            <tr><td>65</td><td class="fw-bold">Pengantar Surat - Telepon</td><td>Pembawa Berita, Alat Perhubungan</td><td>Telekomunikasi, Perhubungan, Komunikasi</td><td>-</td></tr>
+                            <tr><td>66</td><td class="fw-bold">Kamera - Kacamata</td><td>Alat optik, Optik</td><td>Lensa</td><td>Melihat alat, Alat Melihat</td></tr>
+                            <tr><td>67</td><td class="fw-bold">Lambung - Usus</td><td>Alat Pencernaan</td><td>Jalan Makanan, Perut, Isi Perut, Pencernaan Makanan</td><td>Makanan</td></tr>
+                            <tr><td>68</td><td class="fw-bold">Banyak - Sedikit</td><td>Jumlah/Kuantitas, Penyebut Jumlah, Penyertaan Jumlah</td><td>Mengukur, Ukuran</td><td>Uang</td></tr>
+                            <tr><td>69</td><td class="fw-bold">Telur - Benih</td><td>Bibit/bakal/embrio, Alat Pembiak, Permulaan Penghidupan</td><td>Sel, Pembiakan</td><td>Pertanian, Keturunan</td></tr>
+                            <tr><td>70</td><td class="fw-bold">Bendera - Lencana</td><td>Simbol, Lambang, Tanda</td><td>Nama, Tanda Pengenal</td><td>Warna</td></tr>
+                            <tr><td>71</td><td class="fw-bold">Rumput - Gajah</td><td>Makhluk, Organism, Makhluk Hidup</td><td>Tumbuh, Ilmu hayat, Biologi</td><td>Hidup, Hutan, Hayat</td></tr>
+                            <tr><td>72</td><td class="fw-bold">Ember - Kantong</td><td>Wadah, Tempat pengisi, Tempat Penyimpan</td><td>Alat, Tempat sesuatu, Tempat, Benda</td><td>Lubang</td></tr>
+                            <tr><td>73</td><td class="fw-bold">Awal - Akhir</td><td>Pengertian Waktu, Batas</td><td>Waktu, Lamanya, Masa/saat</td><td>Kata Waktu, Buku</td></tr>
+                            <tr><td>74</td><td class="fw-bold">Kikir - Boros</td><td>Kata Sifat, Watak, Sifat Karakter</td><td>Sifat</td><td>Uang, Karakter, Watak</td></tr>
+                            <tr><td>75</td><td class="fw-bold">Penawaran - Permintaan</td><td>Regulator harga, Pengertian Ekonomi</td><td>Dagang, Pembelian, Penjualan, Niaga, Jual beli</td><td>Lawan kata</td></tr>
+                            <tr><td>76</td><td class="fw-bold">Atas - Bawah</td><td>Pengertian ruang, Penyebut ruang</td><td>Arah, Tempat/ruang, Letak, penunjuk tempat, Penentuan Daerah</td><td>Daerah, Ruangan, Tingkatan, Kata</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    async function submitIstJudgment() {
+        const selects = document.querySelectorAll('.score-select');
+        let totalGeRawScore = 0;
+        let allFilled = true;
+
+        selects.forEach(select => {
+            if (select.value === "") {
+                allFilled = false;
+            } else {
+                totalGeRawScore += parseInt(select.value);
+            }
+        });
+
+        if (!allFilled) {
+            alert("Harap berikan nilai (0, 1, atau 2) untuk seluruh 16 jawaban!");
+            return;
+        }
+
+        const payload = {
+            UserAssessmentId: document.getElementById('assessmentId').value,
+            GeRawScore: totalGeRawScore
+        };
+
+        const btn = document.querySelector('button');
+        btn.disabled = true;
+        btn.innerText = "Mengkalkulasi...";
+
+        try {
+            const res = await fetch('/Report/SubmitIstJudgment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+                window.location.href = `/Report/IstResult?userAssessmentId=${payload.UserAssessmentId}`;
+            } else {
+                alert("Gagal menyimpan hasil IST.");
+                btn.disabled = false;
+                btn.innerText = "Simpan & Kalkulasi IQ";
+            }
+        } catch (e) {
+            alert("Terjadi kesalahan koneksi.");
+            btn.disabled = false;
+            btn.innerText = "Simpan & Kalkulasi IQ";
+        }
+    }
+</script>
