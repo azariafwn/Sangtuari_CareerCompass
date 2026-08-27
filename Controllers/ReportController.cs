@@ -21,31 +21,56 @@ namespace SangtuariCareerCompass.Controllers
             _istEngine = new IstScoringEngine();
         }
 
-        public async Task<IActionResult> IstResult(Guid userAssessmentId)
+        [HttpGet]
+        public async Task<IActionResult> IstJudgment(Guid userAssessmentId)
         {
-            if (userAssessmentId == Guid.Empty) return RedirectToAction("Index", "Assessment");
+            var vm = await IstReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
+            if (vm == null) return NotFound("Data tidak ditemukan.");
 
-            // 1. Eksekusi query LINQ di ViewModel Builder
-            var reportVm = await IstReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
-            if (reportVm == null) return NotFound("Data asesmen tidak ditemukan.");
+            if (vm.IsJudged) return RedirectToAction("IstResult", new { userAssessmentId });
 
-            // 2. Eksekusi Scoring Engine Domain Logic
-            _istEngine.ProcessScoring(reportVm);
+            return View("~/Views/Report/IstJudgment.cshtml", vm);
+        }
 
-            // 3. Simpan Hasil ke Tabel Database "UserTestResults"
+        [HttpPost]
+        public async Task<IActionResult> SubmitIstJudgment([FromBody] SubmitIstJudgmentDto dto)
+        {
+            var vm = await IstReportViewModel.BuildFromDatabaseAsync(_context, dto.UserAssessmentId);
+            if (vm == null) return BadRequest("Data tidak valid.");
+
+            vm.GeRawScore = dto.GeRawScore; // Masukkan nilai inputan psikolog
+
+            // Proses seluruh skor IST termasuk GE
+            var engine = new Services.Scoring.IstScoringEngine();
+            engine.ProcessScoring(vm);
+
+            // Simpan ke database
             var resultEntity = new UserTestResult
             {
-                UserAssessmentId = userAssessmentId,
+                UserAssessmentId = dto.UserAssessmentId,
                 TestCategory = "IST",
-                OverallScore = reportVm.CalculatedIQ,
-                Classification = reportVm.IQIntelligenceLevel,
-                ResultDetails = JsonDocument.Parse(JsonSerializer.Serialize(reportVm.SubTestResults))
+                OverallScore = vm.CalculatedIQ,
+                Classification = vm.IQClassification,
+                ResultDetails = JsonDocument.Parse(JsonSerializer.Serialize(vm.SubTestResults))
             };
 
             _context.UserTestResults.Add(resultEntity);
             await _context.SaveChangesAsync();
 
-            return View("~/Views/Report/IstResult.cshtml", reportVm);
+            return Ok(new { success = true });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> IstResult(Guid userAssessmentId)
+        {
+            var vm = await IstReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
+            if (vm == null || !vm.IsJudged) return RedirectToAction("IstJudgment", new { userAssessmentId });
+
+            // Populate IQ Intelligence Level for display (since it's dynamically generated)
+            var engine = new Services.Scoring.IstScoringEngine();
+            engine.ProcessScoring(vm); // Safe rerun just to populate volatile narrative fields if needed
+
+            return View("~/Views/Report/IstResult.cshtml", vm);
         }
 
         public async Task<IActionResult> VarkResult(Guid userAssessmentId)
