@@ -1,0 +1,53 @@
+﻿@model SangtuariCareerCompass.ViewModels.EasReportViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Hasil Employee Aptitude Survey (EAS)";
+}
+
+<div class="container py-5">
+    <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 mb-4" style="background-color: #FFFDF4;">
+
+        <div class="border-bottom pb-4 mb-4">
+            <span class="badge rounded-pill px-3 py-2 mb-2" style="background-color: #4E325A; color: #FFE375;">Employee Aptitude Survey (EAS)</span>
+            <h2 class="fw-bold text-dark mb-1">@Model.FullName</h2>
+            <p class="text-muted mb-0">Status Asesmen: <strong>Selesai</strong></p>
+        </div>
+
+        <div class="table-responsive mb-4">
+            <table class="table table-bordered align-middle bg-white rounded-3">
+                <thead class="text-center" style="background-color: #4E325A; color: #FFE375;">
+                    <tr>
+                        <th>Subtes</th>
+                        <th>Aspek Kognitif</th>
+                        <th>Raw Score</th>
+                        <th>Persentil</th>
+                        <th>Kategori</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var sub in Model.SubTestScores)
+                    {
+                        <tr>
+                            <td class="fw-bold text-center">@sub.SubTestName</td>
+                            <td class="fw-semibold" style="color: #4E325A;">@sub.Aspek</td>
+                            <td class="text-center fs-5 fw-bold">@sub.RawScore</td>
+                            <td class="text-center">@sub.Percentile</td>
+                            <td class="text-center">
+                                <span class="badge" style="background-color: #4E325A; color: white;">@sub.Category</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-end border-top pt-4">
+            <button onclick="window.print()" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold me-2">
+                Cetak Hasil Sementara
+            </button>
+            <a href="/Quiz/Instruction?testKey=VARK&userAssessmentId=@Model.UserAssessmentId" class="btn rounded-pill px-5 py-2 fw-bold" style="background-color: #4E325A; color: #FFE375;">
+                Lanjut ke Tes VARK
+            </a>
+        </div>
+    </div>
+</div>

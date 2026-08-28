@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="Data\Quiz\Holland\" />
-    <Folder Include="Data\Scoring\CFIT\" />
     <Folder Include="Data\Scoring\EAS\" />
     <Folder Include="Data\Scoring\Holland\" />
     <Folder Include="Data\Scoring\PAPI\" />
