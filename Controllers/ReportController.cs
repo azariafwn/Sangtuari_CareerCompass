@@ -60,85 +60,85 @@ namespace SangtuariCareerCompass.Controllers
             return Ok(new { success = true });
         }
 
-        [HttpGet]
-        public async Task<IActionResult> IstResult(Guid userAssessmentId)
-        {
-            var vm = await IstReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
-            if (vm == null || !vm.IsJudged) return RedirectToAction("IstJudgment", new { userAssessmentId });
+        //[HttpGet]
+        //public async Task<IActionResult> IstResult(Guid userAssessmentId)
+        //{
+        //    var vm = await IstReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
+        //    if (vm == null || !vm.IsJudged) return RedirectToAction("IstJudgment", new { userAssessmentId });
 
-            // Populate IQ Intelligence Level for display (since it's dynamically generated)
-            var engine = new Services.Scoring.IstScoringEngine();
-            engine.ProcessScoring(vm); // Safe rerun just to populate volatile narrative fields if needed
+        //    // Populate IQ Intelligence Level for display (since it's dynamically generated)
+        //    var engine = new Services.Scoring.IstScoringEngine();
+        //    engine.ProcessScoring(vm); // Safe rerun just to populate volatile narrative fields if needed
 
-            return View("~/Views/Report/IstResult.cshtml", vm);
-        }
+        //    return View("~/Views/Report/IstResult.cshtml", vm);
+        //}
 
-        public async Task<IActionResult> VarkResult(Guid userAssessmentId)
-        {
-            if (userAssessmentId == Guid.Empty) return RedirectToAction("Index", "Assessment");
+        //public async Task<IActionResult> VarkResult(Guid userAssessmentId)
+        //{
+        //    if (userAssessmentId == Guid.Empty) return RedirectToAction("Index", "Assessment");
 
-            // 1. LINQ Fetch via ViewModel Builder
-            var reportVm = await VarkReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
-            if (reportVm == null) return NotFound("Data asesmen VARK tidak ditemukan.");
+        //    // 1. LINQ Fetch via ViewModel Builder
+        //    var reportVm = await VarkReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
+        //    if (reportVm == null) return NotFound("Data asesmen VARK tidak ditemukan.");
 
-            // 2. Pure Scoring Engine Execution
-            var varkEngine = new VarkScoringEngine();
-            varkEngine.ProcessScoring(reportVm);
+        //    // 2. Pure Scoring Engine Execution
+        //    var varkEngine = new VarkScoringEngine();
+        //    varkEngine.ProcessScoring(reportVm);
 
-            // 3. Simpan Hasil Akhir ke Tabel UserTestResults
-            var resultEntity = new UserTestResult
-            {
-                UserAssessmentId = userAssessmentId,
-                TestCategory = "VARK",
-                OverallScore = reportVm.CategoryScores.Max(c => c.Score),
-                Classification = reportVm.DominantCategoryText,
-                ResultDetails = JsonDocument.Parse(JsonSerializer.Serialize(reportVm.CategoryScores))
-            };
+        //    // 3. Simpan Hasil Akhir ke Tabel UserTestResults
+        //    var resultEntity = new UserTestResult
+        //    {
+        //        UserAssessmentId = userAssessmentId,
+        //        TestCategory = "VARK",
+        //        OverallScore = reportVm.CategoryScores.Max(c => c.Score),
+        //        Classification = reportVm.DominantCategoryText,
+        //        ResultDetails = JsonDocument.Parse(JsonSerializer.Serialize(reportVm.CategoryScores))
+        //    };
 
-            _context.UserTestResults.Add(resultEntity);
-            await _context.SaveChangesAsync();
+        //    _context.UserTestResults.Add(resultEntity);
+        //    await _context.SaveChangesAsync();
 
-            return View("~/Views/Report/VarkResult.cshtml", reportVm);
-        }
+        //    return View("~/Views/Report/VarkResult.cshtml", reportVm);
+        //}
         
-        public async Task<IActionResult> SdsResult(Guid userAssessmentId)
-        {
-            if (userAssessmentId == Guid.Empty) return RedirectToAction("Index", "Assessment");
+        //public async Task<IActionResult> SdsResult(Guid userAssessmentId)
+        //{
+        //    if (userAssessmentId == Guid.Empty) return RedirectToAction("Index", "Assessment");
 
-            // 1. Eksekusi LINQ Fetch di ViewModel Builder
-            var reportVm = await SdsHollandReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
-            if (reportVm == null) return NotFound("Data asesmen SDS Holland tidak ditemukan.");
+        //    // 1. Eksekusi LINQ Fetch di ViewModel Builder
+        //    var reportVm = await SdsHollandReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
+        //    if (reportVm == null) return NotFound("Data asesmen SDS Holland tidak ditemukan.");
 
-            // 2. Pure Scoring Engine Execution
-            var sdsEngine = new SdsHollandScoringEngine();
-            sdsEngine.ProcessScoring(reportVm);
+        //    // 2. Pure Scoring Engine Execution
+        //    var sdsEngine = new SdsHollandScoringEngine();
+        //    sdsEngine.ProcessScoring(reportVm);
 
-            // 3. Simpan Ringkasan Hasil ke Tabel Database UserTestResults
-            var existingResult = await _context.UserTestResults
-                .FirstOrDefaultAsync(r => r.UserAssessmentId == userAssessmentId && r.TestCategory == "SDS_Holland");
+        //    // 3. Simpan Ringkasan Hasil ke Tabel Database UserTestResults
+        //    var existingResult = await _context.UserTestResults
+        //        .FirstOrDefaultAsync(r => r.UserAssessmentId == userAssessmentId && r.TestCategory == "SDS_Holland");
 
-            if (existingResult == null)
-            {
-                var resultEntity = new UserTestResult
-                {
-                    UserAssessmentId = userAssessmentId,
-                    TestCategory = "SDS_Holland",
-                    OverallScore = reportVm.TotalElevationScore,
-                    Classification = reportVm.SummaryCode,
-                    ResultDetails = JsonDocument.Parse(JsonSerializer.Serialize(new
-                    {
-                        SummaryCode = reportVm.SummaryCode,
-                        ProfileElevation = reportVm.ProfileElevationCategory,
-                        Consistency = reportVm.ConsistencyDegree,
-                        Scores = reportVm.RiasecScores
-                    }))
-                };
-                _context.UserTestResults.Add(resultEntity);
-                await _context.SaveChangesAsync();
-            }
+        //    if (existingResult == null)
+        //    {
+        //        var resultEntity = new UserTestResult
+        //        {
+        //            UserAssessmentId = userAssessmentId,
+        //            TestCategory = "SDS_Holland",
+        //            OverallScore = reportVm.TotalElevationScore,
+        //            Classification = reportVm.SummaryCode,
+        //            ResultDetails = JsonDocument.Parse(JsonSerializer.Serialize(new
+        //            {
+        //                SummaryCode = reportVm.SummaryCode,
+        //                ProfileElevation = reportVm.ProfileElevationCategory,
+        //                Consistency = reportVm.ConsistencyDegree,
+        //                Scores = reportVm.RiasecScores
+        //            }))
+        //        };
+        //        _context.UserTestResults.Add(resultEntity);
+        //        await _context.SaveChangesAsync();
+        //    }
 
-            return View("~/Views/Report/SdsResult.cshtml", reportVm);
-        }
+        //    return View("~/Views/Report/SdsResult.cshtml", reportVm);
+        //}
         [HttpGet]
         public async Task<IActionResult> PapiJudgment(Guid userAssessmentId)
         {
@@ -173,14 +173,14 @@ namespace SangtuariCareerCompass.Controllers
             return Ok(new { success = true });
         }
 
-        [HttpGet]
-        public async Task<IActionResult> PapiResult(Guid userAssessmentId)
-        {
-            var vm = await PapiReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
-            if (vm == null || !vm.IsJudged) return RedirectToAction("PapiJudgment", new { userAssessmentId });
+        //[HttpGet]
+        //public async Task<IActionResult> PapiResult(Guid userAssessmentId)
+        //{
+        //    var vm = await PapiReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
+        //    if (vm == null || !vm.IsJudged) return RedirectToAction("PapiJudgment", new { userAssessmentId });
 
-            return View("~/Views/Report/PapiResult.cshtml", vm);
-        }
+        //    return View("~/Views/Report/PapiResult.cshtml", vm);
+        //}
 
         [HttpGet]
         public async Task<IActionResult> FinalReport(Guid userAssessmentId)
