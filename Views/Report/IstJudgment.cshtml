@@ -181,7 +181,8 @@
             });
 
             if (res.ok) {
-                window.location.href = `/Report/IstResult?userAssessmentId=${payload.UserAssessmentId}`;
+                // window.location.href = `/Report/IstResult?userAssessmentId=${payload.UserAssessmentId}`;               
+                window.location.href = `/Quiz/Instruction?testKey=PAPI_Kostick&userAssessmentId=${payload.UserAssessmentId}`;
             } else {
                 alert("Gagal menyimpan hasil IST.");
                 btn.disabled = false;
