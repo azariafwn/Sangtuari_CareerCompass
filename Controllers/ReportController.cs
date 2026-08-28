@@ -192,5 +192,35 @@ namespace SangtuariCareerCompass.Controllers
 
             return View("~/Views/Report/FinalReport.cshtml", reportVm);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> CfitResult(Guid userAssessmentId)
+        {
+            if (userAssessmentId == Guid.Empty) return RedirectToAction("Index", "Assessment");
+
+            var vm = await CfitReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
+            if (vm == null) return NotFound("Data asesmen CFIT tidak ditemukan.");
+
+            // Jalankan engine sekali lagi untuk mempopulasi list SubTestScores ke UI (Transient)
+            var engine = new CfitScoringEngine();
+            engine.ProcessScoring(vm);
+
+            return View("~/Views/Report/CfitResult.cshtml", vm);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EasResult(Guid userAssessmentId)
+        {
+            if (userAssessmentId == Guid.Empty) return RedirectToAction("Index", "Assessment");
+
+            var vm = await EasReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
+            if (vm == null) return NotFound("Data asesmen EAS tidak ditemukan.");
+
+            // Kalkulasi ulang di memori untuk ditampilkan di UI
+            var engine = new EasScoringEngine();
+            engine.ProcessScoring(vm);
+
+            return View("~/Views/Report/EasResult.cshtml", vm);
+        }
     }
 }

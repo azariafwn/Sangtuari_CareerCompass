@@ -1,0 +1,75 @@
+﻿@model SangtuariCareerCompass.ViewModels.CfitReportViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Hasil Tes Intelegensi CFIT";
+}
+
+<div class="container py-5">
+    <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 mb-4" style="background-color: #FFFDF4;">
+        
+        <div class="border-bottom pb-4 mb-4">
+            <span class="badge rounded-pill px-3 py-2 mb-2" style="background-color: #4E325A; color: #FFE375;">Culture Fair Intelligence Test (CFIT) Skala 2</span>
+            <h2 class="fw-bold text-dark mb-1">@Model.FullName</h2>
+            <p class="text-muted mb-0">Usia Kalender: <strong>@(Model.AgeInMonths / 12) Tahun @(Model.AgeInMonths % 12) Bulan</strong> (@Model.AgeInMonths Bulan)</p>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <!-- Summary Score -->
+            <div class="col-md-4 d-flex flex-column gap-3">
+                <div class="p-4 rounded-4 text-center shadow-sm" style="background-color: #4E325A; color: white;">
+                    <span class="d-block small text-uppercase mb-1" style="color: #FFE375;">Total Raw Score</span>
+                    <h1 class="display-4 fw-bold mb-0">@Model.TotalRawScore</h1>
+                </div>
+                <div class="p-4 rounded-4 text-center shadow-sm border" style="background-color: white;">
+                    <span class="d-block small text-muted text-uppercase mb-1">Intelligence Quotient (IQ)</span>
+                    <h2 class="fw-bold mb-1" style="color: #4E325A;">@Model.CalculatedIQ</h2>
+                    <span class="badge bg-secondary fs-6">@Model.IQClassification</span>
+                </div>
+            </div>
+
+            <!-- Breakdown per Subtes -->
+            <div class="col-md-8">
+                <h6 class="fw-bold mb-3" style="color: #4E325A;">Rincian Skor Per Subtes</h6>
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle bg-white rounded-3">
+                        <thead class="text-center" style="background-color: #4E325A; color: #FFE375;">
+                            <tr>
+                                <th>Subtes</th>
+                                <th>Jawaban Benar</th>
+                                <th>Total Soal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var sub in Model.SubTestScores)
+                            {
+                                <tr>
+                                    <td class="fw-semibold text-center" style="color: #4E325A;">@sub.SubTestName</td>
+                                    <td class="text-center fw-bold fs-5">@sub.CorrectCount</td>
+                                    <td class="text-center text-muted">@sub.TotalSoal</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot class="table-light fw-bold text-center">
+                            <tr>
+                                <td>TOTAL</td>
+                                <td class="fs-5" style="color: #4E325A;">@Model.TotalRawScore</td>
+                                <td>46</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tombol Aksi -->
+        <div class="text-end border-top pt-4 mt-2">
+            <!-- Ini dipasang sementara untuk validasi, nanti dihapus jika ingin dibypass -->
+            <button onclick="window.print()" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold me-2">
+                Cetak Hasil Sementara
+            </button>
+            <a href="/Quiz/Instruction?testKey=EAS_1&userAssessmentId=@Model.UserAssessmentId" class="btn rounded-pill px-5 py-2 fw-bold" style="background-color: #4E325A; color: #FFE375;">
+                Lanjut ke Instruksi EAS
+            </a>
+        </div>
+    </div>
+</div>

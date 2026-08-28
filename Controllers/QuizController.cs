@@ -371,6 +371,7 @@ namespace SangtuariCareerCompass.Controllers
                     _context.UserTestResults.Add(resultEntity);
                     await _context.SaveChangesAsync();
                 }
+                
                 else if (dto.SubTestName.Equals("SDS_Holland", StringComparison.OrdinalIgnoreCase))
                 {
                     var sdsVm = new SdsHollandReportViewModel { UserAssessmentId = dto.UserAssessmentId };
@@ -406,7 +407,79 @@ namespace SangtuariCareerCompass.Controllers
                     await _context.SaveChangesAsync();
                 }
 
-                // Catatan: PAPI dan IST tidak dikalkulasi di sini karena butuh manual judgment.
+                // Ubah kondisi if untuk menangkap "CFIT_SubTest_04"
+                else if (dto.SubTestName.Equals("CFIT_SubTest_04", StringComparison.OrdinalIgnoreCase) ||
+                         dto.SubTestName.Equals("CFIT_SubTest_4", StringComparison.OrdinalIgnoreCase))
+                {
+                    var cfitVm = await CfitReportViewModel.BuildFromDatabaseAsync(_context, dto.UserAssessmentId)
+                                 ?? new CfitReportViewModel { UserAssessmentId = dto.UserAssessmentId };
+
+                    var sub4Dict = new Dictionary<string, string>();
+                    if (dto.Answers.ValueKind == JsonValueKind.Object)
+                    {
+                        foreach (var prop in dto.Answers.EnumerateObject())
+                        {
+                            sub4Dict[prop.Name] = prop.Value.GetString()?.ToLower() ?? "";
+                        }
+                    }
+
+                    // Pastikan kita menyimpan di ViewModel dengan key format 04 agar seragam dengan DB
+                    cfitVm.UserAnswers[dto.SubTestName] = sub4Dict;
+
+                    var engine = new CfitScoringEngine();
+                    engine.ProcessScoring(cfitVm);
+
+                    var resultEntity = new UserTestResult
+                    {
+                        UserAssessmentId = dto.UserAssessmentId,
+                        TestCategory = "CFIT",
+                        OverallScore = cfitVm.CalculatedIQ,
+                        Classification = cfitVm.IQClassification,
+                        ResultDetails = JsonDocument.Parse(JsonSerializer.Serialize(new
+                        {
+                            TotalRawScore = cfitVm.TotalRawScore,
+                            SubTestScores = cfitVm.SubTestScores,
+                            AgeInMonths = cfitVm.AgeInMonths
+                        }))
+                    };
+
+                    _context.UserTestResults.Add(resultEntity);
+                    await _context.SaveChangesAsync();
+                }
+
+                else if (dto.SubTestName.Equals("EAS-5", StringComparison.OrdinalIgnoreCase))
+                {
+                    var easVm = await EasReportViewModel.BuildFromDatabaseAsync(_context, dto.UserAssessmentId)
+                                 ?? new EasReportViewModel { UserAssessmentId = dto.UserAssessmentId };
+
+                    var sub5Dict = new Dictionary<string, string>();
+                    if (dto.Answers.ValueKind == JsonValueKind.Object)
+                    {
+                        foreach (var prop in dto.Answers.EnumerateObject())
+                        {
+                            sub5Dict[prop.Name] = prop.Value.GetString()?.ToLower() ?? "";
+                        }
+                    }
+
+                    // Gunakan key format baru agar seragam
+                    easVm.UserAnswers["EAS-5"] = sub5Dict;
+
+                    var engine = new EasScoringEngine();
+                    engine.ProcessScoring(easVm);
+
+                    var resultEntity = new UserTestResult
+                    {
+                        UserAssessmentId = dto.UserAssessmentId,
+                        TestCategory = "EAS",
+                        OverallScore = 0,
+                        Classification = "Komposit EAS",
+                        ResultDetails = JsonDocument.Parse(JsonSerializer.Serialize(easVm.SubTestScores))
+                    };
+
+                    _context.UserTestResults.Add(resultEntity);
+                    await _context.SaveChangesAsync();
+                }
+
                 return Ok(new { success = true });
             }
             catch (Exception ex)
