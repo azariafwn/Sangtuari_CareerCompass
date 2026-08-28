@@ -76,38 +76,5 @@ namespace SangtuariCareerCompass.Controllers
                 return StatusCode(500, new { success = false, message = ex.Message });
             }
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SubmitSubTest([FromBody] SubTestSubmissionDto dto)
-        {
-            if (dto == null || dto.UserAssessmentId == Guid.Empty || string.IsNullOrEmpty(dto.SubTestName))
-            {
-                return BadRequest(new { success = false, message = "Payload data tidak valid." });
-            }
-
-            try
-            {
-                // Parse JsonElement DTO ke JsonDocument untuk kolom JSONB PostgreSQL
-                var answersJsonDoc = JsonDocument.Parse(dto.Answers.GetRawText());
-
-                var userAnswer = new UserAnswer
-                {
-                    UserAssessmentId = dto.UserAssessmentId,
-                    SubTestName = dto.SubTestName,
-                    Answers = answersJsonDoc,
-                    SubmittedAt = DateTime.UtcNow
-                };
-
-                _context.UserAnswers.Add(userAnswer);
-                await _context.SaveChangesAsync();
-
-                return Ok(new { success = true });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { success = false, message = ex.Message });
-            }
-        }
     }
 }
