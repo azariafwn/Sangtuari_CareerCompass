@@ -222,5 +222,14 @@ namespace SangtuariCareerCompass.Controllers
 
             return View("~/Views/Report/SMP/EasResult.cshtml", vm);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> FinalReportSMP(Guid userAssessmentId)
+        {
+            if (userAssessmentId == Guid.Empty) return RedirectToAction("Index", "Assessment");
+            var reportVm = await FinalReportSMPViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
+            if (reportVm == null) return NotFound("Data asesmen tidak ditemukan.");
+            return View("~/Views/Report/SMP/FinalReportSMP.cshtml", reportVm);
+        }
     }
 }

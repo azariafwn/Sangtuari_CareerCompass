@@ -1,0 +1,466 @@
+﻿@model SangtuariCareerCompass.ViewModels.FinalReportSMPViewModel
+@{
+    Layout = null;
+    // Fallback jika tidak ada tanggal lahir/pemeriksaan di ViewModel saat ini
+    string formattedDob = Model.BirthDate.HasValue ? Model.BirthDate.Value.ToString("dd MMMM yyyy") : "-";
+    string assessmentNumber = "SMP-" + Model.UserAssessmentId.ToString().Substring(0, 8).ToUpper();
+    string testedAt = DateTime.Today.ToString("dd MMMM yyyy");
+}
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Laporan_SMP_@Model.FullName</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        :root {
+            --purple-main: #4E325A;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f8f9fa;
+            font-size: 12px;
+            color: #000;
+        }
+
+        /* Container fix rasio A4 */
+        .wrapper {
+            width: 800px;
+            height: 1120px;
+            margin: 20px auto;
+            background: white;
+            padding: 25px 35px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .header-box {
+            border-bottom: 2px solid #000;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .logo-img {
+            height: 50px;
+        }
+
+        .main-title {
+            background-color: #D9D9D9;
+            font-weight: bold;
+            text-align: center;
+            padding: 4px;
+            border: 1px solid #000;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+            .info-table td {
+                border: 1px solid #000;
+                padding: 3px 6px;
+                font-weight: bold;
+                font-size: 11px;
+            }
+
+                .info-table td.label-col {
+                    background-color: #F2F2F2;
+                    width: 18%;
+                }
+
+        .section-title {
+            font-weight: bold;
+            font-size: 12px;
+            background-color: #EBEBEB;
+            padding: 3px 6px;
+            border: 1px solid #000;
+        }
+
+        .iq-box {
+            text-align: center;
+            font-weight: bold;
+            font-size: 12px;
+            padding: 3px;
+            border: 1px solid #000;
+            border-top: none;
+        }
+
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #000;
+        }
+
+            .table-custom th, .table-custom td {
+                border: 1px solid #000;
+                padding: 2.5px;
+                vertical-align: middle;
+            }
+
+            .table-custom th {
+                background-color: #F2F2F2;
+                text-align: center;
+                font-weight: bold;
+                font-size: 12px;
+            }
+
+            .table-custom td {
+                font-size: 12px;
+            }
+
+        .def-col {
+            font-style: italic;
+            line-height: 1.1;
+        }
+
+        .check-box {
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            color: var(--purple-main);
+        }
+
+        .chart-box {
+            border: 1px solid #000;
+            border-top: none;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .canvas-container {
+            height: 110px;
+            width: 100%;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .kesimpulan-box {
+            border: 1px solid #000;
+            padding: 5px;
+            font-size: 12px;
+            line-height: 1.2;
+            text-align: justify;
+        }
+
+        .no-print {
+            margin: 20px auto;
+            max-width: 800px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="no-print">
+        <button id="btnDownload" class="btn btn-primary btn-sm px-4" style="background-color: #4E325A; border: none;">Unduh PDF</button>
+        <a href="/Assessment/Index" class="btn btn-secondary btn-sm px-4">Selesai</a>
+    </div>
+
+    <!-- Area yang ditarik menjadi PDF -->
+    <div class="wrapper" id="pdf-content">
+        <!-- HEADER -->
+        <div class="header-box d-flex align-items-center gap-3">
+            <img src="~/images/logo-sangtuari.png" alt="Sangtuari" class="logo-img" onerror="this.style.display='none'" />
+            <div>
+                <h6 class="fw-bold mb-0" style="font-size: 14px;">SANGTUARI CONSULTING</h6>
+                <div style="font-size: 11px; font-style: italic; line-height: 1.2;">
+                    <strong>Psychological Services</strong><br />
+                    PT. Sangtuari Aman Bertumbuh<br />
+                    Prominent Building, Jl Bukit Cimanggu City Raya KD 2 No 16A Tanah Sareal Bogor<br />
+                    Jawa Barat 16167 | 0813 929 8822 | hello.sangtuari@gmail.com
+                </div>
+            </div>
+        </div>
+
+        <div class="main-title">HASIL ASESMEN PSIKOLOGIS</div>
+
+        <!-- IDENTITAS -->
+        <table class="info-table">
+            <tr>
+                <td class="label-col">Nama Lengkap</td>
+                <td>@Model.FullName</td>
+                <td class="label-col">Tanggal Lahir</td>
+                <td>@formattedDob</td>
+            </tr>
+            <tr>
+                <td class="label-col">Jenis Kelamin</td>
+                <td>@Model.Gender</td>
+                <td class="label-col">Tanggal Pemeriksaan</td>
+                <td>@testedAt</td>
+            </tr>
+            <tr>
+                <td class="label-col">Kelas</td>
+                <td>@Model.Grade</td>
+                <td class="label-col">No. Pemeriksaan</td>
+                <td>@assessmentNumber</td>
+            </tr>
+        </table>
+
+        <div class="text-center fw-bold fs-6 mb-2 mt-3">PSIKOGRAM</div>
+
+        <!-- BAGIAN A -->
+        <div class="section-title">A. INTELIGENSI & BAKAT</div>
+        <div class="iq-box">Inteligensi (IQ) = @Model.CFIT_IQ / @Model.CFIT_Kategori (CFIT Skala 2)</div>
+
+        <table class="table-custom mb-3">
+            <thead>
+                <tr>
+                    <th rowspan="2" width="25%">Aspek Psikologis</th>
+                    <th rowspan="2" width="50%">Definisi</th>
+                    <th colspan="5">Kategori</th>
+                </tr>
+                <tr>
+                    <th width="5%">KS</th>
+                    <th width="5%">K</th>
+                    <th width="5%">R</th>
+                    <th width="5%">B</th>
+                    <th width="5%">BS</th>
+                </tr>
+            </thead>
+            <tbody>
+                @functions {
+                    string RenderCheck(string val, string target) => val == target ? "✔" : "";
+
+                    string ConvertEasCat(string cat)
+                    {
+                        return cat switch { "Kurang Sekali" => "KS", "Kurang" => "K", "Rata-rata" => "R", "Baik" => "B", "Baik Sekali" => "BS", _ => "R" };
+                    }
+
+                    string MapCfitToCat(string cfitClass)
+                    {
+                        if (cfitClass.Contains("Genius") || cfitClass.Contains("Very Superior") || cfitClass.Contains("Superior")) return "BS";
+                        if (cfitClass.Contains("High Average")) return "B";
+                        if (cfitClass.Contains("Average")) return "R";
+                        if (cfitClass.Contains("Low Average")) return "K";
+                        return "KS";
+                    }
+                }
+                <tr>
+                    <td class="fw-bold">Kecerdasan Umum</td>
+                    <td class="def-col">Kemampuan memahami, mengolah, dan menerapkan informasi dalam menyelesaikan masalah.</td>
+                    @{
+                        string cfitShort = MapCfitToCat(Model.CFIT_Kategori);
+                    }
+                    <td class="check-box">@RenderCheck(cfitShort, "KS")</td>
+                    <td class="check-box">@RenderCheck(cfitShort, "K")</td>
+                    <td class="check-box">@RenderCheck(cfitShort, "R")</td>
+                    <td class="check-box">@RenderCheck(cfitShort, "B")</td>
+                    <td class="check-box">@RenderCheck(cfitShort, "BS")</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Kemampuan Verbal</td>
+                    <td class="def-col">Kemampuan memahami makna kata dan informasi yang disampaikan melalui bahasa.</td>
+                    @{
+                        string vShort = ConvertEasCat(Model.EAS_Verbal);
+                    }
+                    <td class="check-box">@RenderCheck(vShort, "KS")</td>
+                    <td class="check-box">@RenderCheck(vShort, "K")</td>
+                    <td class="check-box">@RenderCheck(vShort, "R")</td>
+                    <td class="check-box">@RenderCheck(vShort, "B")</td>
+                    <td class="check-box">@RenderCheck(vShort, "BS")</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Kemampuan Numerik</td>
+                    <td class="def-col">Kemampuan memahami hubungan antar angka serta melakukan perhitungan numerik dasar.</td>
+                    @{
+                        string nShort = ConvertEasCat(Model.EAS_Numerik);
+                    }
+                    <td class="check-box">@RenderCheck(nShort, "KS")</td>
+                    <td class="check-box">@RenderCheck(nShort, "K")</td>
+                    <td class="check-box">@RenderCheck(nShort, "R")</td>
+                    <td class="check-box">@RenderCheck(nShort, "B")</td>
+                    <td class="check-box">@RenderCheck(nShort, "BS")</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Kemampuan Visual-Spasial</td>
+                    <td class="def-col">Kemampuan memahami hubungan bentuk dan ruang serta membayangkan objek dalam pikiran.</td>
+                    @{
+                        string sShort = ConvertEasCat(Model.EAS_Spasial);
+                    }
+                    <td class="check-box">@RenderCheck(sShort, "KS")</td>
+                    <td class="check-box">@RenderCheck(sShort, "K")</td>
+                    <td class="check-box">@RenderCheck(sShort, "R")</td>
+                    <td class="check-box">@RenderCheck(sShort, "B")</td>
+                    <td class="check-box">@RenderCheck(sShort, "BS")</td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="font-size: 9px; margin-top:-10px; margin-bottom: 12px;"><strong>Keterangan:</strong> KS = Kurang Sekali &nbsp; K = Kurang &nbsp; R = Rata-rata &nbsp; B = Baik &nbsp; BS = Baik Sekali</div>
+
+        <!-- BAGIAN B & C -->
+        <div class="row g-2 mb-3">
+            <div class="col-5">
+                <div class="section-title">B. GAYA BELAJAR</div>
+                <div class="chart-box">
+                    <div class="canvas-container"><canvas id="varkChart"></canvas></div>
+                </div>
+                <div class="chart-box border-top mt-1" style="text-align: left; padding: 4px;">
+                    <span class="fw-bold d-block">Gaya Belajar Dominan:</span>
+                    <span class="fst-italic">@Model.DominantVark</span>
+                </div>
+            </div>
+
+            <div class="col-7">
+                <div class="section-title">C. MINAT KARIER</div>
+                <div class="chart-box p-1">
+                    <div class="row g-0 align-items-center">
+                        <div class="col-6">
+                            <div class="canvas-container"><canvas id="hollandChart"></canvas></div>
+                        </div>
+                        <div class="col-6 text-start ps-2 border-start" style="font-size: 10px;">
+                            <div class="border-bottom pb-1 mb-1">
+                                <span class="fw-bold d-block">Rekomendasi Karier:</span>
+                                <ul class="mb-0 ps-3" style="font-size: 12px; line-height: 1.1;">
+                                    @foreach (var career in Model.HollandCareers)
+                                    {
+                                        <li>@career</li>
+                                    }
+                                </ul>
+                            </div>
+                            <div>
+                                <span class="fw-bold d-block">Rekomendasi Pendidikan:</span>
+                                <ul class="mb-0 ps-3" style="font-size: 12px; line-height: 1.1;">
+                                    @foreach (var edu in Model.HollandEducation)
+                                    {
+                                        <li>@edu</li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table class="table-custom mt-1 text-start">
+                    <tr>
+                        <td width="60%"><strong>3 Minat Tertinggi:</strong> <br />@Model.HollandSummaryCode</td>
+                        <td width="40%"><strong>Konsistensi Minat:</strong> <br />@Model.HollandConsistency</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="text-center fw-bold fs-6 mb-2 mt-2">KESIMPULAN DAN SARAN</div>
+        <div class="section-title mb-0">KESIMPULAN</div>
+        <div class="kesimpulan-box mb-2">
+            <p class="mb-1">Peserta didik memiliki kemampuan intelektual yang berada pada taraf @Model.CFIT_Kategori, didukung kemampuan verbal, numerik, dan visual-spasial yang menunjang proses belajar.</p>
+            <p class="mb-1">Peserta didik memiliki kecenderungan gaya belajar @Model.DominantVark, sehingga disarankan untuk menyesuaikan metode belajar dengan preferensi tersebut.</p>
+            <p class="mb-0">Minat karier didominasi oleh tipe @Model.HollandSummaryCode. Konsistensi minat berada di tingkat @Model.HollandConsistency.</p>
+        </div>
+
+        <div class="section-title mb-0">SARAN PENGEMBANGAN</div>
+        <div class="kesimpulan-box">
+            <ul class="mb-0 ps-3">
+                <li>Mengembangkan potensi intelektual melalui kebiasaan belajar yang teratur dan latihan pemecahan masalah.</li>
+                <li>Mengoptimalkan gaya belajar dominan saat menerima dan memproses materi pelajaran.</li>
+                <li>Mengeksplorasi minat dan cita-cita melalui kegiatan akademik maupun ekstrakurikuler yang sesuai.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Script Dependensi html2pdf & Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Setup VARK Chart
+            const varkRaw = @Html.Raw(Model.VarkJson);
+            if (varkRaw && varkRaw.length > 0) {
+                new Chart(document.getElementById('varkChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: varkRaw.map(d => d.CategoryName),
+                        datasets: [{ data: varkRaw.map(d => d.Percentage), backgroundColor: ['#FFE375', '#B19CD9', '#E6E6FA', '#EFE8D8'] }]
+                    },
+                    options: {
+                        devicePixelRatio: 4,
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: false,
+                        layout: {
+                            padding: { right: 15 } // Memberi ruang ekstra di sisi kanan
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                align: 'center', // Rata tengah secara vertikal agar simetris
+                                labels: {
+                                    boxWidth: 8,
+                                    padding: 8, // Diperkecil agar muat di container 110px
+                                    font: { size: 9 }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Setup Holland Chart
+            const hollandRaw = @Html.Raw(Model.HollandJson);
+            if (hollandRaw && hollandRaw.Scores) {
+                new Chart(document.getElementById('hollandChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: hollandRaw.Scores.map(d => d.Name),
+                        datasets: [{ data: hollandRaw.Scores.map(d => d.Percentage), backgroundColor: ['#FFE375', '#B19CD9', '#E6E6FA', '#EFE8D8', '#C3B1E1', '#FDFD96'] }]
+                    },
+                    options: {
+                        devicePixelRatio: 4,
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: false,
+                        layout: {
+                            padding: { right: 15 } // Memberi ruang ekstra di sisi kanan
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                align: 'center', // Rata tengah secara vertikal
+                                labels: {
+                                    boxWidth: 8,
+                                    padding: 5, // Diperkecil secara ekstrem karena ada 6 item
+                                    font: { size: 9 }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Eksekusi Unduh PDF
+            document.getElementById('btnDownload').addEventListener('click', function () {
+                const element = document.getElementById('pdf-content');
+                const btn = this;
+
+                btn.innerText = "Memproses PDF...";
+                btn.disabled = true;
+
+                const originalMargin = element.style.margin;
+                const originalBoxShadow = element.style.boxShadow;
+                element.style.margin = "0";
+                element.style.boxShadow = "none";
+
+                const opt = {
+                    margin:       0,
+                    filename:     `Laporan_SMP_Sangtuari_${'@Model.FullName'.replace(/\s+/g, '_')}.pdf`,
+                    image:        { type: 'png'},
+                    html2canvas:  { scale: 4, useCORS: true },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+
+                html2pdf().set(opt).from(element).save().then(() => {
+                    element.style.margin = originalMargin;
+                    element.style.boxShadow = originalBoxShadow;
+                    btn.innerText = "Unduh PDF";
+                    btn.disabled = false;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

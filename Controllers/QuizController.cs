@@ -405,6 +405,19 @@ namespace SangtuariCareerCompass.Controllers
 
                     _context.UserTestResults.Add(resultEntity);
                     await _context.SaveChangesAsync();
+
+                    // kategori siswa untuk routing dinamis
+                    var assessment = await _context.UserAssessments
+                        .AsNoTracking()
+                        .FirstOrDefaultAsync(u => u.Id == dto.UserAssessmentId);
+
+                    string reportPath = assessment?.AssessmentType == "Exploration" ? "FinalReportSMP" : "FinalReportSMA";
+
+                    return Ok(new
+                    {
+                        success = true,
+                        nextUrl = $"/Report/{reportPath}?userAssessmentId={dto.UserAssessmentId}"
+                    });
                 }
 
                 // Ubah kondisi if untuk menangkap "CFIT_SubTest_04"
