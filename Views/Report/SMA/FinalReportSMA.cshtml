@@ -2,6 +2,7 @@
 @{
     Layout = null;
     string formattedDob = Model.BirthDate.HasValue ? Model.BirthDate.Value.ToString("dd MMMM yyyy") : "-";
+    string assessmentNumber = "SMA-" + Model.UserAssessmentId.ToString().Substring(0, 8).ToUpper();
 }
 
 <!DOCTYPE html>
@@ -19,7 +20,7 @@
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
             background-color: #f8f9fa;
-            font-size: 10px;
+            font-size: 11px;
             color: #000;
         }
 
@@ -51,7 +52,7 @@
             padding: 4px;
             border: 1px solid #000;
             margin-bottom: 10px;
-            font-size: 11px;
+            font-size: 13px;
         }
 
         .info-table {
@@ -64,7 +65,7 @@
                 border: 1px solid #000;
                 padding: 3px 6px;
                 font-weight: bold;
-                font-size: 9.5px;
+                font-size: 11px;
             }
 
                 .info-table td.label-col {
@@ -109,7 +110,7 @@
             }
 
             .table-custom td {
-                font-size: 8.5px;
+                font-size: 10px;
             }
 
         .def-col {
@@ -158,8 +159,8 @@
         <div class="header-box d-flex align-items-center gap-3">
             <img src="~/images/logo-sangtuari.png" alt="Sangtuari" class="logo-img" onerror="this.style.display='none'" />
             <div>
-                <h6 class="fw-bold mb-0" style="font-size: 12px;">SANGTUARI CONSULTING</h6>
-                <div style="font-size: 8.5px; font-style: italic; line-height: 1.2;">
+                <h6 class="fw-bold mb-0" style="font-size: 14px;">SANGTUARI CONSULTING</h6>
+                <div style="font-size: 11px; font-style: italic; line-height: 1.2;">
                     <strong>Psychological Services</strong><br />
                     PT. Sangtuari Aman Bertumbuh<br />
                     Prominent Building, Jl Bukit Cimanggu City Raya KD 2 No 16A Tanah Sareal Bogor<br />
@@ -188,7 +189,7 @@
                 <td class="label-col">Pendidikan Terakhir</td>
                 <td>@Model.SchoolName</td>
                 <td class="label-col">No. Pemeriksaan</td>
-                <td>@Model.AssessmentNumber</td>
+                <td>@assessmentNumber</td>
             </tr>
         </table>
 
@@ -253,7 +254,7 @@
                         }
                     </tbody>
                 </table>
-                <div style="font-size: 7.5px; margin-bottom: 8px;"><strong>Keterangan:</strong> KS=Kurang Sekali, K=Kurang, R=Rata-rata, B=Baik, BS=Baik Sekali</div>
+                <div style="font-size: 9px; margin-bottom: 8px;"><strong>Keterangan:</strong> KS=Kurang Sekali, K=Kurang, R=Rata-rata, B=Baik, BS=Baik Sekali</div>
 
                 <div class="section-title">B. SIKAP KERJA & KEPRIBADIAN</div>
                 <table class="table-custom mb-1">
@@ -299,7 +300,7 @@
                         }
                     </tbody>
                 </table>
-                <div style="font-size: 7.5px;"><strong>Keterangan:</strong> KS=Kurang Sekali, K=Kurang, R=Rata-rata, B=Baik, BS=Baik Sekali</div>
+                <div style="font-size: 9px;"><strong>Keterangan:</strong> KS=Kurang Sekali, K=Kurang, R=Rata-rata, B=Baik, BS=Baik Sekali</div>
             </div>
 
             <!-- KOLOM KANAN (C & D) -->
@@ -331,7 +332,7 @@
                         </div>
                         <div class="border-top pt-1 mb-1">
                             <span class="fw-bold d-block">Rekomendasi Karier:</span>
-                            <ul class="mb-0 ps-3" style="font-size: 8px; line-height: 1.1;">
+                            <ul class="mb-0 ps-3" style="font-size: 10px; line-height: 1.1;">
                                 @foreach (var career in Model.HollandCareers)
                                 {
                                     <li>@career</li>
@@ -340,7 +341,7 @@
                         </div>
                         <div class="border-top pt-1">
                             <span class="fw-bold d-block">Rekomendasi Pendidikan:</span>
-                            <ul class="mb-0 ps-3" style="font-size: 8px; line-height: 1.1;">
+                            <ul class="mb-0 ps-3" style="font-size: 10px; line-height: 1.1;">
                                 @foreach (var edu in Model.HollandEducation)
                                 {
                                     <li>@edu</li>
@@ -368,10 +369,11 @@
                     datasets: [{ data: Object.values(varkData), backgroundColor: ['#E6E6FA', '#FFE375', '#B19CD9', '#EFE8D8'] }]
                 },
                 options: {
+                    devicePixelRatio: 4,
                     responsive: true,
                     maintainAspectRatio: false,
                     animation: false,
-                    plugins: { legend: { position: 'right', labels: { boxWidth: 8, font: { size: 8 } } } }
+                    plugins: { legend: { position: 'right', labels: { boxWidth: 8, font: { size: 9 } } } }
                 }
             });
 
@@ -384,10 +386,21 @@
                     datasets: [{ data: Object.values(hollandData), backgroundColor: ['#E6E6FA', '#FFE375', '#B19CD9', '#EFE8D8', '#C3B1E1', '#FDFD96'] }]
                 },
                 options: {
+                    devicePixelRatio: 4,
                     responsive: true,
                     maintainAspectRatio: false,
                     animation: false,
-                    plugins: { legend: { position: 'right', labels: { boxWidth: 8, font: { size: 8 } } } }
+                    plugins: {
+                            legend: {
+                                position: 'right',
+                                align: 'center', // Rata tengah secara vertikal
+                                labels: {
+                                    boxWidth: 8,
+                                    padding: 5, // Diperkecil secara ekstrem karena ada 6 item
+                                    font: { size: 9 }
+                                }
+                            }
+                        }
                 }
             });
 
@@ -410,8 +423,8 @@
                 const opt = {
                     margin:       0,
                     filename:     `Laporan_Psikotes_Sangtuari_${'@Model.FullName'.replace(/\s+/g, '_')}.pdf`,
-                    image:        { type: 'jpeg', quality: 0.98 },
-                    html2canvas:  { scale: 2, useCORS: true },
+                    image:        { type: 'png'},
+                    html2canvas:  { scale: 4, useCORS: true },
                     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
 
