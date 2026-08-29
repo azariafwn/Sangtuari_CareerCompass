@@ -29,7 +29,7 @@ namespace SangtuariCareerCompass.Controllers
 
             if (vm.IsJudged) return RedirectToAction("IstResult", new { userAssessmentId });
 
-            return View("~/Views/Report/IstJudgment.cshtml", vm);
+            return View("~/Views/Report/SMA/IstJudgment.cshtml", vm);
         }
 
         [HttpPost]
@@ -150,7 +150,7 @@ namespace SangtuariCareerCompass.Controllers
             var engine = new PapiScoringEngine();
             engine.ProcessRawScoring(vm);
 
-            return View("~/Views/Report/PapiJudgment.cshtml", vm);
+            return View("~/Views/Report/SMA/PapiJudgment.cshtml", vm);
         }
 
         [HttpPost]
@@ -183,14 +183,14 @@ namespace SangtuariCareerCompass.Controllers
         //}
 
         [HttpGet]
-        public async Task<IActionResult> FinalReport(Guid userAssessmentId)
+        public async Task<IActionResult> FinalReportSMA(Guid userAssessmentId)
         {
             if (userAssessmentId == Guid.Empty) return RedirectToAction("Index", "Assessment");
 
-            var reportVm = await FinalReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
+            var reportVm = await FinalReportSmaViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
             if (reportVm == null) return NotFound("Data asesmen tidak ditemukan.");
 
-            return View("~/Views/Report/FinalReport.cshtml", reportVm);
+            return View("~/Views/Report/SMA/FinalReportSMA.cshtml", reportVm);
         }
 
         [HttpGet]
@@ -205,7 +205,7 @@ namespace SangtuariCareerCompass.Controllers
             var engine = new CfitScoringEngine();
             engine.ProcessScoring(vm);
 
-            return View("~/Views/Report/CfitResult.cshtml", vm);
+            return View("~/Views/Report/SMP/CfitResult.cshtml", vm);
         }
 
         [HttpGet]
@@ -220,7 +220,7 @@ namespace SangtuariCareerCompass.Controllers
             var engine = new EasScoringEngine();
             engine.ProcessScoring(vm);
 
-            return View("~/Views/Report/EasResult.cshtml", vm);
+            return View("~/Views/Report/SMP/EasResult.cshtml", vm);
         }
     }
 }

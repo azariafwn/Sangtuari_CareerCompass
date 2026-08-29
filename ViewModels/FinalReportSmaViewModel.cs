@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SangtuariCareerCompass.ViewModels
 {
-    public class FinalReportViewModel
+    public class FinalReportSmaViewModel
     {
         public Guid UserAssessmentId { get; set; }
         public string AssessmentNumber { get; set; } = string.Empty;
@@ -31,7 +31,7 @@ namespace SangtuariCareerCompass.ViewModels
         public List<string> HollandEducation { get; set; } = new();
         public Dictionary<string, double> HollandScores { get; set; } = new();
 
-        public static async Task<FinalReportViewModel?> BuildFromDatabaseAsync(ApplicationDbContext dbContext, Guid assessmentId)
+        public static async Task<FinalReportSmaViewModel?> BuildFromDatabaseAsync(ApplicationDbContext dbContext, Guid assessmentId)
         {
             var user = await dbContext.UserAssessments.AsNoTracking().FirstOrDefaultAsync(u => u.Id == assessmentId);
             if (user == null) return null;
@@ -40,7 +40,7 @@ namespace SangtuariCareerCompass.ViewModels
                 .Where(r => r.UserAssessmentId == assessmentId)
                 .ToListAsync();
 
-            var vm = new FinalReportViewModel
+            var vm = new FinalReportSmaViewModel
             {
                 UserAssessmentId = user.Id,
                 // Mengambil 8 karakter awal GUID sebagai No. Pemeriksaan
