@@ -183,7 +183,9 @@
 
                 if (response.ok) {
                     // window.location.href = `/Report/SdsResult?userAssessmentId=${assessmentId}`;                    
-                    window.location.href = `/Report/FinalReportSMA?userAssessmentId=${assessmentId}`;
+                    // window.location.href = `/Report/FinalReportSMA?userAssessmentId=${assessmentId}`;
+                    const data = await response.json();
+                    window.location.href = data.nextUrl; // Rute dinamis ke SMP atau SMA
                 } else {
                     alert("Gagal menyimpan jawaban Holland Test.");
                     resetSubmitState();
