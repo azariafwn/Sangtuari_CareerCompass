@@ -245,7 +245,7 @@
                 });
 
                 if (response.ok) {
-                    window.location.href = `/Report/IstJudgment?userAssessmentId=${userAssessmentId}`;
+                    window.location.href = `/Psychologist/IstJudgment?userAssessmentId=${userAssessmentId}`;
                 } else {
                     const errData = await response.json().catch(() => ({}));
                     alert("Gagal menyimpan IST 09: " + (errData.message || response.status));

@@ -29,7 +29,7 @@ namespace SangtuariCareerCompass.Controllers
 
             if (vm.IsJudged) return RedirectToAction("IstResult", new { userAssessmentId });
 
-            return View("~/Views/Report/SMA/IstJudgment.cshtml", vm);
+            return View("~/Views/Psychologist/Report/IstJudgment.cshtml", vm);
         }
 
         [HttpPost]
@@ -150,7 +150,7 @@ namespace SangtuariCareerCompass.Controllers
             var engine = new PapiScoringEngine();
             engine.ProcessRawScoring(vm);
 
-            return View("~/Views/Report/SMA/PapiJudgment.cshtml", vm);
+            return View("~/Views/Psychologist/Report/PapiJudgment.cshtml", vm);
         }
 
         [HttpPost]
