@@ -174,7 +174,7 @@
         btn.innerText = "Mengkalkulasi...";
 
         try {
-            const res = await fetch('/Report/SubmitIstJudgment', {
+            const res = await fetch('/Psychologist/SubmitIstJudgment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)

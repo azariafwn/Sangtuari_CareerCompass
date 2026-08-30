@@ -65,13 +65,15 @@
             JudgmentsJson: JSON.stringify(aspectGroups)
         };
 
-        const res = await fetch('/Report/SubmitPapiJudgment', {
+        const res = await fetch('/Psychologist/SubmitPapiJudgment', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
 
-        // if (res.ok) window.location.href = `/Report/PapiResult?userAssessmentId=${payload.UserAssessmentId}`;        
-        window.location.href = `/Quiz/Instruction?testKey=VARK&userAssessmentId=${payload.UserAssessmentId}`;
+        if (res.ok) {
+            // window.location.href = `/Report/PapiResult?userAssessmentId=${payload.UserAssessmentId}`;
+            window.location.href = `/Quiz/Instruction?testKey=VARK&userAssessmentId=${payload.UserAssessmentId}`;
+        }        
     }
 </script>
