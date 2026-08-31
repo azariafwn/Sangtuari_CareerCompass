@@ -3,6 +3,7 @@ using System;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SangtuariCareerCompass.Data;
@@ -12,9 +13,11 @@ using SangtuariCareerCompass.Data;
 namespace SangtuariCareerCompass.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260831070438_AddPsychologistTable")]
+    partial class AddPsychologistTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,10 +62,10 @@ namespace SangtuariCareerCompass.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(2026, 8, 31, 7, 26, 9, 276, DateTimeKind.Utc).AddTicks(5513),
+                            CreatedAt = new DateTime(2026, 8, 31, 7, 4, 38, 354, DateTimeKind.Utc).AddTicks(5668),
                             Email = "admin@sangtuari.com",
                             FullName = "Kepala Psikolog Sangtuari",
-                            PasswordHash = "$2a$11$69VBF5IQ5R6aH5alreMiuu8uA4dH3U4GpwqjNoWBldOSqwXTPXDMC",
+                            PasswordHash = "$2a$11$0n.F4Rz9r3eJ7p... (Gunakan Hash BCrypt Asli di sini)",
                             Role = "Head"
                         });
                 });
