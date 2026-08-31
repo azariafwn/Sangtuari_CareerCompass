@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SangtuariCareerCompass.Data;
 using SangtuariCareerCompass.Models;
 using SangtuariCareerCompass.Models.DTOs;
@@ -7,6 +11,7 @@ using SangtuariCareerCompass.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SangtuariCareerCompass.Controllers
@@ -21,11 +26,98 @@ namespace SangtuariCareerCompass.Controllers
             _context = context;
         }
 
-        // --- Dasbor Placeholder ---
+        [Authorize]
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(); // Nanti kita buat dasbor antrean penilaian di sini
+            // --- LOGIKA DASHBOARD STATISTIK ---
+            var totalQueue = await _context.UserAssessments
+                .Where(u => u.AssessmentType == "Discovery")
+                .CountAsync();
+
+            ViewBag.TotalQueue = totalQueue;
+            return View();
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Queue()
+        {
+            // --- LOGIKA TABEL ANTREAN (Pindahan dari Index sebelumnya) ---
+            var assessments = await _context.UserAssessments
+                .AsNoTracking()
+                .Where(u => u.AssessmentType == "Discovery")
+                .OrderByDescending(u => u.Id)
+                .ToListAsync();
+
+            var queueList = new List<dynamic>();
+
+            foreach (var user in assessments)
+            {
+                bool isIstJudged = await _context.UserTestResults.AnyAsync(r => r.UserAssessmentId == user.Id && r.TestCategory == "IST");
+                bool isPapiJudged = await _context.UserTestResults.AnyAsync(r => r.UserAssessmentId == user.Id && r.TestCategory == "PAPI_Kostick");
+
+                queueList.Add(new
+                {
+                    user.Id,
+                    user.FullName,
+                    user.SchoolName,
+                    IsIstJudged = isIstJudged,
+                    IsPapiJudged = isPapiJudged
+                });
+            }
+
+            return View(queueList);
+        }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+                return RedirectToAction("Index");
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            // 1. Cari user di database
+            var user = await _context.PsychologistUsers.FirstOrDefaultAsync(u => u.Email == model.Email);
+
+            // 2. Verifikasi hash BCrypt
+            if (user != null && BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
+            {
+                // 3. Buat "KTP" (Claims) untuk user ini
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Name, user.FullName),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, user.Role)
+                };
+
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+
+                // 4. Terbitkan Cookie Login
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                return RedirectToAction("Index");
+            }
+
+            // Jika gagal
+            ModelState.AddModelError(string.Empty, "Email atau password salah.");
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login");
         }
 
         // --- IST JUDGMENT ---

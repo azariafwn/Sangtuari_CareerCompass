@@ -1,0 +1,74 @@
+﻿@model IEnumerable<dynamic>
+@{
+    ViewData["Title"] = "Antrean Penilaian";
+    Layout = "_PsychologistLayout";
+}
+
+<!-- Kita atur tinggi container agar tidak memicu scroll pada body/halaman utama -->
+<div class="bg-white p-4 rounded-4 shadow-sm d-flex flex-column" style="max-height: 85vh;">
+
+    <!-- Judul akan tetap diam di atas karena berada di luar area scroll tabel -->
+    <h4 class="fw-bold mb-4 flex-shrink-0" style="color: #4A2B50;">Antrean Penilaian (Program Discovery)</h4>
+
+    <!-- Area Scroll Khusus Tabel -->
+    <div class="table-responsive flex-grow-1" style="overflow-y: auto;">
+        <table class="table table-hover align-middle mb-0">
+            <!-- Thead di-lock ke atas dengan z-index agar tidak tertimpa baris data -->
+            <thead style="position: sticky; top: 0; z-index: 10;">
+                <tr>
+                    <!-- Warna background dipindah ke TH agar tidak tembus pandang saat di-scroll -->
+                    <th width="30%" style="background-color: #4A2B50; color: white; border-bottom: none;">Nama Peserta</th>
+                    <th width="25%" style="background-color: #4A2B50; color: white; border-bottom: none;">Asal Sekolah</th>
+                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Status IST</th>
+                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Status PAPI</th>
+                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="fw-bold">@item.FullName</td>
+                        <td>@item.SchoolName</td>
+                        <td class="text-center">
+                            @if (item.IsIstJudged)
+                            {
+                                <span class="badge bg-success rounded-pill px-3 py-2">Selesai</span>
+                            }
+                            else
+                            {
+
+                                <span class="badge bg-warning text-dark rounded-pill px-3 py-2">Menunggu</span>
+                            }
+                        </td>
+                        <td class="text-center">
+                            @if (item.IsPapiJudged)
+                            {
+                                <span class="badge bg-success rounded-pill px-3 py-2">Selesai</span>
+                            }
+                            else
+                            {
+
+                                <span class="badge bg-warning text-dark rounded-pill px-3 py-2">Menunggu</span>
+                            }
+                        </td>
+                        <td class="text-center">
+                            @if (!item.IsIstJudged)
+                            {
+                                <a href="/Psychologist/IstJudgment?userAssessmentId=@item.Id" class="btn btn-sm text-white rounded-pill px-3 fw-bold" style="background-color: #9C7BB4;">Nilai IST</a>
+                            }
+                            else if (!item.IsPapiJudged)
+                            {
+                                <a href="/Psychologist/PapiJudgment?userAssessmentId=@item.Id" class="btn btn-sm text-white rounded-pill px-3 fw-bold" style="background-color: #9C7BB4;">Nilai PAPI</a>
+                            }
+                            else
+                            {
+                                <a href="/Report/FinalReportSMA?userAssessmentId=@item.Id" class="btn btn-outline-secondary btn-sm rounded-pill fw-bold" target="_blank">Lihat Hasil</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
