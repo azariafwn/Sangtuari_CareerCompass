@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SangtuariCareerCompass.Data;
+using SangtuariCareerCompass.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace SangtuariCareerCompass
 {
@@ -9,8 +11,18 @@ namespace SangtuariCareerCompass
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Cookie Authentication
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Psychologist/Login"; // Redirect jika belum login
+                    options.ExpireTimeSpan = TimeSpan.FromHours(5); // Sesi login valid 5 jam
+                    options.SlidingExpiration = true;
+                });
+
             // Add services to the container.
-            builder.Services.AddControllersWithViews();          
+            builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<EmailService>();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -29,6 +41,8 @@ namespace SangtuariCareerCompass
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

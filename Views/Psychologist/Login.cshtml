@@ -1,0 +1,87 @@
+﻿@model SangtuariCareerCompass.ViewModels.LoginViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Psikolog - Sangtuari</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        :root {
+            --bg-purple: #4A2B50;
+            --bg-yellow: #FBE676;
+        }
+
+        body {
+            background-color: var(--bg-purple);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .login-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            background-color: #f8f9fa;
+        }
+
+        .btn-custom {
+            background-color: var(--bg-yellow);
+            color: var(--bg-purple);
+            border-radius: 25px;
+            font-weight: bold;
+            padding: 0.8rem;
+            width: 100%;
+            transition: 0.2s;
+        }
+
+            .btn-custom:hover {
+                background-color: #e5d166;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <div class="text-center mb-4">
+            <img src="~/images/logo-sangtuari.png" alt="Logo" width="80" class="mb-3" onerror="this.style.display='none'">
+            <h4 class="fw-bold" style="color: var(--bg-purple);">Portal Psikolog</h4>
+            <p class="text-muted small">Silakan masuk untuk mengelola antrean penilaian.</p>
+        </div>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger py-2 small rounded-3">
+                @Html.ValidationSummary(false, "", new { @class = "mb-0 list-unstyled" })
+            </div>
+        }
+
+        <form asp-action="Login" method="post">
+            <div class="mb-3">
+                <label class="form-label fw-bold small text-muted">Email</label>
+                <input asp-for="Email" class="form-control" placeholder="admin@sangtuari.com" required autofocus />
+            </div>
+            <div class="mb-4">
+                <label class="form-label fw-bold small text-muted">Password</label>
+                <input asp-for="Password" type="password" class="form-control" placeholder="••••••••" required />
+            </div>
+            <button type="submit" class="btn btn-custom">Masuk</button>
+        </form>
+    </div>
+
+</body>
+</html>
