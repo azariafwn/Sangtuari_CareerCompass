@@ -2,7 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using SangtuariCareerCompass.Data;
 using SangtuariCareerCompass.Models;
+using SangtuariCareerCompass.Services;
 using SangtuariCareerCompass.Services.Scoring;
+using SangtuariCareerCompass.Models.DTOs;
 using SangtuariCareerCompass.ViewModels;
 using System;
 using System.Text.Json;
@@ -230,6 +232,30 @@ namespace SangtuariCareerCompass.Controllers
             var reportVm = await FinalReportSMPViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
             if (reportVm == null) return NotFound("Data asesmen tidak ditemukan.");
             return View("~/Views/Report/SMP/FinalReportSMP.cshtml", reportVm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SendEmailReport([FromBody] SendEmailDto dto, [FromServices] EmailService emailService)
+        {
+            var assessment = await _context.UserAssessments.FindAsync(dto.UserAssessmentId);
+            if (assessment == null || string.IsNullOrEmpty(assessment.Email))
+                return BadRequest(new { success = false, message = "Email tidak ditemukan." });
+
+            // Generate link absolut menuju laporan. Sesuaikan rute (SMP/SMA) berdasarkan AssessmentType.
+            var request = HttpContext.Request;
+            var baseUrl = $"{request.Scheme}://{request.Host}";
+            var reportPath = assessment.AssessmentType == "Exploration" ? "FinalReportSMP" : "FinalReportSMA";
+            var reportUrl = $"{baseUrl}/Report/{reportPath}?userAssessmentId={assessment.Id}";
+
+            try
+            {
+                await emailService.SendResultEmailAsync(assessment.Email, assessment.FullName, reportUrl, assessment.AssessmentType);
+                return Ok(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = ex.Message });
+            }
         }
     }
 }

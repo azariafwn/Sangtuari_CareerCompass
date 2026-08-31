@@ -148,8 +148,8 @@
 </head>
 <body>
     <div class="no-print">
-        <!-- Tombol memicu html2pdf, bukan window.print -->
-        <button id="btnDownload" class="btn btn-primary btn-sm px-4">Unduh PDF</button>
+        <button id="btnSendEmail" class="btn btn-warning btn-sm px-4 me-2">Kirim ke Email</button>
+        <button id="btnDownload" class="btn btn-primary btn-sm px-4" style="background-color: #4A2B50; border: none;">Unduh PDF</button>
         <a href="/Assessment/Index" class="btn btn-secondary btn-sm px-4">Selesai</a>
     </div>
 
@@ -436,6 +436,33 @@
                     btn.innerText = "Unduh PDF";
                     btn.disabled = false;
                 });
+            });
+
+            document.getElementById('btnSendEmail').addEventListener('click', async function () {
+                const btn = this;
+                btn.innerText = "Mengirim...";
+                btn.disabled = true;
+
+                const payload = { UserAssessmentId: '@Model.UserAssessmentId' };
+
+                try {
+                    const response = await fetch('/Report/SendEmailReport', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.ok) {
+                        alert("Email berhasil terkirim!");
+                    } else {
+                        alert("Gagal mengirim email.");
+                    }
+                } catch (e) {
+                    alert("Terjadi kesalahan jaringan.");
+                } finally {
+                    btn.innerText = "Kirim ke Email";
+                    btn.disabled = false;
+                }
             });
         });
     </script>
