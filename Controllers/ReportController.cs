@@ -62,18 +62,18 @@ namespace SangtuariCareerCompass.Controllers
             return Ok(new { success = true });
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> IstResult(Guid userAssessmentId)
-        //{
-        //    var vm = await IstReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
-        //    if (vm == null || !vm.IsJudged) return RedirectToAction("IstJudgment", new { userAssessmentId });
+        [HttpGet]
+        public async Task<IActionResult> IstResult(Guid userAssessmentId)
+        {
+            var vm = await IstReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
+            if (vm == null || !vm.IsJudged) return RedirectToAction("IstJudgment", new { userAssessmentId });
 
-        //    // Populate IQ Intelligence Level for display (since it's dynamically generated)
-        //    var engine = new Services.Scoring.IstScoringEngine();
-        //    engine.ProcessScoring(vm); // Safe rerun just to populate volatile narrative fields if needed
+            // Populate IQ Intelligence Level for display (since it's dynamically generated)
+            var engine = new Services.Scoring.IstScoringEngine();
+            engine.ProcessScoring(vm); // Safe rerun just to populate volatile narrative fields if needed
 
-        //    return View("~/Views/Report/IstResult.cshtml", vm);
-        //}
+            return View("~/Views/Report/SMA/IstResult.cshtml", vm);
+        }
 
         //public async Task<IActionResult> VarkResult(Guid userAssessmentId)
         //{
@@ -102,7 +102,7 @@ namespace SangtuariCareerCompass.Controllers
 
         //    return View("~/Views/Report/VarkResult.cshtml", reportVm);
         //}
-        
+
         //public async Task<IActionResult> SdsResult(Guid userAssessmentId)
         //{
         //    if (userAssessmentId == Guid.Empty) return RedirectToAction("Index", "Assessment");
@@ -175,14 +175,14 @@ namespace SangtuariCareerCompass.Controllers
             return Ok(new { success = true });
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> PapiResult(Guid userAssessmentId)
-        //{
-        //    var vm = await PapiReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
-        //    if (vm == null || !vm.IsJudged) return RedirectToAction("PapiJudgment", new { userAssessmentId });
+        [HttpGet]
+        public async Task<IActionResult> PapiResult(Guid userAssessmentId)
+        {
+            var vm = await PapiReportViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
+            if (vm == null || !vm.IsJudged) return RedirectToAction("PapiJudgment", new { userAssessmentId });
 
-        //    return View("~/Views/Report/PapiResult.cshtml", vm);
-        //}
+            return View("~/Views/Report/SMA/PapiResult.cshtml", vm);
+        }
 
         [HttpGet]
         public async Task<IActionResult> FinalReportSMA(Guid userAssessmentId)
