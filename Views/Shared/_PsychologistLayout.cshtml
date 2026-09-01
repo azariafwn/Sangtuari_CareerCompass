@@ -123,6 +123,9 @@
                 <a href="/Psychologist/Queue" class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["Action"]?.ToString() == "Queue" ? "active" : "")">
                     <i class="bi bi-list-check"></i> <span class="menu-text">Antrean Penilaian</span>
                 </a>
+                <a href="/Psychologist/ParticipantList" class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["Action"]?.ToString() == "ParticipantList" ? "active" : "")">
+                    <i class="bi bi-people-fill"></i> <span class="menu-text">Data Peserta</span>
+                </a>
                 <a href="#" class="list-group-item list-group-item-action">
                     <i class="bi bi-person-badge-fill"></i> <span class="menu-text">Profil Psikolog</span>
                 </a>
@@ -152,5 +155,7 @@
             document.getElementById("sidebar-wrapper").classList.toggle("toggled");
         });
     </script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
