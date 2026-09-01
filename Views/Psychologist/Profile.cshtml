@@ -1,0 +1,64 @@
+﻿@model SangtuariCareerCompass.ViewModels.PsychologistProfileViewModel
+@{
+    ViewData["Title"] = "Profil Psikolog";
+    Layout = "_PsychologistLayout"; // Sesuaikan dengan master layout dashboard Anda
+}
+
+<div class="bg-white p-4 rounded-4 shadow-sm" style="max-width: 800px; margin: 0 auto;">
+    <h4 class="fw-bold mb-4" style="color: #4A2B50;">Profil Saya</h4>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <form asp-action="Profile" method="post">
+        <h5 class="fw-bold mb-3 border-bottom pb-2" style="color: #4A2B50;">Informasi Dasar</h5>
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small">Nama Lengkap</label>
+                <input asp-for="FullName" class="form-control bg-light" />
+                <span asp-validation-for="FullName" class="text-danger small"></span>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small">Gelar Akademik</label>
+                <input asp-for="Degree" class="form-control bg-light" placeholder="Contoh: M.Psi., Psikolog" />
+            </div>
+            <div class="col-12">
+                <label class="form-label fw-bold text-muted small">Email (Kredensial Login)</label>
+                <!-- Dibuat readonly agar tidak diubah sembarangan -->
+                <input asp-for="Email" class="form-control bg-light text-muted" readonly />
+            </div>
+        </div>
+
+        <h5 class="fw-bold mb-3 border-bottom pb-2" style="color: #4A2B50;">Lisensi Profesional</h5>
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small">Nomor SILP</label>
+                <input asp-for="SilpNumber" class="form-control bg-light" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small">Nomor STR</label>
+                <input asp-for="StrNumber" class="form-control bg-light" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small">Tanggal Mulai SILP</label>
+                <!-- Tipe input date didukung langsung oleh DateOnly di C# -->
+                <input asp-for="SilpStartDate" type="date" class="form-control bg-light" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small">Tanggal Berakhir SILP</label>
+                <input asp-for="SilpEndDate" type="date" class="form-control bg-light" />
+            </div>
+        </div>
+
+        <div class="text-end mt-4">
+            <button type="submit" class="btn text-white rounded-pill px-5 fw-bold shadow-sm" style="background-color: #4A2B50;">
+                Simpan Perubahan
+            </button>
+        </div>
+    </form>
+</div>
