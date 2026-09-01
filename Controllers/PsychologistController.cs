@@ -145,6 +145,58 @@ namespace SangtuariCareerCompass.Controllers
             return RedirectToAction("Login");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            // Ambil ID secara aman dari session/cookie auth
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!Guid.TryParse(userIdStr, out Guid userId)) return RedirectToAction("Login");
+
+            var user = await _context.PsychologistUsers.FindAsync(userId);
+            if (user == null) return NotFound();
+
+            var model = new PsychologistProfileViewModel
+            {
+                FullName = user.FullName,
+                Email = user.Email,
+                Degree = user.Degree,
+                SilpNumber = user.SilpNumber,
+                SilpStartDate = user.SilpStartDate,
+                SilpEndDate = user.SilpEndDate,
+                StrNumber = user.StrNumber
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken] // Keamanan ekstra terhadap CSRF
+        public async Task<IActionResult> Profile(PsychologistProfileViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            // Validasi ulang ID dari session
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!Guid.TryParse(userIdStr, out Guid userId)) return RedirectToAction("Login");
+
+            var user = await _context.PsychologistUsers.FindAsync(userId);
+            if (user == null) return NotFound();
+
+            // Update hanya field yang diizinkan (Role dan PasswordHash aman)
+            user.FullName = model.FullName;
+            user.Degree = model.Degree;
+            user.SilpNumber = model.SilpNumber;
+            user.SilpStartDate = model.SilpStartDate;
+            user.SilpEndDate = model.SilpEndDate;
+            user.StrNumber = model.StrNumber;
+
+            _context.PsychologistUsers.Update(user);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Profil berhasil diperbarui!";
+            return RedirectToAction("Profile");
+        }
+
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> ParticipantList()
