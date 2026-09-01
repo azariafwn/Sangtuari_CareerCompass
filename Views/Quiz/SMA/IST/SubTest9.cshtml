@@ -245,7 +245,8 @@
                 });
 
                 if (response.ok) {
-                    window.location.href = `/Psychologist/IstJudgment?userAssessmentId=${userAssessmentId}`;
+                    // window.location.href = `/Psychologist/IstJudgment?userAssessmentId=${userAssessmentId}`;
+                    window.location.href = `/Quiz/Instruction?testKey=PAPI_Kostick&userAssessmentId=${payload.UserAssessmentId}`;
                 } else {
                     const errData = await response.json().catch(() => ({}));
                     alert("Gagal menyimpan IST 09: " + (errData.message || response.status));
