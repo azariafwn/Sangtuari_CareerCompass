@@ -30,12 +30,37 @@ namespace SangtuariCareerCompass.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            // --- LOGIKA DASHBOARD STATISTIK ---
-            var totalQueue = await _context.UserAssessments
-                .Where(u => u.AssessmentType == "Discovery")
-                .CountAsync();
+            var baseQuery = _context.UserAssessments.AsNoTracking();
 
-            ViewBag.TotalQueue = totalQueue;
+            // Eksekusi agregasi secara efisien di level database
+            var totalPeserta = await baseQuery.CountAsync();
+            var totalSekolah = await baseQuery.Select(u => u.SchoolName).Distinct().CountAsync();
+
+            var totalExploration = await baseQuery.CountAsync(u => u.AssessmentType == "Exploration");
+
+            // Tarik ID peserta Discovery untuk mengkalkulasi antrean spesifik
+            var discoveryIds = await baseQuery
+                .Where(u => u.AssessmentType == "Discovery")
+                .Select(u => u.Id)
+                .ToListAsync();
+
+            var totalDiscovery = discoveryIds.Count;
+
+            // Hitung berapa banyak tes IST dan PAPI yang SUDAH dinilai untuk populasi Discovery
+            var judgedIst = await _context.UserTestResults
+                .CountAsync(r => r.TestCategory == "IST" && discoveryIds.Contains(r.UserAssessmentId));
+
+            var judgedPapi = await _context.UserTestResults
+                .CountAsync(r => r.TestCategory == "PAPI_Kostick" && discoveryIds.Contains(r.UserAssessmentId));
+
+            // Kalkulasi sisa antrean
+            ViewBag.TotalPeserta = totalPeserta;
+            ViewBag.TotalSekolah = totalSekolah;
+            ViewBag.TotalExploration = totalExploration;
+            ViewBag.TotalDiscovery = totalDiscovery;
+            ViewBag.UnjudgedIst = totalDiscovery - judgedIst;
+            ViewBag.UnjudgedPapi = totalDiscovery - judgedPapi;
+
             return View();
         }
 
@@ -118,6 +143,69 @@ namespace SangtuariCareerCompass.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login");
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> ParticipantList()
+        {
+            // 1. Ambil data peserta dasar
+            var assessments = await _context.UserAssessments
+                .AsNoTracking()
+                .OrderByDescending(u => u.Id)
+                .Select(u => new
+                {
+                    u.Id,
+                    u.FullName,
+                    u.Gender,
+                    u.BirthDate,
+                    u.SchoolName,
+                    ClassName = u.ClassName,
+                    u.AssessmentType
+                })
+                .ToListAsync();
+
+            var assessmentIds = assessments.Select(a => a.Id).ToList();
+
+            // 2. Ambil status penilaian HANYA untuk peserta yang ditarik, dalam 1 kueri (Mencegah N+1)
+            var judgedTests = await _context.UserTestResults
+                .AsNoTracking()
+                .Where(r => assessmentIds.Contains(r.UserAssessmentId) && (r.TestCategory == "IST" || r.TestCategory == "PAPI_Kostick"))
+                .Select(r => new { r.UserAssessmentId, r.TestCategory })
+                .ToListAsync();
+
+            var modelList = new List<dynamic>();
+
+            // 3. Mapping data di memori
+            foreach (var user in assessments)
+            {
+                var userTests = judgedTests.Where(t => t.UserAssessmentId == user.Id).Select(t => t.TestCategory).ToList();
+
+                var missingTests = new List<string>();
+
+                // Logika dinamis berdasarkan tipe asesmen
+                if (user.AssessmentType == "Discovery")
+                {
+                    if (!userTests.Contains("IST")) missingTests.Add("IST");
+                    if (!userTests.Contains("PAPI_Kostick")) missingTests.Add("PAPI Kostick");
+                }
+                // Jika Exploration (SMP), tambahkan kondisi lain jika ada
+
+                modelList.Add(new
+                {
+                    user.Id,
+                    user.FullName,
+                    user.Gender,
+                    BirthDate = user.BirthDate.ToString("dd MMM yyyy"),
+                    user.SchoolName,
+                    user.ClassName,
+                    user.AssessmentType,
+                    IsFullyJudged = !missingTests.Any(),
+                    MissingTestsMessage = string.Join(" dan ", missingTests)
+                });
+            }
+
+            return View(modelList);
         }
 
         // --- IST JUDGMENT ---
