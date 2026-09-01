@@ -1,0 +1,37 @@
+﻿@model SangtuariCareerCompass.Models.UserAssessment
+@{
+    ViewData["Title"] = "Asesmen Selesai";
+    // Sesuaikan nama layout dengan yang Anda gunakan untuk instruksi/tes
+    Layout = "_QuizLayout";
+}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-sm p-5 border-0 rounded-4 text-center" style="max-width: 600px; background-color: #FFFDF4;">
+
+        <!-- Ikon Sukses (Bootstrap Icons) -->
+        <i class="bi bi-check-circle-fill mb-3" style="font-size: 5rem; color: #4A2B50;"></i>
+
+        <h2 class="fw-bold mb-3" style="color: #4A2B50;">Tes Selesai!</h2>
+
+        <p class="fs-5 text-muted mb-4">
+            Terima kasih, <strong>@Model.FullName</strong>. Anda telah menyelesaikan seluruh rangkaian asesmen psikologi Sangtuari's Career Compass.
+        </p>
+
+        <div class="alert text-start rounded-3 border-0" style="background-color: #FBE676; color: #4A2B50;">
+            <strong class="d-block mb-2"><i class="bi bi-envelope-fill me-2"></i> Informasi Laporan Hasil:</strong>
+
+            @if (Model.AssessmentType == "Exploration")
+            {
+                <span>Hasil asesmen Exploration Anda sedang diproses oleh sistem dan akan segera dikirimkan secara otomatis ke email <b>@Model.Email</b>. Silakan periksa kotak masuk atau folder <i>spam</i> Anda dalam beberapa hari ke depan.</span>
+            }
+            else
+            {
+                <span>Hasil asesmen Discovery Anda telah direkam. Laporan akhir akan dikirimkan ke email <b>@Model.Email</b> setelah evaluasi lanjutan selesai dinilai secara komprehensif oleh tim Psikolog kami. Silakan periksa kotak masuk atau folder <i>spam</i> Anda dalam beberapa hari ke depan.</span>
+            }
+        </div>
+
+        <a href="/" class="btn rounded-pill px-5 py-2 mt-4 fw-bold text-white shadow-sm" style="background-color: #4A2B50;">
+            Kembali ke Beranda
+        </a>
+    </div>
+</div>

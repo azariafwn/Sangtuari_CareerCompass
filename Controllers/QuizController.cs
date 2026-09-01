@@ -404,19 +404,12 @@ namespace SangtuariCareerCompass.Controllers
                     };
 
                     _context.UserTestResults.Add(resultEntity);
-                    await _context.SaveChangesAsync();
-
-                    // kategori siswa untuk routing dinamis
-                    var assessment = await _context.UserAssessments
-                        .AsNoTracking()
-                        .FirstOrDefaultAsync(u => u.Id == dto.UserAssessmentId);
-
-                    string reportPath = assessment?.AssessmentType == "Exploration" ? "FinalReportSMP" : "FinalReportSMA";
+                    await _context.SaveChangesAsync();                    
 
                     return Ok(new
                     {
                         success = true,
-                        nextUrl = $"/Report/{reportPath}?userAssessmentId={dto.UserAssessmentId}"
+                        nextUrl = $"/Quiz/Completed?userAssessmentId={dto.UserAssessmentId}"
                     });
                 }
 
@@ -500,6 +493,22 @@ namespace SangtuariCareerCompass.Controllers
                 Console.WriteLine($"Error Scoring {dto.SubTestName}: {ex.Message}");
                 return StatusCode(500, new { success = false, message = "Terjadi kesalahan internal saat skoring." });
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Completed(Guid userAssessmentId)
+        {
+            if (userAssessmentId == Guid.Empty)
+                return RedirectToAction("Index", "Assessment");
+
+            var assessment = await _context.UserAssessments
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Id == userAssessmentId);
+
+            if (assessment == null)
+                return NotFound();
+
+            return View(assessment);
         }
     }
 }
