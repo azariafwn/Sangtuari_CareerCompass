@@ -1,0 +1,171 @@
+﻿@model IEnumerable<dynamic>
+@{
+    ViewData["Title"] = "Data Peserta & Hasil";
+    Layout = "_PsychologistLayout";
+}
+
+<div class="bg-white p-4 rounded-4 shadow-sm d-flex flex-column" style="max-height: 85vh;">
+
+    <!-- Header Area: Judul, Filter & Pencarian -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-shrink-0">
+        <h4 class="fw-bold mb-0" style="color: #4A2B50;">Data Peserta & Hasil Tes</h4>
+
+        <div class="d-flex gap-2 justify-content-end">
+            <!-- Filter Jenis Tes -->
+            <select id="filterProgram" class="form-select bg-light border-0 text-muted" style="width: 170px; cursor: pointer;">
+                <option value="">Semua Program</option>
+                <option value="exploration">Exploration (SMP)</option>
+                <option value="discovery">Discovery (SMA)</option>
+                <option value="advanced">Advanced</option>
+            </select>
+
+            <!-- Pencarian -->
+            <div class="input-group" style="width: 250px;">
+                <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+                <input type="text" id="searchParticipant" class="form-control border-start-0 bg-light" placeholder="Cari peserta / sekolah">
+            </div>
+        </div>
+    </div>
+
+    <!-- Area Scroll Khusus Tabel -->
+    <div class="table-responsive flex-grow-1" style="overflow-y: auto;">
+        <table class="table table-hover align-middle mb-0" id="participantTable">
+            <thead style="position: sticky; top: 0; z-index: 10; cursor: pointer;">
+                <tr>
+                    <!-- JENIS TES SEKARANG DI KOLOM PERTAMA (Index 0) -->
+                    <th onclick="sortTable(0)" width="15%" style="background-color: #4A2B50; color: white; border-bottom: none;">
+                        Jenis Tes <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i>
+                    </th>
+                    <th onclick="sortTable(1)" width="20%" style="background-color: #4A2B50; color: white; border-bottom: none;">
+                        Nama Lengkap <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i>
+                    </th>
+                    <th onclick="sortTable(2)" width="10%" style="background-color: #4A2B50; color: white; border-bottom: none;">Gender</th>
+                    <th width="15%" style="background-color: #4A2B50; color: white; border-bottom: none;">Tgl Lahir</th>
+                    <th onclick="sortTable(4)" width="15%" style="background-color: #4A2B50; color: white; border-bottom: none;">
+                        Sekolah <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i>
+                    </th>
+                    <th width="10%" style="background-color: #4A2B50; color: white; border-bottom: none;">Kelas</th>
+                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Laporan Akhir</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <!-- TD JENIS TES -->
+                        <td>
+                            @if (item.AssessmentType == "Exploration")
+                            {
+                                <span class="badge rounded-pill fw-bold border px-3 py-2" style="background-color: #FBE676; color: #4A2B50; border-color: #4A2B50 !important; font-size: 0.85rem;">Exploration</span>
+                            }
+                            else if (item.AssessmentType == "Discovery")
+                            {
+                                <span class="badge rounded-pill fw-bold px-3 py-2" style="background-color: #4A2B50; color: #FBE676; font-size: 0.85rem;">Discovery</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary rounded-pill px-3 py-2" style="font-size: 0.85rem;">Advanced</span>
+                            }
+                        </td>
+                        <td class="fw-bold">@item.FullName</td>
+                        <td>@item.Gender</td>
+                        <td>@item.BirthDate</td>
+                        <td>@item.SchoolName</td>
+                        <td>@item.ClassName</td>
+                        <td class="text-center">
+                            @if (item.IsFullyJudged)
+                            {
+                                var reportAction = item.AssessmentType == "Exploration" ? "FinalReportSMP" : "FinalReportSMA";
+                                <a href="/Report/@reportAction?userAssessmentId=@item.Id" class="btn btn-sm text-white rounded-pill px-4 fw-bold" style="background-color: #9C7BB4;" target="_blank">Lihat Hasil</a>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-sm btn-secondary rounded-pill px-4 fw-bold opacity-50" onclick="showCustomAlert('@item.MissingTestsMessage')">
+                                    <i class="bi bi-lock-fill me-1"></i> Terkunci
+                                </button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal Kustom Bootstrap (Bagus & Di Tengah) -->
+<div class="modal fade" id="incompleteModal" tabindex="-1" aria-labelledby="incompleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 15px; overflow: hidden;">
+            <div class="modal-header border-0" style="background-color: #4A2B50; color: white;">
+                <h5 class="modal-title fw-bold" id="incompleteModalLabel">
+                    <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i> Laporan Terkunci
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 text-center bg-light">
+                <p class="mb-3 text-muted">Laporan akhir belum dapat dicetak karena komponen tes berikut belum dinilai oleh Psikolog:</p>
+                <h5 id="missingTestsText" class="fw-bold px-3 py-2 rounded-3 d-inline-block" style="background-color: #FBE676; color: #4A2B50;"></h5>
+                <p class="small text-muted mt-3 mb-0">Silakan proses penilaian melalui menu <strong>Antrean Penilaian</strong> terlebih dahulu.</p>
+            </div>
+            <div class="modal-footer border-0 justify-content-center bg-light pb-4">
+                <button type="button" class="btn fw-bold rounded-pill px-5" style="background-color: #4A2B50; color: white;" data-bs-dismiss="modal">Mengerti</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- LOGIKA FILTER GABUNGAN ---
+    function applyFilters() {
+        let searchText = document.getElementById('searchParticipant').value.toLowerCase();
+        let filterProgram = document.getElementById('filterProgram').value.toLowerCase();
+
+        let rows = document.querySelectorAll('#participantTable tbody tr');
+
+        rows.forEach(row => {
+            let text = row.innerText.toLowerCase();
+            // PERBAIKAN: Target cell Jenis Tes bergeser dari index 1 menjadi index 0
+            let programText = row.cells[0].innerText.toLowerCase();
+
+            let matchSearch = text.includes(searchText);
+            let matchProgram = filterProgram === "" || programText.includes(filterProgram);
+
+            row.style.display = (matchSearch && matchProgram) ? '' : 'none';
+        });
+    }
+
+    document.getElementById('searchParticipant').addEventListener('keyup', applyFilters);
+    document.getElementById('filterProgram').addEventListener('change', applyFilters);
+
+    // --- LOGIKA SORTING TABEL ---
+    let currentSortCol = -1;
+    let asc = true;
+
+    function sortTable(columnIndex) {
+        let table = document.getElementById("participantTable");
+        let tbody = table.querySelector("tbody");
+        let rows = Array.from(tbody.querySelectorAll("tr"));
+
+        asc = currentSortCol === columnIndex ? !asc : true;
+        currentSortCol = columnIndex;
+
+        rows.sort((a, b) => {
+            let valA = a.cells[columnIndex].innerText.trim().toLowerCase();
+            let valB = b.cells[columnIndex].innerText.trim().toLowerCase();
+
+            if (valA < valB) return asc ? -1 : 1;
+            if (valA > valB) return asc ? 1 : -1;
+            return 0;
+        });
+
+        rows.forEach(row => tbody.appendChild(row));
+    }
+
+    // --- LOGIKA POP-UP MODAL KUSTOM ---
+    function showCustomAlert(missingTests) {
+        document.getElementById('missingTestsText').innerText = missingTests;
+        // Karena bootstrap.bundle.js sudah terhubung di Layout, ini tidak akan error lagi
+        var myModal = new bootstrap.Modal(document.getElementById('incompleteModal'));
+        myModal.show();
+    }
+</script>
