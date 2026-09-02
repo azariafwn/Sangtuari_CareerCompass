@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SangtuariCareerCompass.Data;
 using SangtuariCareerCompass.Models;
 using SangtuariCareerCompass.Models.DTOs;
+using SangtuariCareerCompass.Services;
 using SangtuariCareerCompass.Services.Scoring;
 using SangtuariCareerCompass.ViewModels;
 using System;
@@ -20,10 +21,12 @@ namespace SangtuariCareerCompass.Controllers
     public class PsychologistController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly EmailService _emailService;
 
-        public PsychologistController(ApplicationDbContext context)
+        public PsychologistController(ApplicationDbContext context, EmailService emailService)
         {
             _context = context;
+            _emailService = emailService;
         }
 
         [Authorize]
@@ -72,7 +75,7 @@ namespace SangtuariCareerCompass.Controllers
             var assessments = await _context.UserAssessments
                 .AsNoTracking()
                 .Where(u => u.AssessmentType == "Discovery")
-                .OrderByDescending(u => u.Id)
+                .OrderByDescending(u => u.CreatedAt)
                 .ToListAsync();
 
             var queueList = new List<dynamic>();
@@ -85,6 +88,10 @@ namespace SangtuariCareerCompass.Controllers
                 queueList.Add(new
                 {
                     user.Id,
+                    // Format khusus untuk logika sorting (YYYYMMDDHHmmss)
+                    CreatedAtSort = user.CreatedAt.ToString("yyyyMMddHHmmss"),
+                    // Format untuk tampilan UI (02 Sep 2026, 14:30)
+                    CreatedAtDisplay = user.CreatedAt.ToString("dd MMM yyyy, HH:mm"),
                     user.FullName,
                     user.SchoolName,
                     IsIstJudged = isIstJudged,
@@ -204,7 +211,7 @@ namespace SangtuariCareerCompass.Controllers
             // 1. Ambil data peserta dasar
             var assessments = await _context.UserAssessments
                 .AsNoTracking()
-                .OrderByDescending(u => u.Id)
+                .OrderByDescending(u => u.CreatedAt)
                 .Select(u => new
                 {
                     u.Id,
@@ -213,7 +220,8 @@ namespace SangtuariCareerCompass.Controllers
                     u.BirthDate,
                     u.SchoolName,
                     ClassName = u.ClassName,
-                    u.AssessmentType
+                    u.AssessmentType,
+                    u.CreatedAt
                 })
                 .ToListAsync();
 
@@ -253,7 +261,10 @@ namespace SangtuariCareerCompass.Controllers
                     user.ClassName,
                     user.AssessmentType,
                     IsFullyJudged = !missingTests.Any(),
-                    MissingTestsMessage = string.Join(" dan ", missingTests)
+                    MissingTestsMessage = string.Join(" dan ", missingTests),
+
+                    CreatedAtSort = user.CreatedAt.ToString("yyyyMMddHHmmss"),
+                    CreatedAtDisplay = user.CreatedAt.ToString("dd MMM yyyy, HH:mm"),
                 });
             }
 
@@ -299,6 +310,8 @@ namespace SangtuariCareerCompass.Controllers
             _context.UserTestResults.Add(resultEntity);
             await _context.SaveChangesAsync();
 
+            await CheckAndTriggerDiscoveryEmailAsync(dto.UserAssessmentId);
+
             return Ok(new { success = true });
         }
 
@@ -337,7 +350,50 @@ namespace SangtuariCareerCompass.Controllers
             _context.UserTestResults.Add(resultEntity);
             await _context.SaveChangesAsync();
 
+            await CheckAndTriggerDiscoveryEmailAsync(dto.UserAssessmentId);
+
             return Ok(new { success = true });
+        }
+
+        private async Task CheckAndTriggerDiscoveryEmailAsync(Guid userAssessmentId)
+        {
+            // 1. Tarik semua kategori tes yang sudah dinilai untuk user ini
+            var judgedTests = await _context.UserTestResults
+                .AsNoTracking()
+                .Where(r => r.UserAssessmentId == userAssessmentId && (r.TestCategory == "IST" || r.TestCategory == "PAPI_Kostick"))
+                .Select(r => r.TestCategory)
+                .ToListAsync();
+
+            // 2. Jika keduanya sudah ada, tembak email
+            if (judgedTests.Contains("IST") && judgedTests.Contains("PAPI_Kostick"))
+            {
+                var assessment = await _context.UserAssessments.FindAsync(userAssessmentId);
+
+                if (assessment != null && assessment.AssessmentType == "Discovery")
+                {
+                    var request = HttpContext.Request;
+                    var baseUrl = $"{request.Scheme}://{request.Host}";
+                    var reportUrl = $"{baseUrl}/Report/FinalReportSMA?userAssessmentId={assessment.Id}";
+
+                    // Fire-and-Forget: Jangan blokir UI psikolog
+                    _ = Task.Run(async () =>
+                    {
+                        try
+                        {
+                            await _emailService.SendResultEmailAsync(
+                                assessment.Email,
+                                assessment.FullName,
+                                reportUrl,
+                                assessment.AssessmentType
+                            );
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"[Error] Auto-email SMA gagal untuk {assessment.Email}: {ex.Message}");
+                        }
+                    });
+                }
+            }
         }
     }
 }
