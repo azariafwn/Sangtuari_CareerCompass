@@ -31,21 +31,24 @@
     <div class="table-responsive flex-grow-1" style="overflow-y: auto;">
         <table class="table table-hover align-middle mb-0" id="participantTable">
             <thead style="position: sticky; top: 0; z-index: 10; cursor: pointer;">
-                <tr>
+                <tr class="align-middle">
                     <!-- JENIS TES SEKARANG DI KOLOM PERTAMA (Index 0) -->
-                    <th onclick="sortTable(0)" width="15%" style="background-color: #4A2B50; color: white; border-bottom: none;">
+                    <th class="text-center" onclick="sortTable(0)" width="15%" style="background-color: #4A2B50; color: white; border-bottom: none;">
                         Jenis Tes <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i>
                     </th>
-                    <th onclick="sortTable(1)" width="20%" style="background-color: #4A2B50; color: white; border-bottom: none;">
+                    <th class="text-center" onclick="sortTable(1)" width="15%" style="background-color: #4A2B50; color: white; border-bottom: none;">
+                        Waktu Tes <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i>
+                    </th>
+                    <th class="text-center" onclick="sortTable(2)" width="20%" style="background-color: #4A2B50; color: white; border-bottom: none;">
                         Nama Lengkap <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i>
                     </th>
-                    <th onclick="sortTable(2)" width="10%" style="background-color: #4A2B50; color: white; border-bottom: none;">Gender</th>
-                    <th width="15%" style="background-color: #4A2B50; color: white; border-bottom: none;">Tgl Lahir</th>
-                    <th onclick="sortTable(4)" width="15%" style="background-color: #4A2B50; color: white; border-bottom: none;">
+                    <th class="text-center" onclick="sortTable(3)" width="10%" style="background-color: #4A2B50; color: white; border-bottom: none;">Gender</th>
+                    <th class="text-center" width="15%" style="background-color: #4A2B50; color: white; border-bottom: none;">Tgl Lahir</th>
+                    <th class="text-center" onclick="sortTable(5)" width="15%" style="background-color: #4A2B50; color: white; border-bottom: none;">
                         Sekolah <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i>
                     </th>
-                    <th width="10%" style="background-color: #4A2B50; color: white; border-bottom: none;">Kelas</th>
-                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Laporan Akhir</th>
+                    <th class="text-center" width="10%" style="background-color: #4A2B50; color: white; border-bottom: none;">Kelas</th>
+                    <th class="text-center" width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Laporan Akhir</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,6 +70,7 @@
                                 <span class="badge bg-secondary rounded-pill px-3 py-2" style="font-size: 0.85rem;">Advanced</span>
                             }
                         </td>
+                        <td data-sort="@item.CreatedAtSort" class="text-muted small">@item.CreatedAtDisplay</td>
                         <td class="fw-bold">@item.FullName</td>
                         <td>@item.Gender</td>
                         <td>@item.BirthDate</td>
@@ -150,8 +154,12 @@
         currentSortCol = columnIndex;
 
         rows.sort((a, b) => {
-            let valA = a.cells[columnIndex].innerText.trim().toLowerCase();
-            let valB = b.cells[columnIndex].innerText.trim().toLowerCase();
+            let cellA = a.cells[columnIndex];
+            let cellB = b.cells[columnIndex];
+
+            // PERBAIKAN: Hapus deklarasi ganda, gunakan logika pengecekan data-sort yang benar
+            let valA = cellA.hasAttribute("data-sort") ? cellA.getAttribute("data-sort") : cellA.innerText.trim().toLowerCase();
+            let valB = cellB.hasAttribute("data-sort") ? cellB.getAttribute("data-sort") : cellB.innerText.trim().toLowerCase();
 
             if (valA < valB) return asc ? -1 : 1;
             if (valA > valB) return asc ? 1 : -1;
