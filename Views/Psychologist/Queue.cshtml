@@ -38,22 +38,28 @@
         <table class="table table-hover align-middle mb-0" id="queueTable">
             <thead style="position: sticky; top: 0; z-index: 10; cursor: pointer;">
                 <tr>
-                    <th onclick="sortTable(0)" width="25%" style="background-color: #4A2B50; color: white; border-bottom: none;">
-                        Nama Peserta <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i>
+                    <!-- KOLOM BARU: Waktu Tes di Index 0 -->
+                    <th onclick="sortTable(0)" width="15%" style="background-color: #4A2B50; color: white; border-bottom: none;">
+                        Waktu Tes <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i>
                     </th>
                     <th onclick="sortTable(1)" width="20%" style="background-color: #4A2B50; color: white; border-bottom: none;">
+                        Nama Peserta <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i>
+                    </th>
+                    <th onclick="sortTable(2)" width="15%" style="background-color: #4A2B50; color: white; border-bottom: none;">
                         Asal Sekolah <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i>
                     </th>
                     <th width="12%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Status IST</th>
-                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Aksi IST</th>
+                    <th width="13%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Aksi IST</th>
                     <th width="12%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Status PAPI</th>
-                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Aksi PAPI</th>
+                    <th width="13%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Aksi PAPI</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
+                        <!-- TD BARU: Inject data-sort agar urutan matematis (YYYYMMDDHHmmss) berjalan akurat -->
+                        <td data-sort="@item.CreatedAtSort" class="text-muted small">@item.CreatedAtDisplay</td>
                         <td class="fw-bold">@item.FullName</td>
                         <td>@item.SchoolName</td>
 
@@ -65,7 +71,6 @@
                             }
                             else
                             {
-
                                 <span class="badge bg-warning text-dark rounded-pill px-3 py-2">Menunggu</span>
                             }
                         </td>
@@ -76,7 +81,6 @@
                             }
                             else
                             {
-                                <!-- Arahkan ke view hasil spesifik IST -->
                                 <a href="/Report/IstResult?userAssessmentId=@item.Id" class="btn btn-outline-secondary btn-sm rounded-pill fw-bold w-100" target="_blank">Lihat Hasil</a>
                             }
                         </td>
@@ -89,7 +93,6 @@
                             }
                             else
                             {
-
                                 <span class="badge bg-warning text-dark rounded-pill px-3 py-2">Menunggu</span>
                             }
                         </td>
@@ -100,7 +103,6 @@
                             }
                             else
                             {
-                                <!-- Arahkan ke view hasil spesifik PAPI -->
                                 <a href="/Report/PapiResult?userAssessmentId=@item.Id" class="btn btn-outline-secondary btn-sm rounded-pill fw-bold w-100" target="_blank">Lihat Hasil</a>
                             }
                         </td>
@@ -122,29 +124,25 @@
         let rows = document.querySelectorAll('#queueTable tbody tr');
 
         rows.forEach(row => {
-            // Ambil teks keseluruhan baris untuk pencarian nama/sekolah
             let text = row.innerText.toLowerCase();
 
-            // Ambil teks spesifik dari kolom Status IST (Index 2) dan Status PAPI (Index 4)
-            let istStatus = row.cells[2].innerText.toLowerCase();
-            let papiStatus = row.cells[4].innerText.toLowerCase();
+            // PERBAIKAN: Index bergeser! Status IST sekarang di Index 3, Status PAPI di Index 5
+            let istStatus = row.cells[3].innerText.toLowerCase();
+            let papiStatus = row.cells[5].innerText.toLowerCase();
 
-            // Evaluasi kecocokan
             let matchSearch = text.includes(searchText);
             let matchIst = filterIst === "" || istStatus.includes(filterIst);
             let matchPapi = filterPapi === "" || papiStatus.includes(filterPapi);
 
-            // Tampilkan baris HANYA jika ketiga kriteria terpenuhi
             row.style.display = (matchSearch && matchIst && matchPapi) ? '' : 'none';
         });
     }
 
-    // Pasang Event Listener
     document.getElementById('searchInput').addEventListener('keyup', applyFilters);
     document.getElementById('filterIst').addEventListener('change', applyFilters);
     document.getElementById('filterPapi').addEventListener('change', applyFilters);
 
-    // Fitur Sorting (Klik Header)
+    // Fitur Sorting (Klik Header) Cerdas dengan Atribut data-sort
     let currentSortCol = -1;
     let asc = true;
 
@@ -157,15 +155,18 @@
         currentSortCol = columnIndex;
 
         rows.sort((a, b) => {
-            let valA = a.cells[columnIndex].innerText.trim().toLowerCase();
-            let valB = b.cells[columnIndex].innerText.trim().toLowerCase();
+            let cellA = a.cells[columnIndex];
+            let cellB = b.cells[columnIndex];
+
+            // Prioritaskan atribut data-sort jika tersedia, jika tidak pakai innerText
+            let valA = cellA.hasAttribute("data-sort") ? cellA.getAttribute("data-sort") : cellA.innerText.trim().toLowerCase();
+            let valB = cellB.hasAttribute("data-sort") ? cellB.getAttribute("data-sort") : cellB.innerText.trim().toLowerCase();
 
             if (valA < valB) return asc ? -1 : 1;
             if (valA > valB) return asc ? 1 : -1;
             return 0;
         });
 
-        // Re-append baris yang sudah diurutkan
         rows.forEach(row => tbody.appendChild(row));
     }
 </script>
