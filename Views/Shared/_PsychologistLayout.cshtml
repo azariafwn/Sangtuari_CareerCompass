@@ -120,6 +120,15 @@
                 <a href="/Psychologist/Index" class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")">
                     <i class="bi bi-grid-1x2-fill"></i> <span class="menu-text">Dashboard</span>
                 </a>
+
+                <!-- Hanya tampil jika Role = Head -->
+                @if (User.IsInRole("Head"))
+                {
+                    <a href="/Psychologist/AccountManagement" class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["Action"]?.ToString() == "AccountManagement" ? "active" : "")">
+                        <i class="bi bi-people-fill"></i> <span class="menu-text">Manajemen Akun</span>
+                    </a>
+                }
+
                 <a href="/Psychologist/Queue" class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["Action"]?.ToString() == "Queue" ? "active" : "")">
                     <i class="bi bi-list-check"></i> <span class="menu-text">Antrean Penilaian</span>
                 </a>
