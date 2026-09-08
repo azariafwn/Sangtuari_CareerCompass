@@ -1,64 +1,260 @@
 ﻿@model SangtuariCareerCompass.ViewModels.PsychologistProfileViewModel
 @{
     ViewData["Title"] = "Profil Psikolog";
-    Layout = "_PsychologistLayout"; // Sesuaikan dengan master layout dashboard Anda
+    Layout = "_PsychologistLayout";
 }
 
-<div class="bg-white p-4 rounded-4 shadow-sm" style="max-width: 800px; margin: 0 auto;">
-    <h4 class="fw-bold mb-4" style="color: #4A2B50;">Profil Saya</h4>
+<!-- WRAPPER UTAMA: Mengunci lebar maksimal agar semua form di dalamnya sejajar -->
+<div style="max-width: 800px; margin: 0 auto;">
 
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
-            <i class="bi bi-check-circle-fill me-2"></i> @TempData["SuccessMessage"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <!-- BLOK 1: INFORMASI PROFIL -->
+    <div class="bg-white p-4 rounded-4 shadow-sm mb-4">
+        <h4 class="fw-bold mb-4" style="color: #4A2B50;">Profil Saya</h4>
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show rounded-3 shadow-sm" role="alert">
+                <i class="bi bi-x-circle-fill me-2"></i> @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show rounded-3 shadow-sm" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i> @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <form asp-action="Profile" method="post">
+            <h5 class="fw-bold mb-3 border-bottom pb-2" style="color: #4A2B50;">Informasi Dasar</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-muted small">Nama Lengkap</label>
+                    <input asp-for="FullName" class="form-control bg-light" />
+                    <span asp-validation-for="FullName" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-muted small">Gelar Akademik</label>
+                    <input asp-for="Degree" class="form-control bg-light" placeholder="Contoh: M.Psi., Psikolog" />
+                </div>
+                <div class="col-12">
+                    <label class="form-label fw-bold text-muted small">Email (Kredensial Login)</label>
+                    <input asp-for="Email" class="form-control bg-light text-muted" readonly />
+                </div>
+            </div>
+
+            <h5 class="fw-bold mb-3 border-bottom pb-2" style="color: #4A2B50;">Lisensi Profesional</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-muted small">Nomor SILP</label>
+                    <input asp-for="SilpNumber" class="form-control bg-light" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-muted small">Nomor STR</label>
+                    <input asp-for="StrNumber" class="form-control bg-light" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-muted small">Tanggal Mulai SILP</label>
+                    <input asp-for="SilpStartDate" type="date" class="form-control bg-light" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-muted small">Tanggal Berakhir SILP</label>
+                    <input asp-for="SilpEndDate" type="date" class="form-control bg-light" />
+                </div>
+            </div>
+
+            <div class="text-end mt-4">
+                <button type="submit" class="btn text-white rounded-pill px-5 fw-bold shadow-sm" style="background-color: #4A2B50;">
+                    Simpan Perubahan
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- BLOK 2: UBAH PASSWORD -->
+    <!-- Dihapus mt-4 nya karena margin pemisah sudah dihandle oleh mb-4 di blok atas -->
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
+            <h5 class="fw-bold" style="color: #4A2B50;"><i class="bi bi-shield-lock-fill me-2"></i>Ubah Password</h5>
         </div>
+        <div class="card-body p-4">
+            <!-- Placeholder untuk notifikasi error dinamis -->
+            <div id="passwordAlertPlaceholder"></div>
+
+            <form id="formChangePassword" asp-action="ChangePassword" asp-controller="Psychologist" method="post">
+                <div class="mb-3">
+                    <label class="form-label fw-bold text-muted small">Password Lama</label>
+                    <div class="input-group">
+                        <input type="password" name="OldPassword" id="oldPassword" class="form-control" required>
+                        <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('oldPassword', this)">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold text-muted small">Password Baru</label>
+                    <div class="input-group">
+                        <!-- Tambahkan id="newPassword" jika belum ada -->
+                        <input type="password" name="NewPassword" id="newPassword" class="form-control" required minlength="8" maxlength="12">
+                        <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('newPassword', this)">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- PERUBAHAN: Daftar Syarat Password -->
+                    <ul class="list-unstyled small mt-2 mb-0" id="passwordRules">
+                        <li id="ruleLength" class="text-danger"><i class="bi bi-x-circle me-1"></i> 8-12 karakter</li>
+                        <li id="ruleUpper" class="text-danger"><i class="bi bi-x-circle me-1"></i> Minimal 1 huruf besar (A-Z)</li>
+                        <li id="ruleLower" class="text-danger"><i class="bi bi-x-circle me-1"></i> Minimal 1 huruf kecil (a-z)</li>
+                        <li id="ruleNumber" class="text-danger"><i class="bi bi-x-circle me-1"></i> Minimal 1 angka (0-9)</li>
+                        <li id="ruleSymbol" class="text-danger"><i class="bi bi-x-circle me-1"></i> Minimal 1 karakter spesial (!@@#$ dll)</li>
+                    </ul>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold text-muted small">Konfirmasi Password Baru</label>
+                    <div class="input-group">
+                        <input type="password" name="ConfirmPassword" id="confirmPassword" class="form-control" required minlength="8" maxlength="12">
+                        <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('confirmPassword', this)">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                    <div id="ruleMatch" class="small text-danger mt-1 d-none"><i class="bi bi-x-circle me-1"></i> Password tidak cocok</div>
+                </div>
+
+                <div class="text-end">
+                    <!-- PERUBAHAN: Tambahkan id dan atribut disabled bawaan -->
+                    <button type="submit" id="btnSubmitPassword" class="btn text-white rounded-pill px-4 fw-bold" style="background-color: #4A2B50;" disabled>Simpan Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function togglePassword(inputId, btnElement) {
+        var input = document.getElementById(inputId);
+        var icon = btnElement.querySelector('i');
+
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove('bi-eye');
+            icon.classList.add('bi-eye-slash');
+        } else {
+            input.type = "password";
+            icon.classList.remove('bi-eye-slash');
+            icon.classList.add('bi-eye');
+        }
     }
 
-    <form asp-action="Profile" method="post">
-        <h5 class="fw-bold mb-3 border-bottom pb-2" style="color: #4A2B50;">Informasi Dasar</h5>
-        <div class="row g-3 mb-4">
-            <div class="col-md-6">
-                <label class="form-label fw-bold text-muted small">Nama Lengkap</label>
-                <input asp-for="FullName" class="form-control bg-light" />
-                <span asp-validation-for="FullName" class="text-danger small"></span>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-bold text-muted small">Gelar Akademik</label>
-                <input asp-for="Degree" class="form-control bg-light" placeholder="Contoh: M.Psi., Psikolog" />
-            </div>
-            <div class="col-12">
-                <label class="form-label fw-bold text-muted small">Email (Kredensial Login)</label>
-                <!-- Dibuat readonly agar tidak diubah sembarangan -->
-                <input asp-for="Email" class="form-control bg-light text-muted" readonly />
-            </div>
-        </div>
+    // DOM Elements
+    const newPassInput = document.getElementById('newPassword');
+    const confPassInput = document.getElementById('confirmPassword');
+    const btnSubmit = document.getElementById('btnSubmitPassword');
+    const ruleMatch = document.getElementById('ruleMatch');
 
-        <h5 class="fw-bold mb-3 border-bottom pb-2" style="color: #4A2B50;">Lisensi Profesional</h5>
-        <div class="row g-3 mb-4">
-            <div class="col-md-6">
-                <label class="form-label fw-bold text-muted small">Nomor SILP</label>
-                <input asp-for="SilpNumber" class="form-control bg-light" />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-bold text-muted small">Nomor STR</label>
-                <input asp-for="StrNumber" class="form-control bg-light" />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-bold text-muted small">Tanggal Mulai SILP</label>
-                <!-- Tipe input date didukung langsung oleh DateOnly di C# -->
-                <input asp-for="SilpStartDate" type="date" class="form-control bg-light" />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-bold text-muted small">Tanggal Berakhir SILP</label>
-                <input asp-for="SilpEndDate" type="date" class="form-control bg-light" />
-            </div>
-        </div>
+    // Helper untuk mengubah warna dan ikon aturan
+    function updateRule(elementId, isValid) {
+        const el = document.getElementById(elementId);
+        const icon = el.querySelector('i');
 
-        <div class="text-end mt-4">
-            <button type="submit" class="btn text-white rounded-pill px-5 fw-bold shadow-sm" style="background-color: #4A2B50;">
-                Simpan Perubahan
-            </button>
-        </div>
-    </form>
-</div>
+        if (isValid) {
+            el.classList.replace('text-danger', 'text-success');
+            icon.classList.replace('bi-x-circle', 'bi-check-circle-fill');
+        } else {
+            el.classList.replace('text-success', 'text-danger');
+            icon.classList.replace('bi-check-circle-fill', 'bi-x-circle');
+        }
+        return isValid;
+    }
+
+    // Fungsi Validasi Utama
+    function validatePassword() {
+        const val = newPassInput.value;
+        const confVal = confPassInput.value;
+
+        // Evaluasi Regex
+        const isLength = updateRule('ruleLength', val.length >= 8 && val.length <= 12);
+        const isUpper = updateRule('ruleUpper', /[A-Z]/.test(val));
+        const isLower = updateRule('ruleLower', /[a-z]/.test(val));
+        const isNumber = updateRule('ruleNumber', /[0-9]/.test(val));
+        const isSymbol = updateRule('ruleSymbol', /[\W_]/.test(val));
+
+        // Evaluasi Kecocokan (Hanya tampilkan error jika konfirmasi sudah mulai diisi)
+        let isMatch = false;
+        if (confVal.length > 0) {
+            isMatch = val === confVal;
+            ruleMatch.classList.remove('d-none');
+            if (isMatch) {
+                ruleMatch.classList.replace('text-danger', 'text-success');
+                ruleMatch.innerHTML = '<i class="bi bi-check-circle-fill me-1"></i> Password cocok';
+            } else {
+                ruleMatch.classList.replace('text-success', 'text-danger');
+                ruleMatch.innerHTML = '<i class="bi bi-x-circle me-1"></i> Password tidak cocok';
+            }
+        } else {
+            ruleMatch.classList.add('d-none');
+        }
+
+        // Enable tombol HANYA JIKA semua aturan terpenuhi
+        if (isLength && isUpper && isLower && isNumber && isSymbol && isMatch) {
+            btnSubmit.removeAttribute('disabled');
+        } else {
+            btnSubmit.setAttribute('disabled', 'true');
+        }
+    }
+
+    // Pasang Event Listener saat pengguna mengetik
+    newPassInput.addEventListener('input', validatePassword);
+    confPassInput.addEventListener('input', validatePassword);
+
+    // Menggunakan Fetch API untuk mencegah Chrome Pop-up saat gagal
+    document.getElementById('formChangePassword').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const form = this;
+        const btn = document.getElementById('btnSubmitPassword');
+        const alertPlaceholder = document.getElementById('passwordAlertPlaceholder');
+
+        btn.disabled = true;
+        btn.innerText = "Menyimpan...";
+        alertPlaceholder.innerHTML = '';
+
+        // PERBAIKAN: Deklarasi di luar blok try agar dikenali oleh finally
+        let response;
+
+        try {
+            response = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form)
+            });
+
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                const data = await response.json();
+                alertPlaceholder.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show rounded-3 shadow-sm small" role="alert">
+                        <i class="bi bi-x-circle-fill me-2"></i> ${data.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>`;
+            }
+        } catch (error) {
+            alertPlaceholder.innerHTML = `
+                <div class="alert alert-danger alert-dismissible fade show rounded-3 shadow-sm small" role="alert">
+                    <i class="bi bi-wifi-off me-2"></i> Terjadi kesalahan jaringan.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>`;
+        } finally {
+            // PERBAIKAN: Variabel response sekarang aman dibaca
+            if (!response || !response.ok) {
+                btn.disabled = false;
+                btn.innerText = "Simpan Password";
+            }
+        }
+    });
+</script>
