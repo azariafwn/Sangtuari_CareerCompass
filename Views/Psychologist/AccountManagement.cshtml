@@ -1,0 +1,113 @@
+﻿@model IEnumerable<SangtuariCareerCompass.Models.PsychologistUser>
+@{
+    ViewData["Title"] = "Manajemen Akun Psikolog";
+    Layout = "_PsychologistLayout";
+}
+
+<div class="bg-white p-4 rounded-4 shadow-sm d-flex flex-column" style="max-height: 85vh;">
+
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-shrink-0">
+        <h4 class="fw-bold mb-0" style="color: #4A2B50;">Manajemen Akun Psikolog</h4>
+        <button type="button" class="btn text-white fw-bold rounded-pill px-4" style="background-color: #9C7BB4;" data-bs-toggle="modal" data-bs-target="#addAccountModal">
+            <i class="bi bi-person-plus-fill me-1"></i> Tambah Akun
+        </button>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="table-responsive flex-grow-1" style="overflow-y: auto;">
+        <table class="table table-hover align-middle mb-0">
+            <thead style="position: sticky; top: 0; z-index: 10;">
+                <tr class="align-middle">
+                    <th width="25%" style="background-color: #4A2B50; color: white; border-bottom: none;">Nama Lengkap</th>
+                    <th width="25%" style="background-color: #4A2B50; color: white; border-bottom: none;">Email</th>
+                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Role</th>
+                    <th width="20%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Tgl Dibuat</th>
+                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Status Lisensi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td class="fw-bold">@user.FullName</td>
+                        <td class="text-muted">@user.Email</td>
+                        <td class="text-center">
+                            @if (user.Role == "Head")
+                            {
+                                <span class="badge rounded-pill bg-danger">Head Psikolog</span>
+                            }
+                            else
+                            {
+                                <span class="badge rounded-pill bg-info text-dark">Staff Psikolog</span>
+                            }
+                        </td>
+                        <td class="text-center small text-muted">@user.CreatedAt.ToString("dd MMM yyyy")</td>
+                        <td class="text-center">
+                            @if (string.IsNullOrEmpty(user.SilpNumber))
+                            {
+                                <span class="text-danger small"><i class="bi bi-x-circle"></i> Belum Lengkap</span>
+                            }
+                            else
+                            {
+                                <span class="text-success small"><i class="bi bi-check-circle"></i> Lengkap</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal Tambah Akun -->
+<div class="modal fade" id="addAccountModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header border-0" style="background-color: #4A2B50; color: white;">
+                <h5 class="modal-title fw-bold">Tambah Akun Psikolog Baru</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form asp-action="AddAccount" asp-controller="Psychologist" method="post">
+                <div class="modal-body p-4 bg-light">
+                    <div class="alert text-dark small rounded-3 border-0 mb-4" style="background-color: #FBE676;">
+                        <i class="bi bi-info-circle-fill me-1"></i> Password akan di-generate secara otomatis dan dikirimkan ke email tujuan.
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted small">Nama Lengkap</label>
+                        <input type="text" name="FullName" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted small">Email Aktif</label>
+                        <input type="email" name="Email" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted small">Role / Hak Akses</label>
+                        <select name="Role" class="form-select" required>
+                            <option value="Staff">Staff Psikolog</option>
+                            <option value="Head">Head Psikolog</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 justify-content-end bg-light pb-4">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4 fw-bold" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn text-white rounded-pill px-4 fw-bold" style="background-color: #4A2B50;">Simpan & Kirim Akses</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
