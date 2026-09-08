@@ -81,5 +81,58 @@ namespace SangtuariCareerCompass.Services
             await client.SendAsync(message);
             await client.DisconnectAsync(true);
         }
+
+        public async Task SendCredentialEmailAsync(string toEmail, string fullName, string plainPassword, string role)
+        {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Sangtuari Consulting", "noreply@sangtuari.com"));
+            message.To.Add(new MailboxAddress(fullName, toEmail));
+            message.Subject = "Kredensial Akun Psikolog - Sangtuari's Career Compass";
+
+            var bodyBuilder = new BodyBuilder
+            {
+                HtmlBody = $@"
+                <div style='font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 10px; overflow: hidden;'>
+                    <div style='background-color: #4A2B50; padding: 20px; text-align: center; color: #FBE676;'>
+                        <h2 style='margin:0;'>Akses Dasbor Psikolog</h2>
+                    </div>
+                    <div style='padding: 20px; background-color: #FFFDF4;'>
+                        <p>Halo <strong>{fullName}</strong>,</p>
+                        <p>Akun Anda sebagai <strong>{role}</strong> telah berhasil dibuat oleh Kepala Psikolog. Berikut adalah kredensial login Anda:</p>
+                        
+                        <div style='background-color: #eee; padding: 15px; border-radius: 5px; margin: 20px 0;'>
+                            <p style='margin: 0;'><strong>Email:</strong> {toEmail}</p>
+                            <p style='margin: 0;'><strong>Password:</strong> <span style='font-family: monospace; font-size: 16px;'>{plainPassword}</span></p>
+                        </div>
+                        
+                        <h4 style='color: #4A2B50; margin-bottom: 10px;'>Langkah Selanjutnya (Wajib):</h4>
+                        <ol style='margin-top: 0; padding-left: 20px; font-size: 14px;'>
+                            <li style='margin-bottom: 8px;'>Segera login ke dasbor dan <strong>ubah password default Anda</strong> melalui menu yang tersedia.</li>
+                            <li style='margin-bottom: 8px;'>Masuk ke menu <strong>Profil Psikolog</strong> untuk melengkapi data lisensi profesional Anda (Nomor SILP, masa berlaku, dan Nomor STR).</li>
+                        </ol>
+
+                        <div style='background-color: #ffe6e6; border-left: 4px solid #ff4d4d; padding: 12px 15px; margin: 25px 0; font-size: 13px; color: #b30000;'>
+                            <strong><span style='font-size: 16px;'>⚠️</span> Peringatan Keamanan:</strong><br/>
+                            Kredensial ini bersifat sangat rahasia. Anda dilarang keras membagikan informasi login ini kepada pihak mana pun. Segala aktivitas di dalam akun ini sepenuhnya menjadi tanggung jawab Anda guna menjaga kerahasiaan dan integritas data hasil tes peserta.
+                        </div>
+                        
+                        <p style='margin-top: 30px;'>Salam hangat,<br/><strong>Tim Sangtuari</strong></p>
+                    </div>
+                </div>"
+            };
+
+            message.Body = bodyBuilder.ToMessageBody();
+
+            using var client = new SmtpClient();
+            var host = _config["SmtpSettings:Host"];
+            var port = int.Parse(_config["SmtpSettings:Port"] ?? "2525");
+            var user = _config["SmtpSettings:Username"];
+            var pass = _config["SmtpSettings:Password"];
+
+            await client.ConnectAsync(host, port, MailKit.Security.SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync(user, pass);
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
+        }
     }
 }
