@@ -395,5 +395,110 @@ namespace SangtuariCareerCompass.Controllers
                 }
             }
         }
+
+        // Tambahkan fungsi helper untuk generate password (8 karakter acak)
+        private string GenerateRandomPassword()
+        {
+            return Guid.NewGuid().ToString("N").Substring(0, 8);
+        }
+
+        // Endpoint GET: Menampilkan list akun
+        [Authorize(Roles = "Head")] // STRICT RBAC: Hanya Head yang bisa akses
+        [HttpGet]
+        public async Task<IActionResult> AccountManagement()
+        {
+            var accounts = await _context.PsychologistUsers
+                .AsNoTracking()
+                .OrderByDescending(u => u.CreatedAt)
+                .ToListAsync();
+
+            return View(accounts);
+        }
+
+        // Endpoint POST: Menambahkan akun baru
+        [Authorize(Roles = "Head")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddAccount(CreatePsychologistViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Data tidak valid. Periksa kembali isian Anda.";
+                return RedirectToAction("AccountManagement");
+            }
+
+            // CEK DUPLIKASI EMAIL
+            var emailExists = await _context.PsychologistUsers.AnyAsync(u => u.Email == model.Email);
+            if (emailExists)
+            {
+                TempData["ErrorMessage"] = $"Email {model.Email} sudah terdaftar.";
+                return RedirectToAction("AccountManagement");
+            }
+
+            // Generate Password & Hash
+            string rawPassword = GenerateRandomPassword();
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(rawPassword);
+
+            var newUser = new PsychologistUser
+            {
+                FullName = model.FullName,
+                Email = model.Email,
+                Role = model.Role,
+                PasswordHash = hashedPassword
+            };
+
+            _context.PsychologistUsers.Add(newUser);
+            await _context.SaveChangesAsync();
+
+            // Fire-and-Forget Email pengiriman kredensial
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await _emailService.SendCredentialEmailAsync(newUser.Email, newUser.FullName, rawPassword, newUser.Role);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[Error] Gagal mengirim kredensial ke {newUser.Email}: {ex.Message}");
+                }
+            });
+
+            TempData["SuccessMessage"] = $"Akun {model.FullName} berhasil dibuat. Kredensial telah dikirim ke email.";
+            return RedirectToAction("AccountManagement");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { message = "Data tidak valid. Periksa kembali syarat password." });
+
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!Guid.TryParse(userIdStr, out Guid userId)) return Unauthorized();
+
+            var user = await _context.PsychologistUsers.FindAsync(userId);
+            if (user == null) return NotFound();
+
+            bool isOldPasswordCorrect = BCrypt.Net.BCrypt.Verify(model.OldPassword, user.PasswordHash);
+            if (!isOldPasswordCorrect)
+            {
+                // Mengembalikan HTTP 400 agar browser sadar ini gagal
+                return BadRequest(new { message = "Gagal: Password lama yang Anda masukkan SALAH." });
+            }
+
+            if (BCrypt.Net.BCrypt.Verify(model.NewPassword, user.PasswordHash))
+            {
+                return BadRequest(new { message = "Gagal: Password baru tidak boleh sama dengan password lama." });
+            }
+
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
+            _context.PsychologistUsers.Update(user);
+            await _context.SaveChangesAsync();
+
+            // Simpan pesan sukses untuk ditampilkan setelah reload
+            TempData["SuccessMessage"] = "Keamanan akun diperbarui: Password berhasil diubah!";
+            return Ok(new { success = true });
+        }
     }
 }
