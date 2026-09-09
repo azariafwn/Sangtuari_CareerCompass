@@ -122,6 +122,11 @@ namespace SangtuariCareerCompass.Controllers
             // 2. Verifikasi hash BCrypt
             if (user != null && BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
             {
+                if (!user.IsActive)
+                {
+                    ModelState.AddModelError(string.Empty, "Akses ditolak: Akun Anda telah dinonaktifkan. Silakan hubungi admin.");
+                    return View(model);
+                }
                 // 3. Buat "KTP" (Claims) untuk user ini
                 var claims = new List<Claim>
                 {
@@ -499,6 +504,36 @@ namespace SangtuariCareerCompass.Controllers
             // Simpan pesan sukses untuk ditampilkan setelah reload
             TempData["SuccessMessage"] = "Keamanan akun diperbarui: Password berhasil diubah!";
             return Ok(new { success = true });
+        }
+
+        // Endpoint POST: Toggle Status Akun (Deactivate / Activate)
+        [Authorize(Roles = "Head")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleAccountStatus(Guid id)
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // ANTI-LOCKOUT: Mencegah Head menonaktifkan dirinya sendiri
+            if (currentUserId == id.ToString())
+            {
+                TempData["ErrorMessage"] = "Anda tidak dapat menonaktifkan akun Anda sendiri yang sedang aktif digunakan.";
+                return RedirectToAction("AccountManagement");
+            }
+
+            var targetUser = await _context.PsychologistUsers.FindAsync(id);
+            if (targetUser == null) return NotFound();
+
+            // Balikkan status (jika true jadi false, jika false jadi true)
+            targetUser.IsActive = !targetUser.IsActive;
+
+            _context.PsychologistUsers.Update(targetUser);
+            await _context.SaveChangesAsync();
+
+            string actionText = targetUser.IsActive ? "diaktifkan kembali" : "dinonaktifkan";
+            TempData["SuccessMessage"] = $"Akun {targetUser.Email} berhasil {actionText}.";
+
+            return RedirectToAction("AccountManagement");
         }
     }
 }
