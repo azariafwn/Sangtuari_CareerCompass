@@ -32,39 +32,54 @@
         <table class="table table-hover align-middle mb-0">
             <thead style="position: sticky; top: 0; z-index: 10;">
                 <tr class="align-middle">
-                    <th width="25%" style="background-color: #4A2B50; color: white; border-bottom: none;">Nama Lengkap</th>
-                    <th width="25%" style="background-color: #4A2B50; color: white; border-bottom: none;">Email</th>
+                    <th width="20%" style="background-color: #4A2B50; color: white; border-bottom: none;">Nama Lengkap</th>
+                    <th width="20%" style="background-color: #4A2B50; color: white; border-bottom: none;">Email</th>
                     <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Role</th>
-                    <th width="20%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Tgl Dibuat</th>
-                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Status Lisensi</th>
+                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Tgl Dibuat</th>
+                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Status</th>
+                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var user in Model)
                 {
-                    <tr>
+                    // Efek visual jika dinonaktifkan
+                    var rowOpacity = user.IsActive ? "1" : "0.6";
+
+                    <tr style="opacity: @rowOpacity;">
                         <td class="fw-bold">@user.FullName</td>
                         <td class="text-muted">@user.Email</td>
                         <td class="text-center">
                             @if (user.Role == "Head")
                             {
-                                <span class="badge rounded-pill bg-danger">Head Psikolog</span>
+                                <span class="badge rounded-pill bg-danger">Head</span>
                             }
                             else
                             {
-                                <span class="badge rounded-pill bg-info text-dark">Staff Psikolog</span>
+                                <span class="badge rounded-pill bg-info text-dark">Staff</span>
                             }
                         </td>
                         <td class="text-center small text-muted">@user.CreatedAt.ToString("dd MMM yyyy")</td>
                         <td class="text-center">
-                            @if (string.IsNullOrEmpty(user.SilpNumber))
+                            @if (user.IsActive)
                             {
-                                <span class="text-danger small"><i class="bi bi-x-circle"></i> Belum Lengkap</span>
+                                <span class="text-success small fw-bold"><i class="bi bi-person-check-fill"></i> Aktif</span>
                             }
                             else
                             {
-                                <span class="text-success small"><i class="bi bi-check-circle"></i> Lengkap</span>
+                                <span class="text-danger small fw-bold"><i class="bi bi-person-x-fill"></i> Nonaktif</span>
                             }
+                        </td>
+                        <td class="text-center">
+                            @{
+                                var btnClass = user.IsActive ? "btn-outline-danger" : "btn-outline-success";
+                                var btnIcon = user.IsActive ? "bi-lock-fill" : "bi-unlock-fill";
+                                var btnText = user.IsActive ? "Deactivate" : "Activate";
+                            }
+                            <button type="button" class="btn btn-sm @btnClass rounded-pill px-3 fw-bold"
+                                    onclick="openToggleModal('@user.Id', '@user.Email', '@user.Role', @user.IsActive.ToString().ToLower())">
+                                <i class="bi @btnIcon"></i> @btnText
+                            </button>
                         </td>
                     </tr>
                 }
@@ -111,3 +126,65 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Toggle Status -->
+<div class="modal fade" id="toggleStatusModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header border-0" id="toggleModalHeader">
+                <h5 class="modal-title fw-bold text-white"><i class="bi bi-exclamation-triangle-fill me-2"></i> Konfirmasi Aksi</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form asp-action="ToggleAccountStatus" asp-controller="Psychologist" method="post">
+                <div class="modal-body p-4 bg-light text-center">
+                    <input type="hidden" name="id" id="toggleUserId" />
+
+                    <p class="mb-3">Apakah Anda yakin ingin <strong id="actionVerbText"></strong> akun dengan akses berikut?</p>
+
+                    <div class="bg-white border rounded-3 p-3 mb-3 d-inline-block text-start">
+                        <div class="mb-1"><span class="text-muted small">Email:</span> <strong id="targetEmail"></strong></div>
+                        <div><span class="text-muted small">Akses:</span> <strong id="targetRole"></strong></div>
+                    </div>
+
+                    <p class="small text-muted mb-0" id="actionWarningText"></p>
+                </div>
+                <div class="modal-footer border-0 justify-content-center bg-light pb-4">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4 fw-bold" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn text-white rounded-pill px-4 fw-bold" id="btnConfirmToggle"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openToggleModal(id, email, role, isActive) {
+        document.getElementById('toggleUserId').value = id;
+        document.getElementById('targetEmail').innerText = email;
+        document.getElementById('targetRole').innerText = role;
+
+        const header = document.getElementById('toggleModalHeader');
+        const actionVerb = document.getElementById('actionVerbText');
+        const warning = document.getElementById('actionWarningText');
+        const btnSubmit = document.getElementById('btnConfirmToggle');
+
+        if (isActive) {
+            header.style.backgroundColor = '#dc3545'; // Merah
+            actionVerb.innerText = "MENONAKTIFKAN (Deactivate)";
+            actionVerb.className = "text-danger";
+            warning.innerText = "*Akun ini akan langsung ter-logout dan tidak bisa mengakses sistem hingga diaktifkan kembali.";
+            btnSubmit.style.backgroundColor = '#dc3545';
+            btnSubmit.innerText = "Ya, Nonaktifkan";
+        } else {
+            header.style.backgroundColor = '#198754'; // Hijau
+            actionVerb.innerText = "MENGAKTIFKAN KEMBALI (Activate)";
+            actionVerb.className = "text-success";
+            warning.innerText = "*Akun ini akan mendapatkan kembali akses masuk ke dalam sistem dengan password terakhirnya.";
+            btnSubmit.style.backgroundColor = '#198754';
+            btnSubmit.innerText = "Ya, Aktifkan";
+        }
+
+        var toggleModal = new bootstrap.Modal(document.getElementById('toggleStatusModal'));
+        toggleModal.show();
+    }
+</script>
