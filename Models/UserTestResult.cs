@@ -16,6 +16,8 @@ namespace SangtuariCareerCompass.Models
         [ForeignKey("UserAssessmentId")]
         public UserAssessment UserAssessment { get; set; } = null!;
 
+        public Guid? PsychologistId { get; set; }
+
         [Required]
         public string TestCategory { get; set; } = string.Empty; // "IST", "CFIT", "EAS", "PAPI", "VARK", "SDS_Holland"
 
