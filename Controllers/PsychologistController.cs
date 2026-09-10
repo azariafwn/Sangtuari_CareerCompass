@@ -303,9 +303,13 @@ namespace SangtuariCareerCompass.Controllers
             var engine = new IstScoringEngine();
             engine.ProcessScoring(vm);
 
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Guid? psychologistId = Guid.TryParse(userIdStr, out var id) ? id : null;
+
             var resultEntity = new UserTestResult
             {
                 UserAssessmentId = dto.UserAssessmentId,
+                PsychologistId = psychologistId,
                 TestCategory = "IST",
                 OverallScore = vm.CalculatedIQ,
                 Classification = vm.IQClassification,
@@ -343,9 +347,13 @@ namespace SangtuariCareerCompass.Controllers
         {
             var aspectGroups = JsonSerializer.Deserialize<List<PapiAspectGroup>>(dto.JudgmentsJson);
 
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Guid? psychologistId = Guid.TryParse(userIdStr, out var id) ? id : null;
+
             var resultEntity = new UserTestResult
             {
                 UserAssessmentId = dto.UserAssessmentId,
+                PsychologistId = psychologistId,
                 TestCategory = "PAPI_Kostick",
                 OverallScore = 0,
                 Classification = "Manual Judged",
