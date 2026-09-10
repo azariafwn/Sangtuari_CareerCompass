@@ -352,6 +352,19 @@
                 </div>
             </div>
         </div>
+
+        <!-- TTD DIGITAL SMA -->
+        <div class="mt-4" style="float: right; text-align: center; width: 220px;">
+            <p class="mb-1" style="font-size: 11px;">Bogor, @Model.TestedAt.ToString("dd MMMM yyyy")</p>
+            <p class="mb-1 fw-bold" style="font-size: 11px;">Psikolog Pemeriksa,</p>
+
+            <!-- Barcode QR Code -->
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=70x70&data=Assessed_By_@Uri.EscapeDataString(Model.PsychologistName)_SILP_@Model.PsychologistSilp" alt="TTD Barcode" class="my-2" style="width: 60px; height: 60px;" />
+
+            <p class="mb-0 fw-bold" style="text-decoration: underline; font-size: 11px;">@Model.PsychologistName, @Model.PsychologistDegree</p>
+            <p class="mb-0" style="font-size: 10px;">No. SILP: @Model.PsychologistSilp</p>
+        </div>
+        <div style="clear: both;"></div>
     </div>
 
     <!-- Script Dependensi html2pdf & Chart.js -->

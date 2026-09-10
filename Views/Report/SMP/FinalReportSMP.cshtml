@@ -361,6 +361,25 @@
                 <li>Mengeksplorasi minat dan cita-cita melalui kegiatan akademik maupun ekstrakurikuler yang sesuai.</li>
             </ul>
         </div>
+
+        <!-- TTD DIGITAL SMP (Horizontal & Vertically Centered) -->
+        <div class="mt-3" style="float: right; min-width: 260px; max-width: 320px;">
+
+            <div class="d-flex justify-content-end align-items-center gap-2">
+                <!-- Barcode: flex-shrink-0 mencegah gambar mengecil -->
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=60x60&data=Valid_Head_Psychologist_@Uri.EscapeDataString(Model.PsychologistName)_SILP_@Model.PsychologistSilp" alt="TTD Barcode" style="width: 55px; height: 55px; flex-shrink: 0;" />
+
+                <!-- Teks rata kiri (text-start) -->
+                <div class="text-start">
+                    <div style="font-size: 12px;">Bogor, @testedAt</div>
+                    <div class="fw-bold mb-1" style="font-size: 12px;">Kepala Psikolog,</div>
+                    <div class="fw-bold" style="text-decoration: underline; font-size: 12px; line-height: 1.1;">@Model.PsychologistName, @Model.PsychologistDegree</div>
+                    <div style="font-size: 11px; margin-top: 2px;">No. SILP: @Model.PsychologistSilp</div>
+                </div>
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+
     </div>
 
     <!-- Script Dependensi html2pdf & Chart.js -->
