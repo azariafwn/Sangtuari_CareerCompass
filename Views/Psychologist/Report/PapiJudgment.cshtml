@@ -4,36 +4,43 @@
     Layout = "_PsychologistLayout";
 }
 
-<div class="container py-5">
-    <div class="card shadow-sm p-4">
-        <h4 class="text-purple-main fw-bold mb-4">Input Judgment Manual PAPI Kostick</h4>
-        <p>Peserta: <strong>@Model.FullName</strong></p>
+<div class="bg-white p-4 rounded-4 shadow-sm d-flex flex-column" style="max-height: 85vh;">
 
-        <form id="judgmentForm">
-            <input type="hidden" id="assessmentId" value="@Model.UserAssessmentId" />
+    <!-- Header Informasi -->
+    <div class="mb-4 flex-shrink-0 border-bottom pb-3">
+        <h4 class="fw-bold mb-1" style="color: #4A2B50;">Input Judgment Manual PAPI Kostick</h4>
+        <p class="text-muted mb-0">Peserta: <strong class="text-dark">@Model.FullName</strong></p>
+    </div>
 
-            <table class="table table-bordered align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>Aspek</th>
-                        <th>Rincian Faktor (Kode: Skor - Kategori)</th>
-                        <th>Judgment Psikolog</th>
+    <form id="judgmentForm" class="d-flex flex-column flex-grow-1" style="min-height: 0;">
+        <input type="hidden" id="assessmentId" value="@Model.UserAssessmentId" />
+
+        <!-- Area Scroll Khusus Tabel -->
+        <div class="table-responsive flex-grow-1 mb-3" style="overflow-y: auto;">
+            <table class="table table-hover align-middle mb-0">
+                <thead style="position: sticky; top: 0; z-index: 10;">
+                    <tr class="align-middle">
+                        <th width="25%" style="background-color: #4A2B50; color: white; border-bottom: none;">Aspek</th>
+                        <th width="50%" style="background-color: #4A2B50; color: white; border-bottom: none;">Rincian Faktor (Kode: Skor - Kategori)</th>
+                        <th width="25%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Judgment Psikolog</th>
                     </tr>
                 </thead>
                 <tbody id="aspectsContainer">
                     @foreach (var aspect in Model.AspectGroups)
                     {
                         <tr class="aspect-row" data-aspect="@aspect.AspectName">
-                            <td class="fw-bold">@aspect.AspectName</td>
+                            <td class="fw-bold" style="color: #4A2B50;">@aspect.AspectName</td>
                             <td>
                                 @foreach (var f in aspect.Factors)
                                 {
-                                    <span class="badge bg-secondary me-1">@f.Code: @f.RawScore (@f.Leveling)</span>
+                                    <span class="badge bg-light text-dark border me-1 mb-1" style="font-size: 0.85rem;">
+                                        @f.Code: @f.RawScore (@f.Leveling)
+                                    </span>
                                 }
                             </td>
-                            <td>
-                                <select class="form-select judgment-select">
-                                    <option value="">-- Pilih --</option>
+                            <td class="text-center">
+                                <select class="form-select judgment-select border-secondary bg-light">
+                                    <option value="">-- Pilih Judgment --</option>
                                     <option value="KS">Kurang Sekali (KS)</option>
                                     <option value="K">Kurang (K)</option>
                                     <option value="R">Rata-rata (R)</option>
@@ -45,9 +52,15 @@
                     }
                 </tbody>
             </table>
-            <button type="button" onclick="submitJudgment()" class="btn btn-purple-custom">Simpan & Lihat Laporan</button>
-        </form>
-    </div>
+        </div>
+
+        <!-- Tombol Aksi (Tetap di bawah saat di-scroll) -->
+        <div class="text-end flex-shrink-0 pt-3 border-top">
+            <button type="button" onclick="submitJudgment()" class="btn text-white rounded-pill px-5 fw-bold shadow-sm" style="background-color: #4A2B50;">
+                <i class="bi bi-save-fill me-2"></i>Simpan & Lihat Laporan
+            </button>
+        </div>
+    </form>
 </div>
 
 <script>
@@ -56,29 +69,52 @@
         const rows = document.querySelectorAll('.aspect-row');
 
         let allFilled = true;
+        // Hapus highlight error sebelumnya (jika ada)
+        rows.forEach(r => r.querySelector('.judgment-select').classList.remove('is-invalid'));
+
         rows.forEach((row, index) => {
-            const val = row.querySelector('.judgment-select').value;
-            if (!val) allFilled = false;
+            const selectEl = row.querySelector('.judgment-select');
+            const val = selectEl.value;
+            if (!val) {
+                allFilled = false;
+                selectEl.classList.add('is-invalid'); // Beri highlight merah jika kosong
+            }
             aspectGroups[index].FinalJudgment = val;
         });
 
-        if (!allFilled) { alert("Harap isi semua judgment!"); return; }
+        if (!allFilled) {
+            alert("Harap isi semua judgment psikolog yang masih ditandai merah sebelum menyimpan!");
+            return;
+        }
+
+        // Disable tombol saat proses submit untuk mencegah double-click
+        const btn = document.querySelector('button[onclick="submitJudgment()"]');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Menyimpan...';
 
         const payload = {
             UserAssessmentId: document.getElementById('assessmentId').value,
             JudgmentsJson: JSON.stringify(aspectGroups)
         };
 
-        const res = await fetch('/Psychologist/SubmitPapiJudgment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
+        try {
+            const res = await fetch('/Psychologist/SubmitPapiJudgment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
 
-        if (res.ok) {
-            // window.location.href = `/Report/PapiResult?userAssessmentId=${payload.UserAssessmentId}`;
-            // window.location.href = `/Quiz/Instruction?testKey=VARK&userAssessmentId=${payload.UserAssessmentId}`;
-            window.location.href = '/Psychologist/Queue';
-        }        
+            if (res.ok) {
+                window.location.href = '/Psychologist/Queue';
+            } else {
+                alert("Terjadi kesalahan saat menyimpan judgment.");
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-save-fill me-2"></i>Simpan & Lihat Laporan';
+            }
+        } catch (err) {
+            alert("Terjadi kesalahan jaringan.");
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-save-fill me-2"></i>Simpan & Lihat Laporan';
+        }
     }
 </script>
