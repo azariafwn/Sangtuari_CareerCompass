@@ -6,11 +6,21 @@
 
 <div class="bg-white p-4 rounded-4 shadow-sm d-flex flex-column" style="max-height: 85vh;">
 
+    <!-- Header & Search Bar -->
     <div class="d-flex justify-content-between align-items-center mb-4 flex-shrink-0">
         <h4 class="fw-bold mb-0" style="color: #4A2B50;">Manajemen Akun Psikolog</h4>
-        <button type="button" class="btn text-white fw-bold rounded-pill px-4" style="background-color: #9C7BB4;" data-bs-toggle="modal" data-bs-target="#addAccountModal">
-            <i class="bi bi-person-plus-fill me-1"></i> Tambah Akun
-        </button>
+
+        <div class="d-flex gap-2">
+            <!-- Input Pencarian -->
+            <div class="input-group" style="width: 250px;">
+                <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+                <input type="text" id="searchAccount" class="form-control border-start-0 bg-light" placeholder="Cari nama, email, role...">
+            </div>
+
+            <button type="button" class="btn text-white fw-bold rounded-pill px-4" style="background-color: #9C7BB4;" data-bs-toggle="modal" data-bs-target="#addAccountModal">
+                <i class="bi bi-person-plus-fill me-1"></i> Tambah Akun
+            </button>
+        </div>
     </div>
 
     @if (TempData["SuccessMessage"] != null)
@@ -28,22 +38,22 @@
         </div>
     }
 
+    <!-- Tabel dengan Fitur Sort -->
     <div class="table-responsive flex-grow-1" style="overflow-y: auto;">
-        <table class="table table-hover align-middle mb-0">
-            <thead style="position: sticky; top: 0; z-index: 10;">
+        <table class="table table-hover align-middle mb-0" id="accountTable">
+            <thead style="position: sticky; top: 0; z-index: 10; cursor: pointer;">
                 <tr class="align-middle">
-                    <th width="20%" style="background-color: #4A2B50; color: white; border-bottom: none;">Nama Lengkap</th>
-                    <th width="20%" style="background-color: #4A2B50; color: white; border-bottom: none;">Email</th>
-                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Role</th>
-                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Tgl Dibuat</th>
-                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Status</th>
-                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Aksi</th>
+                    <th onclick="sortTable(0)" width="20%" style="background-color: #4A2B50; color: white; border-bottom: none;">Nama Lengkap <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i></th>
+                    <th onclick="sortTable(1)" width="20%" style="background-color: #4A2B50; color: white; border-bottom: none;">Email <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i></th>
+                    <th onclick="sortTable(2)" width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Role <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i></th>
+                    <th onclick="sortTable(3)" width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Tgl Dibuat <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i></th>
+                    <th onclick="sortTable(4)" width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Status <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i></th>
+                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none; cursor: default;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var user in Model)
                 {
-                    // Efek visual jika dinonaktifkan
                     var rowOpacity = user.IsActive ? "1" : "0.6";
 
                     <tr style="opacity: @rowOpacity;">
@@ -59,7 +69,10 @@
                                 <span class="badge rounded-pill bg-info text-dark">Staff</span>
                             }
                         </td>
-                        <td class="text-center small text-muted">@user.CreatedAt.ToString("dd MMM yyyy")</td>
+                        <!-- Inject atribut data-sort untuk akurasi urutan tanggal -->
+                        <td class="text-center small text-muted" data-sort="@user.CreatedAt.ToString("yyyyMMddHHmmss")">
+                            @user.CreatedAt.ToString("dd MMM yyyy")
+                        </td>
                         <td class="text-center">
                             @if (user.IsActive)
                             {
@@ -82,7 +95,6 @@
                                     <i class="bi @btnIcon"></i> @btnText
                                 </button>
 
-                                <!-- HANYA MUNCUL JIKA BUKAN HEAD -->
                                 @if (user.Role != "Head")
                                 {
                                     <button type="button" class="btn btn-sm btn-danger rounded-pill px-3 fw-bold shadow-sm"
@@ -149,14 +161,11 @@
             <form asp-action="ToggleAccountStatus" asp-controller="Psychologist" method="post">
                 <div class="modal-body p-4 bg-light text-center">
                     <input type="hidden" name="id" id="toggleUserId" />
-
                     <p class="mb-3">Apakah Anda yakin ingin <strong id="actionVerbText"></strong> akun dengan akses berikut?</p>
-
                     <div class="bg-white border rounded-3 p-3 mb-3 d-inline-block text-start">
                         <div class="mb-1"><span class="text-muted small">Email:</span> <strong id="targetEmail"></strong></div>
                         <div><span class="text-muted small">Akses:</span> <strong id="targetRole"></strong></div>
                     </div>
-
                     <p class="small text-muted mb-0" id="actionWarningText"></p>
                 </div>
                 <div class="modal-footer border-0 justify-content-center bg-light pb-4">
@@ -179,14 +188,11 @@
             <form asp-action="DeleteAccount" asp-controller="Psychologist" method="post">
                 <div class="modal-body p-4 bg-light text-center">
                     <input type="hidden" name="id" id="deleteUserId" />
-
                     <p class="mb-3">Tindakan ini <strong>TIDAK DAPAT DIBATALKAN</strong>. Apakah Anda yakin ingin menghapus akun ini beserta seluruh aksesnya?</p>
-
                     <div class="bg-white border border-danger rounded-3 p-3 mb-3 d-inline-block text-start">
                         <div class="mb-1"><span class="text-muted small">Email yang akan dihapus:</span></div>
                         <div><strong id="deleteTargetEmail" class="text-danger fs-5"></strong></div>
                     </div>
-
                     <p class="small text-muted mb-0">*Sistem akan menghapus data kredensial ini sepenuhnya.</p>
                 </div>
                 <div class="modal-footer border-0 justify-content-center bg-light pb-4">
@@ -199,6 +205,48 @@
 </div>
 
 <script>
+    // Fitur Live Search / Filter
+    document.getElementById('searchAccount').addEventListener('keyup', function () {
+        let filter = this.value.toLowerCase();
+        let rows = document.querySelectorAll('#accountTable tbody tr');
+
+        rows.forEach(row => {
+            // Mencari teks di dalam seluruh cell pada baris tersebut
+            let text = row.innerText.toLowerCase();
+            row.style.display = text.includes(filter) ? '' : 'none';
+        });
+    });
+
+    // Fitur Sorting Dinamis
+    let currentSortCol = -1;
+    let asc = true;
+
+    function sortTable(columnIndex) {
+        let table = document.getElementById("accountTable");
+        let tbody = table.querySelector("tbody");
+        let rows = Array.from(tbody.querySelectorAll("tr"));
+
+        asc = currentSortCol === columnIndex ? !asc : true;
+        currentSortCol = columnIndex;
+
+        rows.sort((a, b) => {
+            let cellA = a.cells[columnIndex];
+            let cellB = b.cells[columnIndex];
+
+            // Prioritaskan atribut data-sort jika ada, jika tidak gunakan teks biasa
+            let valA = cellA.hasAttribute("data-sort") ? cellA.getAttribute("data-sort") : cellA.innerText.trim().toLowerCase();
+            let valB = cellB.hasAttribute("data-sort") ? cellB.getAttribute("data-sort") : cellB.innerText.trim().toLowerCase();
+
+            if (valA < valB) return asc ? -1 : 1;
+            if (valA > valB) return asc ? 1 : -1;
+            return 0;
+        });
+
+        // Terapkan hasil urutan ke dalam tabel
+        rows.forEach(row => tbody.appendChild(row));
+    }
+
+    // Script Modal yang sudah ada
     function openToggleModal(id, email, role, isActive) {
         document.getElementById('toggleUserId').value = id;
         document.getElementById('targetEmail').innerText = email;
@@ -210,14 +258,14 @@
         const btnSubmit = document.getElementById('btnConfirmToggle');
 
         if (isActive) {
-            header.style.backgroundColor = '#dc3545'; // Merah
+            header.style.backgroundColor = '#dc3545';
             actionVerb.innerText = "MENONAKTIFKAN (Deactivate)";
             actionVerb.className = "text-danger";
             warning.innerText = "*Akun ini akan langsung ter-logout dan tidak bisa mengakses sistem hingga diaktifkan kembali.";
             btnSubmit.style.backgroundColor = '#dc3545';
             btnSubmit.innerText = "Ya, Nonaktifkan";
         } else {
-            header.style.backgroundColor = '#198754'; // Hijau
+            header.style.backgroundColor = '#198754';
             actionVerb.innerText = "MENGAKTIFKAN KEMBALI (Activate)";
             actionVerb.className = "text-success";
             warning.innerText = "*Akun ini akan mendapatkan kembali akses masuk ke dalam sistem dengan password terakhirnya.";
