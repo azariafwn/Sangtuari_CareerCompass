@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Laporan_@Model.FullName</title>
+    <title>Hasil_Psikotes_SMA_Sangtuari_@Model.FullName</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <style>
         :root {
@@ -422,7 +422,7 @@
 
                 const opt = {
                     margin:       0,
-                    filename:     `Laporan_Psikotes_Sangtuari_${'@Model.FullName'.replace(/\s+/g, '_')}.pdf`,
+                    filename:     `Hasil_Psikotes_SMA_Sangtuari_${'@Model.FullName'.replace(/\s+/g, '_')}.pdf`,
                     image:        { type: 'png'},
                     html2canvas:  { scale: 4, useCORS: true },
                     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
