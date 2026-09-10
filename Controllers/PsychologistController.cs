@@ -535,5 +535,28 @@ namespace SangtuariCareerCompass.Controllers
 
             return RedirectToAction("AccountManagement");
         }
+
+        // Endpoint POST: Hapus Akun Permanen (Hanya Staff)
+        [Authorize(Roles = "Head")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAccount(Guid id)
+        {
+            var targetUser = await _context.PsychologistUsers.FindAsync(id);
+            if (targetUser == null) return NotFound();
+
+            // VALIDASI KRITIKAL: Cek keamanan lapis dua di backend
+            if (targetUser.Role == "Head")
+            {
+                TempData["ErrorMessage"] = "Akses ditolak: Akun dengan role Head Psikolog tidak dapat dihapus secara permanen.";
+                return RedirectToAction("AccountManagement");
+            }
+
+            _context.PsychologistUsers.Remove(targetUser);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = $"Akun {targetUser.Email} berhasil dihapus secara permanen.";
+            return RedirectToAction("AccountManagement");
+        }
     }
 }

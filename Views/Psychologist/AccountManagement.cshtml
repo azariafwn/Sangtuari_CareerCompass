@@ -76,10 +76,21 @@
                                 var btnIcon = user.IsActive ? "bi-lock-fill" : "bi-unlock-fill";
                                 var btnText = user.IsActive ? "Deactivate" : "Activate";
                             }
-                            <button type="button" class="btn btn-sm @btnClass rounded-pill px-3 fw-bold"
-                                    onclick="openToggleModal('@user.Id', '@user.Email', '@user.Role', @user.IsActive.ToString().ToLower())">
-                                <i class="bi @btnIcon"></i> @btnText
-                            </button>
+                            <div class="d-flex justify-content-center gap-2">
+                                <button type="button" class="btn btn-sm @btnClass rounded-pill px-3 fw-bold"
+                                        onclick="openToggleModal('@user.Id', '@user.Email', '@user.Role', @user.IsActive.ToString().ToLower())">
+                                    <i class="bi @btnIcon"></i> @btnText
+                                </button>
+
+                                <!-- HANYA MUNCUL JIKA BUKAN HEAD -->
+                                @if (user.Role != "Head")
+                                {
+                                    <button type="button" class="btn btn-sm btn-danger rounded-pill px-3 fw-bold shadow-sm"
+                                            onclick="openDeleteModal('@user.Id', '@user.Email')">
+                                        <i class="bi bi-trash3-fill"></i>
+                                    </button>
+                                }
+                            </div>
                         </td>
                     </tr>
                 }
@@ -157,6 +168,36 @@
     </div>
 </div>
 
+<!-- Modal Hapus Akun Permanen -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header border-0" style="background-color: #dc3545;">
+                <h5 class="modal-title fw-bold text-white"><i class="bi bi-exclamation-octagon-fill me-2"></i> Hapus Akun Permanen</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form asp-action="DeleteAccount" asp-controller="Psychologist" method="post">
+                <div class="modal-body p-4 bg-light text-center">
+                    <input type="hidden" name="id" id="deleteUserId" />
+
+                    <p class="mb-3">Tindakan ini <strong>TIDAK DAPAT DIBATALKAN</strong>. Apakah Anda yakin ingin menghapus akun ini beserta seluruh aksesnya?</p>
+
+                    <div class="bg-white border border-danger rounded-3 p-3 mb-3 d-inline-block text-start">
+                        <div class="mb-1"><span class="text-muted small">Email yang akan dihapus:</span></div>
+                        <div><strong id="deleteTargetEmail" class="text-danger fs-5"></strong></div>
+                    </div>
+
+                    <p class="small text-muted mb-0">*Sistem akan menghapus data kredensial ini sepenuhnya.</p>
+                </div>
+                <div class="modal-footer border-0 justify-content-center bg-light pb-4">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4 fw-bold" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold">Ya, Hapus Permanen</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
     function openToggleModal(id, email, role, isActive) {
         document.getElementById('toggleUserId').value = id;
@@ -186,5 +227,13 @@
 
         var toggleModal = new bootstrap.Modal(document.getElementById('toggleStatusModal'));
         toggleModal.show();
+    }
+
+    function openDeleteModal(id, email) {
+        document.getElementById('deleteUserId').value = id;
+        document.getElementById('deleteTargetEmail').innerText = email;
+
+        var deleteModal = new bootstrap.Modal(document.getElementById('deleteAccountModal'));
+        deleteModal.show();
     }
 </script>
