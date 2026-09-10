@@ -36,6 +36,11 @@ namespace SangtuariCareerCompass.ViewModels
         public List<string> HollandCareers { get; set; } = new();
         public List<string> HollandEducation { get; set; } = new();
 
+        // Properti untuk Informasi Psikolog
+        public string PsychologistName { get; set; } = string.Empty;
+        public string PsychologistDegree { get; set; } = string.Empty;
+        public string PsychologistSilp { get; set; } = string.Empty;
+
         public static async Task<FinalReportSMPViewModel?> BuildFromDatabaseAsync(ApplicationDbContext dbContext, Guid assessmentId)
         {
             var user = await dbContext.UserAssessments.AsNoTracking().FirstOrDefaultAsync(u => u.Id == assessmentId);
@@ -135,6 +140,15 @@ namespace SangtuariCareerCompass.ViewModels
                 // Ambil 4 rekomendasi teratas agar UI tidak terlalu penuh
                 vm.HollandCareers = careers.Take(4).ToList();
                 vm.HollandEducation = educations.Take(4).ToList();
+            }
+
+            // Tarik data Kepala Psikolog untuk TTD SMP
+            var headPsychologist = await dbContext.PsychologistUsers.AsNoTracking().FirstOrDefaultAsync(p => p.Role == "Head");
+            if (headPsychologist != null)
+            {
+                vm.PsychologistName = headPsychologist.FullName;
+                vm.PsychologistDegree = headPsychologist.Degree;
+                vm.PsychologistSilp = headPsychologist.SilpNumber;
             }
 
             return vm;

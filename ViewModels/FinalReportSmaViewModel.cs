@@ -31,6 +31,10 @@ namespace SangtuariCareerCompass.ViewModels
         public List<string> HollandEducation { get; set; } = new();
         public Dictionary<string, double> HollandScores { get; set; } = new();
 
+        public string PsychologistName { get; set; } = string.Empty;
+        public string PsychologistDegree { get; set; } = string.Empty;
+        public string PsychologistSilp { get; set; } = string.Empty;
+
         public static async Task<FinalReportSmaViewModel?> BuildFromDatabaseAsync(ApplicationDbContext dbContext, Guid assessmentId)
         {
             var user = await dbContext.UserAssessments.AsNoTracking().FirstOrDefaultAsync(u => u.Id == assessmentId);
@@ -139,6 +143,19 @@ namespace SangtuariCareerCompass.ViewModels
                     'C' => new List<string> { "S1 Akuntansi", "S1 Sistem Informasi", "S1 Administrasi Publik" },
                     _ => new List<string>()
                 };
+            }
+
+            // Tarik data Psikolog yang menilai IST / PAPI peserta ini
+            var judgedTest = results.FirstOrDefault(r => r.TestCategory == "IST" || r.TestCategory == "PAPI_Kostick");
+            if (judgedTest != null && judgedTest.PsychologistId.HasValue)
+            {
+                var assessor = await dbContext.PsychologistUsers.AsNoTracking().FirstOrDefaultAsync(p => p.Id == judgedTest.PsychologistId.Value);
+                if (assessor != null)
+                {
+                    vm.PsychologistName = assessor.FullName;
+                    vm.PsychologistDegree = assessor.Degree;
+                    vm.PsychologistSilp = assessor.SilpNumber;
+                }
             }
 
             return vm;
