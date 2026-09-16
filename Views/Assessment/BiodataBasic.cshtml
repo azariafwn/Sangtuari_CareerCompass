@@ -32,8 +32,32 @@
         <input type="text" name="SchoolName" class="form-control rounded-4 border-0 py-2.5 px-3 shadow-sm bg-input-custom" required>
     </div>
     <div class="row">
-        <div class="col-md-6 mb-3"><label class="form-label text-dark fw-medium small mb-1">Kelas</label><input type="text" name="ClassName" class="form-control rounded-4 border-0 py-2.5 px-3 shadow-sm bg-input-custom" required></div>
-        <div class="col-md-6 mb-3"><label class="form-label text-dark fw-medium small mb-1">Jurusan</label><input type="text" name="Major" class="form-control rounded-4 border-0 py-2.5 px-3 shadow-sm bg-input-custom" required></div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label text-dark fw-medium small mb-1">Kelas</label>
+            <select name="ClassName" class="form-select rounded-4 border-0 py-2.5 px-3 shadow-sm bg-input-custom" required>
+                <option value="" disabled selected>Pilih Kelas...</option>
+                @if (ViewBag.AssessmentType == "Exploration")
+                {
+                    <option value="7">Kelas 7</option>
+                    <option value="8">Kelas 8</option>
+                    <option value="9">Kelas 9</option>
+                }
+                else if (ViewBag.AssessmentType == "Discovery")
+                {
+                    <option value="10">Kelas 10</option>
+                    <option value="11">Kelas 11</option>
+                    <option value="12">Kelas 12</option>
+                }
+                else
+                {
+                    <option value="Umum">Umum / Pekerja</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label text-dark fw-medium small mb-1">Jurusan</label>
+            <input type="text" name="Major" class="form-control rounded-4 border-0 py-2.5 px-3 shadow-sm bg-input-custom" placeholder="Mis: IPA / IPS / Kosongkan" required>
+        </div>
     </div>
     <div class="text-end mt-4">
         <button type="submit" class="btn btn-purple-custom rounded-pill px-5 py-2.5 fw-medium shadow-sm">Selanjutnya</button>

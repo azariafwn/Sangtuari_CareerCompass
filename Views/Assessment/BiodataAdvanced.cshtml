@@ -2,6 +2,12 @@
 @{
     Layout = "~/Views/Shared/_AssessmentLayout.cshtml";
     ViewData["Title"] = "Data Diri Tambahan";
+
+    // Inisialisasi daftar mapel secara memori untuk kecepatan render
+    var smpSubjects = new List<string> { "Agama", "PPKn", "B. Indonesia", "Matematika", "IPA", "IPS", "B. Inggris", "PJOK", "Informatika", "Seni Budaya", "B. Daerah" };
+    var smaSubjects = new List<string> { "Agama", "PPKn", "B. Indonesia", "Matematika", "B. Inggris", "PJOK", "Sejarah", "Informatika", "Seni Budaya", "Biologi", "Fisika", "Kimia", "Ekonomi", "Sosiologi", "Geografi", "Antropologi", "B. Indonesia Lanjutan", "B. Inggris Lanjutan", "B. Arab", "B. Jepang", "B. Jerman", "B. Korea", "B. Mandarin", "B. Prancis", "Sastra", "PKWU" };
+
+    var currentSubjects = Model.AssessmentType == "Exploration" ? smpSubjects : smaSubjects;
 }
 
 <style>
@@ -28,20 +34,45 @@
     <div class="mb-3"><label class="form-label text-dark fw-medium small mb-1">Hobi</label><input type="text" id="Hobby" class="form-control rounded-4 border-0 py-2.5 bg-input-custom shadow-sm"></div>
     <div class="mb-3"><label class="form-label text-dark fw-medium small mb-1">Cita-cita</label><input type="text" id="Goals" class="form-control rounded-4 border-0 py-2.5 bg-input-custom shadow-sm"></div>
 
+    <!-- MAPEL DISUKAI -->
     <div class="mb-3">
         <label class="form-label text-dark fw-medium small mb-2">3 Mata Pelajaran yang Paling Disukai</label>
-        <div class="d-flex gap-3">
-            <input type="text" id="L1" class="form-control rounded-4 border-0 py-2.5 text-center bg-input-custom shadow-sm">
-            <input type="text" id="L2" class="form-control rounded-4 border-0 py-2.5 text-center bg-input-custom shadow-sm">
-            <input type="text" id="L3" class="form-control rounded-4 border-0 py-2.5 text-center bg-input-custom shadow-sm">
+        <div class="row g-3">
+            @for (int i = 1; i <= 3; i++)
+            {
+                <div class="col-12 col-md-4">
+                    <select id="L@(i)_Select" class="form-select rounded-4 border-0 py-2.5 bg-input-custom shadow-sm mb-2" onchange="toggleOtherMapel(this, 'L@(i)_Other')">
+                        <option value="">Pilih Mapel @i...</option>
+                        @foreach (var mapel in currentSubjects)
+                        {
+                            <option value="@mapel">@mapel</option>
+                        }
+                        <option value="Lainnya">Lainnya: ...</option>
+                    </select>
+                    <input type="text" id="L@(i)_Other" class="form-control rounded-4 border-0 py-2.5 bg-input-custom shadow-sm d-none" placeholder="Ketik mapel...">
+                </div>
+            }
         </div>
     </div>
+
+    <!-- MAPEL TIDAK DISUKAI -->
     <div class="mb-4">
         <label class="form-label text-dark fw-medium small mb-2">3 Mata Pelajaran yang Paling Tidak Disukai</label>
-        <div class="d-flex gap-3">
-            <input type="text" id="D1" class="form-control rounded-4 border-0 py-2.5 text-center bg-input-custom shadow-sm">
-            <input type="text" id="D2" class="form-control rounded-4 border-0 py-2.5 text-center bg-input-custom shadow-sm">
-            <input type="text" id="D3" class="form-control rounded-4 border-0 py-2.5 text-center bg-input-custom shadow-sm">
+        <div class="row g-3">
+            @for (int i = 1; i <= 3; i++)
+            {
+                <div class="col-12 col-md-4">
+                    <select id="D@(i)_Select" class="form-select rounded-4 border-0 py-2.5 bg-input-custom shadow-sm mb-2" onchange="toggleOtherMapel(this, 'D@(i)_Other')">
+                        <option value="">Pilih Mapel @i...</option>
+                        @foreach (var mapel in currentSubjects)
+                        {
+                            <option value="@mapel">@mapel</option>
+                        }
+                        <option value="Lainnya">Lainnya: ...</option>
+                    </select>
+                    <input type="text" id="D@(i)_Other" class="form-control rounded-4 border-0 py-2.5 bg-input-custom shadow-sm d-none" placeholder="Ketik mapel...">
+                </div>
+            }
         </div>
     </div>
 
@@ -57,6 +88,27 @@
 
 @section Scripts {
     <script>
+        // Fungsi untuk toggle input text ketika opsi 'Lainnya' dipilih
+        function toggleOtherMapel(selectElem, targetInputId) {
+            const inputElem = document.getElementById(targetInputId);
+            if (selectElem.value === 'Lainnya') {
+                inputElem.classList.remove('d-none');
+                inputElem.focus();
+            } else {
+                inputElem.classList.add('d-none');
+                inputElem.value = ''; // Reset input text jika batal milih 'Lainnya'
+            }
+        }
+
+        // Fungsi helper untuk mengambil nilai aktual dari dropdown/input text
+        function getMapelValue(baseId) {
+            const selectVal = document.getElementById(baseId + '_Select').value;
+            if (selectVal === 'Lainnya') {
+                return document.getElementById(baseId + '_Other').value.trim();
+            }
+            return selectVal;
+        }
+
         async function sendData() {
             const btn = document.getElementById('btnSubmit');
             if (btn) {
@@ -80,15 +132,13 @@
                 MotherJob: document.getElementById('MotherJob').value,
                 Hobby: document.getElementById('Hobby').value,
                 Goals: document.getElementById('Goals').value,
+
+                // Gunakan fungsi helper, lalu buang isian yang kosong (filter Boolean)
                 LikedSubjects: [
-                    document.getElementById('L1').value,
-                    document.getElementById('L2').value,
-                    document.getElementById('L3').value
+                    getMapelValue('L1'), getMapelValue('L2'), getMapelValue('L3')
                 ].filter(Boolean),
                 DislikedSubjects: [
-                    document.getElementById('D1').value,
-                    document.getElementById('D2').value,
-                    document.getElementById('D3').value
+                    getMapelValue('D1'), getMapelValue('D2'), getMapelValue('D3')
                 ].filter(Boolean)
             };
 
@@ -107,14 +157,9 @@
                 if (res.ok && data.success) {
                     localStorage.clear();
 
-                    // Percabangan Alur Berdasarkan Tipe Asesmen
                     if (type === 'Discovery') {
-                        // SMA
                         window.location.href = `/Quiz/Instruction?testKey=IST_SubTest_01&userAssessmentId=${data.userAssessmentId}`;
-                        // window.location.href = `/Quiz/Instruction?testKey=SDS_Holland&userAssessmentId=${data.userAssessmentId}`;
-                        // window.location.href = `/Quiz/Instruction?testKey=PAPI_Kostick&userAssessmentId=${data.userAssessmentId}`;
                     } else {
-                        // SMP
                         window.location.href = `/Quiz/Instruction?testKey=CFIT_SubTest_01&userAssessmentId=${data.userAssessmentId}`;
                     }
                 } else {
