@@ -368,6 +368,97 @@ namespace SangtuariCareerCompass.Controllers
             return Ok(new { success = true });
         }
 
+        // 1. TAMBAHKAN FUNGSI ANTREAN SMP
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> QueueSMP()
+        {
+            var assessments = await _context.UserAssessments
+                .AsNoTracking()
+                .Where(u => u.AssessmentType == "Exploration")
+                .OrderByDescending(u => u.CreatedAt)
+                .ToListAsync();
+
+            var queueList = new List<dynamic>();
+
+            foreach (var user in assessments)
+            {
+                bool isJudged = await _context.UserTestResults.AnyAsync(r => r.UserAssessmentId == user.Id && r.TestCategory == "Final_Judgment_SMP");
+
+                queueList.Add(new
+                {
+                    user.Id,
+                    CreatedAtSort = user.CreatedAt.ToString("yyyyMMddHHmmss"),
+                    CreatedAtDisplay = user.CreatedAt.ToString("dd MMM yyyy, HH:mm"),
+                    user.FullName,
+                    user.SchoolName,
+                    IsJudged = isJudged
+                });
+            }
+
+            return View(queueList);
+        }
+
+        // 2. TAMBAHKAN FUNGSI GET & POST JUDGMENT SMP
+        [HttpGet]
+        public async Task<IActionResult> SmpJudgment(Guid userAssessmentId)
+        {
+            var vm = await FinalReportSMPViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
+            if (vm == null) return NotFound("Data tidak ditemukan.");
+
+            // Jika sudah dinilai, lemparkan ke halaman preview laporan
+            if (vm.IsJudged) return RedirectToAction("FinalReportSMP", "Report", new { userAssessmentId });
+
+            return View("~/Views/Psychologist/Report/SmpJudgment.cshtml", vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitSmpJudgment([FromBody] SubmitSmpJudgmentDto dto)
+        {
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Guid? psychologistId = Guid.TryParse(userIdStr, out var id) ? id : null;
+
+            var resultEntity = new UserTestResult
+            {
+                UserAssessmentId = dto.UserAssessmentId,
+                PsychologistId = psychologistId,
+                TestCategory = "Final_Judgment_SMP",
+                OverallScore = 0,
+                Classification = "Manual Judged",
+                ResultDetails = JsonDocument.Parse(JsonSerializer.Serialize(new
+                {
+                    Kesimpulan = dto.Kesimpulan,
+                    Saran = dto.Saran
+                }))
+            };
+
+            _context.UserTestResults.Add(resultEntity);
+            await _context.SaveChangesAsync();
+
+            // TRIGGER EMAIL SETELAH PSIKOLOG SELESAI MENILAI
+            var assessment = await _context.UserAssessments.FindAsync(dto.UserAssessmentId);
+            if (assessment != null && assessment.AssessmentType == "Exploration")
+            {
+                var request = HttpContext.Request;
+                var baseUrl = $"{request.Scheme}://{request.Host}";
+                var reportUrl = $"{baseUrl}/Report/FinalReportSMP?userAssessmentId={assessment.Id}";
+
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await _emailService.SendResultEmailAsync(assessment.Email, assessment.FullName, reportUrl, assessment.AssessmentType);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[Error] Auto-email SMP gagal: {ex.Message}");
+                    }
+                });
+            }
+
+            return Ok(new { success = true });
+        }
+
         private async Task CheckAndTriggerDiscoveryEmailAsync(Guid userAssessmentId)
         {
             // 1. Tarik semua kategori tes yang sudah dinilai untuk user ini
