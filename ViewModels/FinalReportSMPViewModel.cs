@@ -41,6 +41,11 @@ namespace SangtuariCareerCompass.ViewModels
         public string PsychologistDegree { get; set; } = string.Empty;
         public string PsychologistSilp { get; set; } = string.Empty;
 
+        // Porperti Kesimpulan
+        public string CustomKesimpulan { get; set; } = string.Empty;
+        public string CustomSaran { get; set; } = string.Empty;
+        public bool IsJudged { get; set; } = false;
+
         public static async Task<FinalReportSMPViewModel?> BuildFromDatabaseAsync(ApplicationDbContext dbContext, Guid assessmentId)
         {
             var user = await dbContext.UserAssessments.AsNoTracking().FirstOrDefaultAsync(u => u.Id == assessmentId);
@@ -92,6 +97,15 @@ namespace SangtuariCareerCompass.ViewModels
 
                     vm.HollandJson = res.ResultDetails.RootElement.GetRawText();
                 }
+                else if (res.TestCategory == "Final_Judgment_SMP")
+                {
+                    vm.IsJudged = true;
+                    var doc = JsonDocument.Parse(res.ResultDetails.RootElement.GetRawText());
+                    if (doc.RootElement.TryGetProperty("Kesimpulan", out var kesimpulan))
+                        vm.CustomKesimpulan = kesimpulan.GetString() ?? "";
+                    if (doc.RootElement.TryGetProperty("Saran", out var saran))
+                        vm.CustomSaran = saran.GetString() ?? "";
+                }
             }
 
             // Ekstraksi Rekomendasi Karier & Pendidikan berdasarkan Kode Holland
@@ -142,13 +156,28 @@ namespace SangtuariCareerCompass.ViewModels
                 vm.HollandEducation = educations.Take(4).ToList();
             }
 
-            // Tarik data Kepala Psikolog untuk TTD SMP
-            var headPsychologist = await dbContext.PsychologistUsers.AsNoTracking().FirstOrDefaultAsync(p => p.Role == "Head");
-            if (headPsychologist != null)
+            // Tarik data Psikolog yang spesifik menilai "Final_Judgment_SMP" untuk peserta ini
+            var judgedTest = results.FirstOrDefault(r => r.TestCategory == "Final_Judgment_SMP");
+            if (judgedTest != null && judgedTest.PsychologistId.HasValue)
             {
-                vm.PsychologistName = headPsychologist.FullName;
-                vm.PsychologistDegree = headPsychologist.Degree;
-                vm.PsychologistSilp = headPsychologist.SilpNumber;
+                var assessor = await dbContext.PsychologistUsers.AsNoTracking().FirstOrDefaultAsync(p => p.Id == judgedTest.PsychologistId.Value);
+                if (assessor != null)
+                {
+                    vm.PsychologistName = assessor.FullName;
+                    vm.PsychologistDegree = assessor.Degree;
+                    vm.PsychologistSilp = assessor.SilpNumber;
+                }
+            }
+            // Fallback keamanan jika belum dinilai namun dirender (meski tidak seharusnya terjadi di production)
+            else
+            {
+                var headPsychologist = await dbContext.PsychologistUsers.AsNoTracking().FirstOrDefaultAsync(p => p.Role == "Head");
+                if (headPsychologist != null)
+                {
+                    vm.PsychologistName = headPsychologist.FullName;
+                    vm.PsychologistDegree = headPsychologist.Degree;
+                    vm.PsychologistSilp = headPsychologist.SilpNumber;
+                }
             }
 
             return vm;
