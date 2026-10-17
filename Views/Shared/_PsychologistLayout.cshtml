@@ -130,7 +130,10 @@
                 }
 
                 <a href="/Psychologist/Queue" class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["Action"]?.ToString() == "Queue" ? "active" : "")">
-                    <i class="bi bi-list-check"></i> <span class="menu-text">Antrean Penilaian</span>
+                    <i class="bi bi-person-check-fill"></i> <span class="menu-text">Antrean SMA</span>
+                </a>
+                <a href="/Psychologist/QueueSMP" class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["Action"]?.ToString() == "QueueSMP" ? "active" : "")">
+                    <i class="bi bi-person-lines-fill"></i> <span class="menu-text">Antrean SMP</span>
                 </a>
                 <a href="/Psychologist/ParticipantList" class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["Action"]?.ToString() == "ParticipantList" ? "active" : "")">
                     <i class="bi bi-people-fill"></i> <span class="menu-text">Data Peserta</span>
@@ -166,5 +169,7 @@
     </script>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Wadah penampung skrip spesifik dari masing-masing halaman -->
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
