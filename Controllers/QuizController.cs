@@ -513,32 +513,32 @@ namespace SangtuariCareerCompass.Controllers
                 return NotFound();
 
             // LOGIKA AUTO-EMAIL KHUSUS SMP (Exploration)
-            if (assessment.AssessmentType == "Exploration")
-            {
-                // Generate URL lengkap berdasarkan host server saat ini
-                var request = HttpContext.Request;
-                var baseUrl = $"{request.Scheme}://{request.Host}";
-                var reportUrl = $"{baseUrl}/Report/FinalReportSMP?userAssessmentId={assessment.Id}";
+            //if (assessment.AssessmentType == "Exploration")
+            //{
+            //    // Generate URL lengkap berdasarkan host server saat ini
+            //    var request = HttpContext.Request;
+            //    var baseUrl = $"{request.Scheme}://{request.Host}";
+            //    var reportUrl = $"{baseUrl}/Report/FinalReportSMP?userAssessmentId={assessment.Id}";
 
-                // Eksekusi Fire-and-Forget di background thread agar loading UI tidak terblokir
-                _ = Task.Run(async () =>
-                {
-                    try
-                    {
-                        await _emailService.SendResultEmailAsync(
-                            assessment.Email,
-                            assessment.FullName,
-                            reportUrl,
-                            assessment.AssessmentType
-                        );
-                    }
-                    catch (Exception ex)
-                    {
-                        // Logging jika email gagal (bisa diganti dengan ILogger ke depannya)
-                        Console.WriteLine($"[Error] Gagal mengirim auto-email ke {assessment.Email}: {ex.Message}");
-                    }
-                });
-            }
+            //    // Eksekusi Fire-and-Forget di background thread agar loading UI tidak terblokir
+            //    _ = Task.Run(async () =>
+            //    {
+            //        try
+            //        {
+            //            await _emailService.SendResultEmailAsync(
+            //                assessment.Email,
+            //                assessment.FullName,
+            //                reportUrl,
+            //                assessment.AssessmentType
+            //            );
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            // Logging jika email gagal (bisa diganti dengan ILogger ke depannya)
+            //            Console.WriteLine($"[Error] Gagal mengirim auto-email ke {assessment.Email}: {ex.Message}");
+            //        }
+            //    });
+            //}
 
             return View(assessment);
         }
