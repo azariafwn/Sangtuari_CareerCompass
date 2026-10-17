@@ -1,0 +1,132 @@
+﻿@model IEnumerable<dynamic>
+@{
+    ViewData["Title"] = "Antrean Penilaian SMP";
+    Layout = "_PsychologistLayout";
+}
+
+<div class="bg-white p-4 rounded-4 shadow-sm d-flex flex-column" style="max-height: 85vh;">
+
+    <!-- Header Area: Judul & Filter Pencarian -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-shrink-0">
+        <h4 class="fw-bold mb-0" style="color: #4A2B50;">Antrean Penilaian (Program Exploration)</h4>
+
+        <div class="d-flex gap-2 justify-content-end">
+            <!-- Filter Status Penilaian (Tunggal untuk SMP) -->
+            <select id="filterStatus" class="form-select bg-light border-0 text-muted" style="width: 160px; cursor: pointer;">
+                <option value="">Semua Status</option>
+                <option value="selesai">Selesai Dinilai</option>
+                <option value="menunggu">Menunggu</option>
+            </select>
+
+            <!-- Search Bar -->
+            <div class="input-group" style="width: 280px;">
+                <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+                <input type="text" id="searchInput" class="form-control border-start-0 bg-light" placeholder="Cari nama atau sekolah...">
+            </div>
+        </div>
+    </div>
+
+    <!-- Area Scroll Khusus Tabel -->
+    <div class="table-responsive flex-grow-1" style="overflow-y: auto;">
+        <table class="table table-hover align-middle mb-0" id="queueTable">
+            <thead style="position: sticky; top: 0; z-index: 10; cursor: pointer;">
+                <tr>
+                    <th onclick="sortTable(0)" width="20%" style="background-color: #4A2B50; color: white; border-bottom: none;">
+                        Waktu Tes <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i>
+                    </th>
+                    <th onclick="sortTable(1)" width="25%" style="background-color: #4A2B50; color: white; border-bottom: none;">
+                        Nama Peserta <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i>
+                    </th>
+                    <th onclick="sortTable(2)" width="25%" style="background-color: #4A2B50; color: white; border-bottom: none;">
+                        Asal Sekolah <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i>
+                    </th>
+                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Status Penilaian</th>
+                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td data-sort="@item.CreatedAtSort" class="text-muted small">@item.CreatedAtDisplay</td>
+                        <td class="fw-bold">@item.FullName</td>
+                        <td>@item.SchoolName</td>
+
+                        <!-- Status Penilaian SMP -->
+                        <td class="text-center">
+                            @if (item.IsJudged)
+                            {
+                                <span class="badge bg-success rounded-pill px-3 py-2">Selesai</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark rounded-pill px-3 py-2">Menunggu</span>
+                            }
+                        </td>
+
+                        <!-- Aksi Penilaian SMP -->
+                        <td class="text-center">
+                            @if (!item.IsJudged)
+                            {
+                                <a href="/Psychologist/SmpJudgment?userAssessmentId=@item.Id" class="btn btn-sm text-white rounded-pill px-3 fw-bold w-100" style="background-color: #9C7BB4;">Nilai</a>
+                            }
+                            else
+                            {
+                                <a href="/Report/FinalReportSMP?userAssessmentId=@item.Id" class="btn btn-outline-secondary btn-sm rounded-pill fw-bold w-100" target="_blank">Lihat Laporan</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Script Sorting & Filtering Client-Side yang Dioptimalkan untuk SMP -->
+<script>
+    function applyFilters() {
+        let searchText = document.getElementById('searchInput').value.toLowerCase();
+        let filterStatus = document.getElementById('filterStatus').value.toLowerCase();
+        let rows = document.querySelectorAll('#queueTable tbody tr');
+
+        rows.forEach(row => {
+            let text = row.innerText.toLowerCase();
+            // Index 3 adalah kolom Status Penilaian
+            let statusText = row.cells[3].innerText.toLowerCase();
+
+            let matchSearch = text.includes(searchText);
+            let matchStatus = filterStatus === "" || statusText.includes(filterStatus);
+
+            row.style.display = (matchSearch && matchStatus) ? '' : 'none';
+        });
+    }
+
+    document.getElementById('searchInput').addEventListener('keyup', applyFilters);
+    document.getElementById('filterStatus').addEventListener('change', applyFilters);
+
+    let currentSortCol = -1;
+    let asc = true;
+
+    function sortTable(columnIndex) {
+        let table = document.getElementById("queueTable");
+        let tbody = table.querySelector("tbody");
+        let rows = Array.from(tbody.querySelectorAll("tr"));
+
+        asc = currentSortCol === columnIndex ? !asc : true;
+        currentSortCol = columnIndex;
+
+        rows.sort((a, b) => {
+            let cellA = a.cells[columnIndex];
+            let cellB = b.cells[columnIndex];
+
+            let valA = cellA.hasAttribute("data-sort") ? cellA.getAttribute("data-sort") : cellA.innerText.trim().toLowerCase();
+            let valB = cellB.hasAttribute("data-sort") ? cellB.getAttribute("data-sort") : cellB.innerText.trim().toLowerCase();
+
+            if (valA < valB) return asc ? -1 : 1;
+            if (valA > valB) return asc ? 1 : -1;
+            return 0;
+        });
+
+        rows.forEach(row => tbody.appendChild(row));
+    }
+</script>
