@@ -12,21 +12,28 @@
 
         <div class="d-flex gap-2 justify-content-end">
             <!-- Filter IST -->
-            <select id="filterIst" class="form-select bg-light border-0 text-muted" style="width: 140px; cursor: pointer;">
+            <select id="filterIst" class="form-select bg-light border-0 text-muted" style="width: 130px; cursor: pointer;">
                 <option value="">Status IST</option>
                 <option value="selesai">Selesai</option>
                 <option value="menunggu">Menunggu</option>
             </select>
 
             <!-- Filter PAPI -->
-            <select id="filterPapi" class="form-select bg-light border-0 text-muted" style="width: 150px; cursor: pointer;">
+            <select id="filterPapi" class="form-select bg-light border-0 text-muted" style="width: 135px; cursor: pointer;">
                 <option value="">Status PAPI</option>
                 <option value="selesai">Selesai</option>
                 <option value="menunggu">Menunggu</option>
             </select>
 
+            <!-- Filter Kesimpulan -->
+            <select id="filterKesimpulan" class="form-select bg-light border-0 text-muted" style="width: 155px; cursor: pointer;">
+                <option value="">Status Kesimpulan</option>
+                <option value="selesai">Selesai</option>
+                <option value="menunggu">Menunggu</option>
+            </select>
+
             <!-- Search Bar -->
-            <div class="input-group" style="width: 250px;">
+            <div class="input-group" style="width: 230px;">
                 <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
                 <input type="text" id="searchInput" class="form-control border-start-0 bg-light" placeholder="Cari peserta / sekolah">
             </div>
@@ -36,58 +43,58 @@
     <!-- Area Scroll Khusus Tabel -->
     <div class="table-responsive flex-grow-1" style="overflow-y: auto;">
         <table class="table table-hover align-middle mb-0" id="queueTable">
-            <thead style="position: sticky; top: 0; z-index: 10; cursor: pointer;">
+            <thead style="position: sticky; top: 0; z-index: 10;">
                 <tr>
-                    <!-- KOLOM BARU: Waktu Tes di Index 0 -->
-                    <th onclick="sortTable(0)" width="15%" style="background-color: #4A2B50; color: white; border-bottom: none;">
-                        Waktu Tes <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i>
+                    <th onclick="sortTable(0)" width="15%" style="background-color: #4A2B50; color: white; border-bottom: none; cursor: pointer;">
+                        Waktu Tes <i class="bi bi-arrow-down-up small ms-1 text-white-50"></i>
                     </th>
-                    <th onclick="sortTable(1)" width="20%" style="background-color: #4A2B50; color: white; border-bottom: none;">
-                        Nama Peserta <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i>
+                    <th onclick="sortTable(1)" width="20%" style="background-color: #4A2B50; color: white; border-bottom: none; cursor: pointer;">
+                        Nama Peserta <i class="bi bi-arrow-down-up small ms-1 text-white-50"></i>
                     </th>
-                    <th onclick="sortTable(2)" width="15%" style="background-color: #4A2B50; color: white; border-bottom: none;">
-                        Asal Sekolah <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i>
+                    <th onclick="sortTable(2)" width="15%" style="background-color: #4A2B50; color: white; border-bottom: none; cursor: pointer;">
+                        Asal Sekolah <i class="bi bi-arrow-down-up small ms-1 text-white-50"></i>
                     </th>
-                    <th width="12%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Status IST</th>
-                    <th width="13%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Aksi IST</th>
-                    <th width="12%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Status PAPI</th>
-                    <th width="13%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Aksi PAPI</th>
+                    <th width="10%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">IST</th>
+                    <th width="10%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">PAPI</th>
+                    <th width="15%" class="text-center border-start" style="background-color: #4A2B50; color: white; border-bottom: none;">Status Kesimpulan</th>
+                    <th width="15%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Aksi Akhir</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <!-- TD BARU: Inject data-sort agar urutan matematis (YYYYMMDDHHmmss) berjalan akurat -->
                         <td data-sort="@item.CreatedAtSort" class="text-muted small">@item.CreatedAtDisplay</td>
                         <td class="fw-bold">@item.FullName</td>
                         <td>@item.SchoolName</td>
 
-                        <!-- Blok IST -->
-                        <td class="text-center">
-                            @if (item.IsIstJudged)
-                            {
-                                <span class="badge bg-success rounded-pill px-3 py-2">Selesai</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-warning text-dark rounded-pill px-3 py-2">Menunggu</span>
-                            }
-                        </td>
-                        <td class="text-center">
+                        <!-- Kolom IST (Index 3) -->
+                        <td class="text-center" data-status="@(item.IsIstJudged ? "selesai" : "menunggu")">
                             @if (!item.IsIstJudged)
                             {
-                                <a href="/Psychologist/IstJudgment?userAssessmentId=@item.Id" class="btn btn-sm text-white rounded-pill px-3 fw-bold w-100" style="background-color: #9C7BB4;">Nilai</a>
+                                <a href="/Psychologist/IstJudgment?userAssessmentId=@item.Id" class="btn btn-sm text-white rounded-pill px-3 fw-bold" style="background-color: #9C7BB4; font-size: 11px;">Nilai IST</a>
                             }
                             else
                             {
-                                <a href="/Report/IstResult?userAssessmentId=@item.Id" class="btn btn-outline-secondary btn-sm rounded-pill fw-bold w-100" target="_blank">Lihat Hasil</a>
+                                <span class="badge bg-success"><i class="bi bi-check2"></i></span>
                             }
                         </td>
 
-                        <!-- Blok PAPI -->
-                        <td class="text-center border-start">
-                            @if (item.IsPapiJudged)
+                        <!-- Kolom PAPI (Index 4) -->
+                        <td class="text-center" data-status="@(item.IsPapiJudged ? "selesai" : "menunggu")">
+                            @if (!item.IsPapiJudged)
+                            {
+                                <a href="/Psychologist/PapiJudgment?userAssessmentId=@item.Id" class="btn btn-sm text-white rounded-pill px-3 fw-bold" style="background-color: #9C7BB4; font-size: 11px;">Nilai PAPI</a>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success"><i class="bi bi-check2"></i></span>
+                            }
+                        </td>
+
+                        <!-- Kolom Status Kesimpulan (Index 5) -->
+                        <td class="text-center border-start" data-status="@(item.IsFinalJudged ? "selesai" : "menunggu")">
+                            @if (item.IsFinalJudged)
                             {
                                 <span class="badge bg-success rounded-pill px-3 py-2">Selesai</span>
                             }
@@ -96,14 +103,23 @@
                                 <span class="badge bg-warning text-dark rounded-pill px-3 py-2">Menunggu</span>
                             }
                         </td>
+
+                        <!-- Aksi Akhir (Index 6) -->
                         <td class="text-center">
-                            @if (!item.IsPapiJudged)
+                            @if (!item.IsFinalJudged)
                             {
-                                <a href="/Psychologist/PapiJudgment?userAssessmentId=@item.Id" class="btn btn-sm text-white rounded-pill px-3 fw-bold w-100" style="background-color: #9C7BB4;">Nilai</a>
+                                if (item.IsIstJudged && item.IsPapiJudged)
+                                {
+                                    <a href="/Psychologist/SmaJudgment?userAssessmentId=@item.Id" class="btn btn-sm text-white rounded-pill px-3 fw-bold w-100" style="background-color: #9C7BB4;">Buat Kesimpulan</a>
+                                }
+                                else
+                                {
+                                    <span class="text-muted small fst-italic">Selesaikan IST & PAPI</span>
+                                }
                             }
                             else
                             {
-                                <a href="/Report/PapiResult?userAssessmentId=@item.Id" class="btn btn-outline-secondary btn-sm rounded-pill fw-bold w-100" target="_blank">Lihat Hasil</a>
+                                <a href="/Report/FinalReportSMA?userAssessmentId=@item.Id" class="btn btn-outline-secondary btn-sm rounded-pill fw-bold w-100" target="_blank">Lihat Laporan</a>
                             }
                         </td>
                     </tr>
@@ -113,36 +129,38 @@
     </div>
 </div>
 
-<!-- Script Sorting & Filtering Client-Side -->
+<!-- Script Sorting & Filtering Client-Side yang Diperbaiki -->
 <script>
-    // FUNGSI FILTER GABUNGAN (Pencarian & Status)
     function applyFilters() {
         let searchText = document.getElementById('searchInput').value.toLowerCase();
         let filterIst = document.getElementById('filterIst').value.toLowerCase();
         let filterPapi = document.getElementById('filterPapi').value.toLowerCase();
+        let filterKesimpulan = document.getElementById('filterKesimpulan').value.toLowerCase();
 
         let rows = document.querySelectorAll('#queueTable tbody tr');
 
         rows.forEach(row => {
-            let text = row.innerText.toLowerCase();
+            let rowText = row.innerText.toLowerCase();
 
-            // PERBAIKAN: Index bergeser! Status IST sekarang di Index 3, Status PAPI di Index 5
-            let istStatus = row.cells[3].innerText.toLowerCase();
-            let papiStatus = row.cells[5].innerText.toLowerCase();
+            // Mengambil status langsung dari atribut data-status agar aman dari perubahan elemen HTML di dalam sel
+            let istStatus = row.cells[3].getAttribute('data-status') || "";
+            let papiStatus = row.cells[4].getAttribute('data-status') || "";
+            let kesimpulanStatus = row.cells[5].getAttribute('data-status') || "";
 
-            let matchSearch = text.includes(searchText);
-            let matchIst = filterIst === "" || istStatus.includes(filterIst);
-            let matchPapi = filterPapi === "" || papiStatus.includes(filterPapi);
+            let matchSearch = rowText.includes(searchText);
+            let matchIst = filterIst === "" || istStatus === filterIst;
+            let matchPapi = filterPapi === "" || papiStatus === filterPapi;
+            let matchKesimpulan = filterKesimpulan === "" || kesimpulanStatus === filterKesimpulan;
 
-            row.style.display = (matchSearch && matchIst && matchPapi) ? '' : 'none';
+            row.style.display = (matchSearch && matchIst && matchPapi && matchKesimpulan) ? '' : 'none';
         });
     }
 
     document.getElementById('searchInput').addEventListener('keyup', applyFilters);
     document.getElementById('filterIst').addEventListener('change', applyFilters);
     document.getElementById('filterPapi').addEventListener('change', applyFilters);
+    document.getElementById('filterKesimpulan').addEventListener('change', applyFilters);
 
-    // Fitur Sorting (Klik Header) Cerdas dengan Atribut data-sort
     let currentSortCol = -1;
     let asc = true;
 
@@ -158,7 +176,6 @@
             let cellA = a.cells[columnIndex];
             let cellB = b.cells[columnIndex];
 
-            // Prioritaskan atribut data-sort jika tersedia, jika tidak pakai innerText
             let valA = cellA.hasAttribute("data-sort") ? cellA.getAttribute("data-sort") : cellA.innerText.trim().toLowerCase();
             let valB = cellB.hasAttribute("data-sort") ? cellB.getAttribute("data-sort") : cellB.innerText.trim().toLowerCase();
 
