@@ -4,63 +4,183 @@
     Layout = "_PsychologistLayout";
 }
 
-<div class="bg-white p-4 rounded-4 shadow-sm d-flex flex-column" style="max-height: 85vh;">
+<style>
+    .bg-purple-main {
+        background-color: #4E325A;
+        color: white;
+    }
 
-    <!-- Header Informasi -->
-    <div class="mb-4 flex-shrink-0 border-bottom pb-3">
-        <h4 class="fw-bold mb-1" style="color: #4A2B50;">Input Judgment Manual PAPI Kostick</h4>
-        <p class="text-muted mb-0">Peserta: <strong class="text-dark">@Model.FullName</strong></p>
-    </div>
+    .text-purple-main {
+        color: #4E325A;
+    }
 
-    <form id="judgmentForm" class="d-flex flex-column flex-grow-1" style="min-height: 0;">
-        <input type="hidden" id="assessmentId" value="@Model.UserAssessmentId" />
+    .bg-yellow-accent {
+        background-color: #FFE375;
+        color: #4E325A;
+    }
 
-        <!-- Area Scroll Khusus Tabel -->
-        <div class="table-responsive flex-grow-1 mb-3" style="overflow-y: auto;">
-            <table class="table table-hover align-middle mb-0">
-                <thead style="position: sticky; top: 0; z-index: 10;">
-                    <tr class="align-middle">
-                        <th width="25%" style="background-color: #4A2B50; color: white; border-bottom: none;">Aspek</th>
-                        <th width="50%" style="background-color: #4A2B50; color: white; border-bottom: none;">Rincian Faktor (Kode: Skor - Kategori)</th>
-                        <th width="25%" class="text-center" style="background-color: #4A2B50; color: white; border-bottom: none;">Judgment Psikolog</th>
-                    </tr>
-                </thead>
-                <tbody id="aspectsContainer">
-                    @foreach (var aspect in Model.AspectGroups)
-                    {
-                        <tr class="aspect-row" data-aspect="@aspect.AspectName">
-                            <td class="fw-bold" style="color: #4A2B50;">@aspect.AspectName</td>
-                            <td>
-                                @foreach (var f in aspect.Factors)
+    .table-reference th {
+        font-size: 0.85rem;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .table-reference td {
+        font-size: 0.8rem;
+        vertical-align: top;
+    }
+
+    .sticky-panel {
+        position: sticky;
+        top: 20px;
+        height: calc(100vh - 40px);
+        overflow-y: auto;
+    }
+</style>
+
+<div class="container-fluid py-4 px-md-5">
+    <div class="row g-4">
+
+        <!-- PANEL KIRI: Form Input Judgment Psikolog PAPI -->
+        <div class="col-lg-5">
+            <div class="card shadow-sm p-4 h-100 border-0 rounded-4 d-flex flex-column">
+                <h5 class="text-purple-main fw-bold mb-3"><i class="bi bi-pencil-square me-2"></i>Form Judgment PAPI Kostick</h5>
+                <div class="mb-3 bg-light p-3 rounded-3 border flex-shrink-0">
+                    <p class="mb-1 small">Peserta: <strong class="fs-6">@Model.FullName</strong></p>
+                    <p class="mb-0 text-muted small">Tentukan kategori penilaian akhir untuk setiap aspek berdasarkan rincian faktor tes peserta dan panduan referensi di sebelah kanan.</p>
+                </div>
+
+                <form id="judgmentForm" class="d-flex flex-column flex-grow-1" style="min-height: 0;">
+                    <input type="hidden" id="assessmentId" value="@Model.UserAssessmentId" />
+
+                    <div class="table-responsive flex-grow-1 mb-3" style="overflow-y: auto;">
+                        <table class="table align-middle table-hover">
+                            <thead class="table-light text-center" style="position: sticky; top: 0; z-index: 10;">
+                                <tr>
+                                    <th width="35%">Aspek</th>
+                                    <th width="35%">Faktor Terukur</th>
+                                    <th width="30%">Judgment</th>
+                                </tr>
+                            </thead>
+                            <tbody id="aspectsContainer">
+                                @foreach (var aspect in Model.AspectGroups)
                                 {
-                                    <span class="badge bg-light text-dark border me-1 mb-1" style="font-size: 0.85rem;">
-                                        @f.Code: @f.RawScore (@f.Leveling)
-                                    </span>
+                                    <tr class="aspect-row" data-aspect="@aspect.AspectName">
+                                        <td class="fw-bold text-purple-main">@aspect.AspectName</td>
+                                        <td>
+                                            @foreach (var f in aspect.Factors)
+                                            {
+                                                <span class="badge bg-light text-dark border me-1 mb-1" style="font-size: 0.75rem;">
+                                                    @f.Code: @f.RawScore (@f.Leveling)
+                                                </span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <select class="form-select form-select-sm judgment-select border-secondary fw-bold text-center">
+                                                <option value="" selected disabled>-</option>
+                                                <option value="KS">KS</option>
+                                                <option value="K">K</option>
+                                                <option value="R">R</option>
+                                                <option value="B">B</option>
+                                                <option value="BS">BS</option>
+                                            </select>
+                                        </td>
+                                    </tr>
                                 }
-                            </td>
-                            <td class="text-center">
-                                <select class="form-select judgment-select border-secondary bg-light">
-                                    <option value="">-- Pilih Judgment --</option>
-                                    <option value="KS">Kurang Sekali (KS)</option>
-                                    <option value="K">Kurang (K)</option>
-                                    <option value="R">Rata-rata (R)</option>
-                                    <option value="B">Baik (B)</option>
-                                    <option value="BS">Baik Sekali (BS)</option>
-                                </select>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="d-grid mt-auto flex-shrink-0 pt-2 border-top">
+                        <button type="button" onclick="submitJudgment()" class="btn bg-purple-main text-white py-2 fw-bold rounded-pill shadow-sm">
+                            Simpan Penilaian
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
 
-        <!-- Tombol Aksi (Tetap di bawah saat di-scroll) -->
-        <div class="text-end flex-shrink-0 pt-3 border-top">
-            <button type="button" onclick="submitJudgment()" class="btn text-white rounded-pill px-5 fw-bold shadow-sm" style="background-color: #4A2B50;">
-                <i class="bi bi-save-fill me-2"></i>Simpan & Lihat Laporan
-            </button>
+        <!-- PANEL KANAN: Referensi Kunci Interpretasi PAPI (Sticky) -->
+        <div class="col-lg-7">
+            <div class="card shadow-sm p-4 border-0 rounded-4 sticky-panel bg-white">
+                <h5 class="text-purple-main fw-bold mb-3"><i class="bi bi-journal-text me-2"></i>Referensi Interpretasi PAPI Kostick</h5>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-reference">
+                        <thead class="bg-purple-main text-white">
+                            <tr>
+                                <th width="15%">Aspek</th>
+                                <th width="17%">Kurang Sekali (KS)</th>
+                                <th width="17%">Kurang (K)</th>
+                                <th width="17%">Rata-rata (R)</th>
+                                <th width="17%">Baik (B)</th>
+                                <th width="17%">Baik Sekali (BS)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="fw-bold">Motivasi Kerja</td>
+                                <td>Dorongan sangat rendah untuk mencapai target.</td>
+                                <td>Dorongan berprestasi relatif rendah, butuh arahan eksternal.</td>
+                                <td>Motivasi cukup untuk menyelesaikan tugas standar.</td>
+                                <td>Dorongan kuat mencapai target dan menyelesaikan tugas dengan baik.</td>
+                                <td>Berprestasi sangat tinggi, gigih, dan konsisten.</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Kepemimpinan</td>
+                                <td>Kurang inisiatif memimpin atau memutuskan.</td>
+                                <td>Cenderung menghindari tanggung jawab memimpin.</td>
+                                <td>Dapat memimpin pada situasi tertentu.</td>
+                                <td>Mampu mengarahkan dan memutuskan efektif.</td>
+                                <td>Sangat mandiri, percaya diri, dan memimpin kelompok.</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Gaya Kerja</td>
+                                <td>Sulit mengatur kerja sistematis dan teliti.</td>
+                                <td>Cukup terstruktur tapi perlu pengawasan.</td>
+                                <td>Bekerja sistematis sesuai prosedur umum.</td>
+                                <td>Terstruktur, terorganisir, dan teliti.</td>
+                                <td>Sangat sistematis dan konsisten menjaga kualitas.</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Hubungan Interpersonal</td>
+                                <td>Kesulitan menjalin relasi sosial dan tim.</td>
+                                <td>Keterbatasan dalam kerja sama sosial.</td>
+                                <td>Relasi dan kerja sama sosial cukup baik.</td>
+                                <td>Membangun hubungan positif dan efektif.</td>
+                                <td>Sangat mudah berelasi dan bersosialisasi.</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Stabilitas Emosi</td>
+                                <td>Mudah terpengaruh tekanan dan emosi.</td>
+                                <td>Kadang sulit pertahankan kestabilan emosi.</td>
+                                <td>Cukup mampu mengelola tekanan.</td>
+                                <td>Mampu mengelola tekanan dan tetap tenang.</td>
+                                <td>Sangat stabil dan efektif di bawah tekanan.</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Aktivitas Kerja</td>
+                                <td>Sulit menyesuaikan diri dengan situasi baru.</td>
+                                <td>Butuh waktu adaptasi perubahan lebih lama.</td>
+                                <td>Adaptasi perubahan pada tingkat memadai.</td>
+                                <td>Mudah menyesuaikan diri dengan hal baru.</td>
+                                <td>Sangat fleksibel dan cepat beradaptasi.</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Kepatuhan Terhadap Aturan</td>
+                                <td>Kurang nyaman mengikuti aturan/struktur.</td>
+                                <td>Menunjukkan resistensi terhadap pengawasan.</td>
+                                <td>Mampu mengikuti arahan sesuai situasi.</td>
+                                <td>Kooperatif terhadap aturan dan sistem kerja.</td>
+                                <td>Sangat menghargai disiplin dan struktur.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    </form>
+
+    </div>
 </div>
 
 <script>
@@ -69,7 +189,6 @@
         const rows = document.querySelectorAll('.aspect-row');
 
         let allFilled = true;
-        // Hapus highlight error sebelumnya (jika ada)
         rows.forEach(r => r.querySelector('.judgment-select').classList.remove('is-invalid'));
 
         rows.forEach((row, index) => {
@@ -77,17 +196,16 @@
             const val = selectEl.value;
             if (!val) {
                 allFilled = false;
-                selectEl.classList.add('is-invalid'); // Beri highlight merah jika kosong
+                selectEl.classList.add('is-invalid');
             }
             aspectGroups[index].FinalJudgment = val;
         });
 
         if (!allFilled) {
-            alert("Harap isi semua judgment psikolog yang masih ditandai merah sebelum menyimpan!");
+            alert("Harap isi semua judgment psikolog sebelum menyimpan!");
             return;
         }
 
-        // Disable tombol saat proses submit untuk mencegah double-click
         const btn = document.querySelector('button[onclick="submitJudgment()"]');
         btn.disabled = true;
         btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Menyimpan...';
