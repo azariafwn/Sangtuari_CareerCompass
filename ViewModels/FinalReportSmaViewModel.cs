@@ -35,6 +35,17 @@ namespace SangtuariCareerCompass.ViewModels
         public string PsychologistDegree { get; set; } = string.Empty;
         public string PsychologistSilp { get; set; } = string.Empty;
 
+        // --- PROPERTI BARU UNTUK KESIMPULAN & SARAN (PAGE 2) ---
+        public bool IsFinalJudged { get; set; } = false;
+        public string Kekuatan { get; set; } = string.Empty;
+        public string AreaPengembangan { get; set; } = string.Empty;
+        public string DinamikaKognitif { get; set; } = string.Empty;
+        public string DinamikaSikapKerja { get; set; } = string.Empty;
+        public string DinamikaGayaBelajar { get; set; } = string.Empty;
+        public string DinamikaMinatKarier { get; set; } = string.Empty;
+        public string DinamikaRekomendasi { get; set; } = string.Empty;
+        public string SaranPengembangan { get; set; } = string.Empty;
+
         public static async Task<FinalReportSmaViewModel?> BuildFromDatabaseAsync(ApplicationDbContext dbContext, Guid assessmentId)
         {
             var user = await dbContext.UserAssessments.AsNoTracking().FirstOrDefaultAsync(u => u.Id == assessmentId);
@@ -47,7 +58,6 @@ namespace SangtuariCareerCompass.ViewModels
             var vm = new FinalReportSmaViewModel
             {
                 UserAssessmentId = user.Id,
-                // Mengambil 8 karakter awal GUID sebagai No. Pemeriksaan
                 AssessmentNumber = user.Id.ToString().Substring(0, 8).ToUpper(),
                 FullName = user.FullName,
                 Gender = user.Gender,
@@ -109,17 +119,29 @@ namespace SangtuariCareerCompass.ViewModels
                             }
                         }
                     }
+                    else if (res.TestCategory == "Final_Judgment_SMA")
+                    {
+                        vm.IsFinalJudged = true;
+                        if (root.TryGetProperty("Kekuatan", out var k)) vm.Kekuatan = k.GetString() ?? "";
+                        if (root.TryGetProperty("AreaPengembangan", out var a)) vm.AreaPengembangan = a.GetString() ?? "";
+                        if (root.TryGetProperty("DinamikaKognitif", out var dk)) vm.DinamikaKognitif = dk.GetString() ?? "";
+                        if (root.TryGetProperty("DinamikaSikapKerja", out var ds)) vm.DinamikaSikapKerja = ds.GetString() ?? "";
+                        if (root.TryGetProperty("DinamikaGayaBelajar", out var dg)) vm.DinamikaGayaBelajar = dg.GetString() ?? "";
+                        if (root.TryGetProperty("DinamikaMinatKarier", out var dm)) vm.DinamikaMinatKarier = dm.GetString() ?? "";
+                        if (root.TryGetProperty("DinamikaRekomendasi", out var dr)) vm.DinamikaRekomendasi = dr.GetString() ?? "";
+                        if (root.TryGetProperty("SaranPengembangan", out var sp)) vm.SaranPengembangan = sp.GetString() ?? "";
+                    }
                 }
                 catch { }
             }
 
-            // Membaca Karier dari typeMasterData berdasarkan Kode Dominan (Huruf Pertama)
+            // Membaca Karier dari JSON
             if (!string.IsNullOrEmpty(vm.HollandSummaryCode))
             {
                 char dom = vm.HollandSummaryCode.FirstOrDefault();
                 string domCode = dom.ToString();
-
                 var hollandPath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Scoring", "Holland", "riasecMap.json");
+
                 if (File.Exists(hollandPath))
                 {
                     var jsonDoc = JsonDocument.Parse(File.ReadAllText(hollandPath)).RootElement;
@@ -132,7 +154,6 @@ namespace SangtuariCareerCompass.ViewModels
                     }
                 }
 
-                // Set Rekomendasi Pendidikan berdasarkan Tipe Dominan
                 vm.HollandEducation = dom switch
                 {
                     'R' => new List<string> { "S1 Teknik Mesin", "S1 Teknik Sipil", "S1 Teknik Penerbangan/Aeronautika" },
@@ -145,11 +166,15 @@ namespace SangtuariCareerCompass.ViewModels
                 };
             }
 
-            // Tarik data Psikolog yang menilai IST / PAPI peserta ini
-            var judgedTest = results.FirstOrDefault(r => r.TestCategory == "IST" || r.TestCategory == "PAPI_Kostick");
-            if (judgedTest != null && judgedTest.PsychologistId.HasValue)
+            // Tarik data Psikolog yang menilai Final_Judgment_SMA (Prioritas) atau fallback ke IST/PAPI
+            var finalJudgedTest = results.FirstOrDefault(r => r.TestCategory == "Final_Judgment_SMA");
+            var backupTest = results.FirstOrDefault(r => r.TestCategory == "IST" || r.TestCategory == "PAPI_Kostick");
+
+            var targetPsychologistId = finalJudgedTest?.PsychologistId ?? backupTest?.PsychologistId;
+
+            if (targetPsychologistId.HasValue)
             {
-                var assessor = await dbContext.PsychologistUsers.AsNoTracking().FirstOrDefaultAsync(p => p.Id == judgedTest.PsychologistId.Value);
+                var assessor = await dbContext.PsychologistUsers.AsNoTracking().FirstOrDefaultAsync(p => p.Id == targetPsychologistId.Value);
                 if (assessor != null)
                 {
                     vm.PsychologistName = assessor.FullName;
