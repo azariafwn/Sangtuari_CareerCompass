@@ -1,0 +1,474 @@
+﻿@model SangtuariCareerCompass.ViewModels.FinalReportSmaViewModel
+@{
+    Layout = "~/Views/Shared/_PsychologistLayout.cshtml";
+    ViewData["Title"] = "Kesimpulan Akhir SMA";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold text-dark fst-italic mb-1" style="color: var(--bg-purple);">Kesimpulan Psikologis SMA</h3>
+        <p class="text-muted small mb-0">Peserta: <strong>@Model.FullName</strong> | Asal: @Model.SchoolName</p>
+    </div>
+    <a href="/Psychologist/Queue" class="btn btn-outline-secondary rounded-pill btn-sm fw-medium">
+        <i class="bi bi-arrow-left"></i> Kembali ke Antrean
+    </a>
+</div>
+
+<div class="row g-4">
+    <!-- KOLOM KIRI: Data Siswa & Referensi Interpretasi -->
+    <div class="col-lg-5">
+
+        <!-- RINGKASAN HASIL TES -->
+        <div class="card border-0 shadow-sm rounded-4 mb-3">
+            <div class="card-header bg-white border-bottom-0 pt-4 pb-0 px-4">
+                <h6 class="fw-bold text-dark mb-0"><i class="bi bi-person-vcard text-warning me-2"></i>Ringkasan Hasil Tes</h6>
+            </div>
+            <div class="card-body px-4 py-3" style="max-height: 35vh; overflow-y: auto;">
+
+                <!-- Kognitif (IST) -->
+                <h6 class="fw-bold small border-bottom pb-1 text-primary">Kognitif & Bakat (IST)</h6>
+                <div class="d-flex justify-content-between small mb-2">
+                    <span class="text-muted">Inteligensi Umum (IQ)</span>
+                    <span class="fw-bold">@Model.IstIqScore (@Model.IstIqClassification)</span>
+                </div>
+                <div class="row g-1 mb-3">
+                    @foreach (var aspect in Model.IstAspectCategories)
+                    {
+                        <div class="col-12 d-flex justify-content-between small border-bottom border-light pb-1">
+                            <span class="text-muted text-truncate" style="max-width: 65%;">@aspect.Key</span>
+                            <span class="fw-medium">@aspect.Value</span>
+                        </div>
+                    }
+                </div>
+
+                <!-- Sikap Kerja (PAPI) -->
+                <h6 class="fw-bold small border-bottom pb-1 text-primary mt-2">Sikap Kerja (PAPI Kostick)</h6>
+                <div class="row g-1 mb-3">
+                    @foreach (var aspect in Model.PapiAspectJudgments)
+                    {
+                        <div class="col-12 d-flex justify-content-between small border-bottom border-light pb-1">
+                            <span class="text-muted text-truncate" style="max-width: 65%;">@aspect.Key</span>
+                            <span class="fw-medium">@aspect.Value</span>
+                        </div>
+                    }
+                </div>
+
+                <!-- Gaya Belajar & Minat -->
+                <h6 class="fw-bold small border-bottom pb-1 text-primary mt-2">Gaya Belajar & Minat Karier</h6>
+                <div class="d-flex justify-content-between small mb-1">
+                    <span class="text-muted">Gaya Belajar (VARK)</span>
+                    <span class="fw-bold">@Model.VarkDominant</span>
+                </div>
+                <div class="d-flex justify-content-between small mb-1">
+                    <span class="text-muted">Minat (Holland)</span>
+                    <span class="fw-bold">@Model.HollandSummaryCode</span>
+                </div>
+                <div class="d-flex justify-content-between small">
+                    <span class="text-muted">Konsistensi Minat</span>
+                    <span class="fw-bold">@Model.HollandConsistency</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- DATABASE INTERPRETASI -->
+        <div class="card border-0 shadow-sm rounded-4" style="max-height: 60vh; overflow-y: auto;">
+            <div class="card-header bg-white border-bottom-0 pt-3 pb-2 px-4 sticky-top z-1">
+                <h6 class="fw-bold text-dark mb-0"><i class="bi bi-journal-bookmark text-primary me-2"></i>Database Interpretasi</h6>
+            </div>
+            <div class="card-body px-3 pb-4 pt-0">
+                <div class="accordion accordion-flush border-top" id="accordionReference">
+
+                    <!-- 1. Referensi Kognitif (IST/EAS/CFIT) -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed small fw-bold py-3 bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#refKognitif">
+                                Inteligensi & Bakat Terukur
+                            </button>
+                        </h2>
+                        <div id="refKognitif" class="accordion-collapse collapse" data-bs-parent="#accordionReference">
+                            <div class="accordion-body p-0">
+                                <div class="table-responsive p-3">
+                                    <table class="table table-bordered align-middle mb-0" style="font-size: 0.75rem; min-width: 900px;">
+                                        <thead class="table-secondary text-center">
+                                            <tr>
+                                                <th width="15%">Aspek</th>
+                                                <th width="17%">Kurang Sekali</th>
+                                                <th width="17%">Kurang</th>
+                                                <th width="17%">Rata-rata</th>
+                                                <th width="17%">Baik</th>
+                                                <th width="17%">Baik Sekali</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="fw-bold bg-light">Kemampuan Membuat Pertimbangan dan Keputusan</td>
+                                                <td>Mengalami kesulitan memahami situasi dan menentukan keputusan yang tepat dalam berbagai kondisi.</td>
+                                                <td>Kemampuan membuat pertimbangan masih di bawah rata-rata sehingga memerlukan bantuan dalam mengevaluasi suatu situasi.</td>
+                                                <td>Mampu memahami situasi dan membuat pertimbangan yang sesuai dalam kondisi umum.</td>
+                                                <td>Mampu menilai situasi dengan baik dan membuat keputusan yang cukup tepat berdasarkan informasi yang tersedia.</td>
+                                                <td>Mampu memahami situasi secara komprehensif serta membuat keputusan yang matang dan realistis.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold bg-light">Kemampuan Verbal</td>
+                                                <td>Mengalami kesulitan memahami makna kata dan informasi berbasis bahasa.</td>
+                                                <td>Kemampuan memahami serta mengolah informasi verbal masih di bawah rata-rata.</td>
+                                                <td>Mampu memahami dan mengolah informasi verbal sesuai tuntutan umum.</td>
+                                                <td>Mampu memahami makna kata dan konsep serta mengolah informasi verbal dengan baik.</td>
+                                                <td>Memiliki kemampuan verbal yang sangat baik, mampu memahami dan mengolah informasi bahasa yang kompleks secara efektif.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold bg-light">Kemampuan Analogi dan Hubungan Logis</td>
+                                                <td>Mengalami kesulitan menemukan hubungan antar konsep atau informasi.</td>
+                                                <td>Kemampuan menemukan hubungan logis masih di bawah rata-rata sehingga membutuhkan waktu lebih lama dalam memahami pola hubungan.</td>
+                                                <td>Mampu menemukan hubungan logis antar informasi pada tingkat yang umum.</td>
+                                                <td>Mampu memahami hubungan antar konsep dan menggunakan pola tersebut dalam menyelesaikan masalah.</td>
+                                                <td>Sangat mampu menemukan hubungan logis yang kompleks dan menerapkannya secara fleksibel pada berbagai situasi.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold bg-light">Kemampuan Abstraksi Verbal</td>
+                                                <td>Mengalami kesulitan memahami konsep umum dan menarik inti suatu informasi.</td>
+                                                <td>Kemampuan membentuk konsep dan memahami ide abstrak masih terbatas.</td>
+                                                <td>Mampu memahami konsep umum dan ide abstrak sesuai tuntutan umum.</td>
+                                                <td>Mampu mengidentifikasi inti permasalahan dan memahami konsep abstrak dengan baik.</td>
+                                                <td>Sangat mampu melakukan abstraksi, generalisasi, dan memahami konsep yang kompleks.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold bg-light">Kemampuan Memori</td>
+                                                <td>Mengalami kesulitan mengingat dan mempertahankan informasi yang telah dipelajari.</td>
+                                                <td>Kemampuan mengingat informasi masih di bawah rata-rata dan memerlukan pengulangan lebih banyak.</td>
+                                                <td>Mampu mengingat dan memanggil kembali informasi pada tingkat yang umum.</td>
+                                                <td>Mampu menyimpan dan mengingat kembali informasi dengan baik dan cukup konsisten.</td>
+                                                <td>Memiliki daya ingat yang sangat baik serta mampu mempertahankan informasi secara akurat dalam waktu yang lebih lama.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold bg-light">Kemampuan Numerik Praktis</td>
+                                                <td>Mengalami kesulitan memahami angka, perhitungan, dan pengolahan informasi kuantitatif.</td>
+                                                <td>Kemampuan berhitung dan memahami konsep numerik masih di bawah rata-rata.</td>
+                                                <td>Mampu melakukan perhitungan dan memahami informasi numerik sesuai tuntutan umum.</td>
+                                                <td>Mampu menggunakan angka dan menyelesaikan permasalahan numerik dengan baik.</td>
+                                                <td>Memiliki kemampuan numerik yang sangat baik serta mampu menyelesaikan perhitungan secara cepat dan akurat.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold bg-light">Kemampuan Penalaran Numerik</td>
+                                                <td>Mengalami kesulitan menemukan pola dan aturan dalam rangkaian angka.</td>
+                                                <td>Kemampuan mengenali pola numerik masih di bawah rata-rata.</td>
+                                                <td>Mampu mengenali pola dan hubungan antar angka pada tingkat yang umum.</td>
+                                                <td>Mampu menemukan pola serta memprediksi kelanjutan suatu rangkaian angka dengan baik.</td>
+                                                <td>Sangat mampu memahami pola numerik yang kompleks dan menarik kesimpulan secara logis.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold bg-light">Kemampuan Analisis Visual</td>
+                                                <td>Mengalami kesulitan memahami hubungan antar bagian dalam suatu bentuk atau gambar.</td>
+                                                <td>Kemampuan menganalisis dan menyusun informasi visual masih terbatas.</td>
+                                                <td>Mampu memahami hubungan bagian dan keseluruhan pada bentuk visual sederhana.</td>
+                                                <td>Mampu menganalisis serta menyusun informasi visual secara tepat.</td>
+                                                <td>Sangat mampu memahami, menganalisis, dan mengintegrasikan berbagai informasi visual menjadi satu kesatuan yang utuh.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold bg-light">Kemampuan Spasial</td>
+                                                <td>Mengalami kesulitan membayangkan bentuk dan hubungan ruang tiga dimensi.</td>
+                                                <td>Kemampuan memahami hubungan ruang masih di bawah rata-rata.</td>
+                                                <td>Mampu memahami hubungan ruang dan bentuk tiga dimensi pada tingkat umum.</td>
+                                                <td>Mampu membayangkan dan memahami objek dalam ruang tiga dimensi dengan baik.</td>
+                                                <td>Memiliki kemampuan visual-spasial yang sangat baik serta mampu memanipulasi objek tiga dimensi secara mental dengan akurat.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Referensi PAPI Kostick -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed small fw-bold py-3 bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#refPapi">
+                                Sikap Kerja (PAPI Kostick)
+                            </button>
+                        </h2>
+                        <div id="refPapi" class="accordion-collapse collapse" data-bs-parent="#accordionReference">
+                            <div class="accordion-body p-0">
+                                <div class="table-responsive p-3">
+                                    <table class="table table-bordered align-middle mb-0" style="font-size: 0.75rem; min-width: 900px;">
+                                        <thead class="table-secondary text-center">
+                                            <tr>
+                                                <th width="15%">Aspek</th>
+                                                <th width="17%">Kurang Sekali</th>
+                                                <th width="17%">Kurang</th>
+                                                <th width="17%">Rata-rata</th>
+                                                <th width="17%">Baik</th>
+                                                <th width="17%">Baik Sekali</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="fw-bold bg-light">Motivasi Kerja</td>
+                                                <td>Menunjukkan dorongan yang sangat rendah untuk mencapai target dan menyelesaikan tugas secara optimal.</td>
+                                                <td>Memiliki dorongan berprestasi yang relatif rendah dan memerlukan arahan eksternal untuk menjaga konsistensi usaha.</td>
+                                                <td>Memiliki motivasi yang cukup untuk menyelesaikan tugas dan mencapai target yang diberikan.</td>
+                                                <td>Menunjukkan dorongan yang kuat untuk mencapai target serta menyelesaikan tugas dengan baik.</td>
+                                                <td>Memiliki dorongan berprestasi yang sangat tinggi, gigih, dan konsisten dalam mencapai tujuan.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold bg-light">Kepemimpinan</td>
+                                                <td>Kurang menunjukkan inisiatif untuk memimpin, mengambil keputusan, maupun memengaruhi orang lain.</td>
+                                                <td>Cenderung menghindari tanggung jawab memimpin dan lebih nyaman mengikuti arahan orang lain.</td>
+                                                <td>Dapat mengambil peran memimpin pada situasi tertentu namun tidak selalu menjadi inisiator utama.</td>
+                                                <td>Mampu mengarahkan, memengaruhi, dan mengambil keputusan secara efektif dalam kelompok.</td>
+                                                <td>Sangat mampu memimpin, memengaruhi, serta mengambil keputusan secara mandiri dan percaya diri.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold bg-light">Gaya Kerja</td>
+                                                <td>Mengalami kesulitan dalam mengatur pekerjaan secara sistematis, mengikuti prosedur, dan menjaga ketelitian.</td>
+                                                <td>Cukup mampu bekerja terstruktur namun masih memerlukan pengawasan dan arahan yang jelas.</td>
+                                                <td>Mampu bekerja secara cukup sistematis dan mengikuti prosedur yang berlaku.</td>
+                                                <td>Bekerja secara terstruktur, terorganisir, teliti, dan mengikuti prosedur yang berlaku.</td>
+                                                <td>Sangat sistematis, terorganisir, teliti, dan mampu menjaga kualitas kerja secara konsisten.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold bg-light">Hubungan Interpersonal</td>
+                                                <td>Mengalami kesulitan dalam menjalin hubungan sosial, bekerja sama, dan berinteraksi dengan lingkungan.</td>
+                                                <td>Dapat berinteraksi dengan orang lain namun masih menunjukkan keterbatasan dalam kerja sama dan relasi sosial.</td>
+                                                <td>Dapat menjalin hubungan sosial dan bekerja sama dengan lingkungan secara cukup baik.</td>
+                                                <td>Mampu membangun hubungan yang positif dan bekerja sama secara efektif dengan orang lain.</td>
+                                                <td>Sangat mudah menjalin relasi, bekerja sama, dan membangun hubungan sosial yang positif.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold bg-light">Stabilitas Emosi</td>
+                                                <td>Mudah terpengaruh tekanan, mengalami kesulitan mengendalikan emosi ketika menghadapi masalah.</td>
+                                                <td>Kadang mengalami kesulitan mempertahankan kestabilan emosi ketika menghadapi tekanan.</td>
+                                                <td>Cukup mampu mengelola tekanan dan menjaga keseimbangan emosi dalam berbagai situasi.</td>
+                                                <td>Mampu mengelola tekanan dan tetap tenang ketika menghadapi tantangan.</td>
+                                                <td>Sangat mampu mengendalikan emosi dan tetap efektif dalam situasi penuh tekanan.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold bg-light">Aktivitas kerja</td>
+                                                <td>Mengalami kesulitan menyesuaikan diri terhadap perubahan, situasi baru, maupun tuntutan yang berbeda.</td>
+                                                <td>Membutuhkan waktu lebih lama untuk menyesuaikan diri terhadap perubahan dan situasi baru.</td>
+                                                <td>Mampu menyesuaikan diri dengan perubahan pada tingkat yang memadai.</td>
+                                                <td>Mudah menyesuaikan diri dengan perubahan dan mampu menghadapi situasi baru dengan baik.</td>
+                                                <td>Sangat fleksibel, terbuka terhadap perubahan, dan cepat beradaptasi dengan lingkungan baru.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold bg-light">Kepatuhan terhadap aturan</td>
+                                                <td>Kurang nyaman mengikuti aturan, maupun struktur yang berlaku.</td>
+                                                <td>Masih menunjukkan resistensi terhadap aturan atau pengawasan.</td>
+                                                <td>Mampu mengikuti arahan dan aturan sesuai tuntutan situasi.</td>
+                                                <td>Kooperatif terhadap aturan, arahan, dan sistem kerja yang berlaku.</td>
+                                                <td>Sangat menghargai struktur, disiplin, dan mampu bekerja secara efektif dalam sistem organisasi.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Referensi VARK -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed small fw-bold py-3 bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#refVark">
+                                Gaya Belajar (VARK)
+                            </button>
+                        </h2>
+                        <div id="refVark" class="accordion-collapse collapse" data-bs-parent="#accordionReference">
+                            <div class="accordion-body p-3">
+                                <table class="table table-bordered table-sm align-middle mb-0" style="font-size: 0.75rem;">
+                                    <thead class="table-secondary text-center">
+                                        <tr><th width="20%">Aspek Dominan</th><th>Rekomendasi Metode Belajar</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold bg-light text-center">Visual</td>
+                                            <td>Lebih mudah belajar atau menerima informasi melalui representasi visual yang dapat berupa diagram, grafik, skema, peta konsep, memanfaatkan warna untuk menekankan kalimat atau kata penting, dan hal lain yang relevan.</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold bg-light text-center">Aural/auditori</td>
+                                            <td>Lebih mudah belajar atau menerima informasi melalui kegiatan diskusi, tanya jawab, penjelasan verbal, presentasi, menjelaskan kepada orang lain, atau mendengarkan rekaman.</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold bg-light text-center">Read/Write</td>
+                                            <td>Lebih mudah belajar atau menerima informasi melalui kegiatan membaca buku atau artikel, membuat ringkasan, mencatat, dan kegiatan lain yang melibatkan membaca dan menulis.</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold bg-light text-center">Kinesthetic</td>
+                                            <td>Lebih mudah belajar atau menerima informasi melalui kegiatan praktek, eksperimen, demonstrasi, studi kasus, simulasi, dan kegiatan lain yang melibatkan individu untuk mengalami secara langsung.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Referensi Holland -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed small fw-bold py-3 bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#refHolland">
+                                Minat Karier (SDS Holland)
+                            </button>
+                        </h2>
+                        <div id="refHolland" class="accordion-collapse collapse" data-bs-parent="#accordionReference">
+                            <div class="accordion-body p-3">
+                                <table class="table table-bordered table-sm align-middle mb-3" style="font-size: 0.75rem;">
+                                    <thead class="table-secondary text-center">
+                                        <tr><th width="25%">Aspek</th><th>Jika Dominan</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold bg-light">1. Realistic (R)</td>
+                                            <td>Individu dengan minat Realistic cenderung menyukai aktivitas praktis yang melibatkan alat, mesin, atau pekerjaan lapangan. Kecenderungan ini mengembangkan kompetensi teknis dan mekanikal, namun kurang menyukai interaksi sosial yang intens.</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold bg-light">2. Investigative (I)</td>
+                                            <td>Individu dengan minat Investigative cenderung menyukai aktivitas analisis, penelitian, dan pemecahan masalah. Kecenderungan ini mengembangkan kompetensi analitis dan ilmiah, namun kurang menyukai pekerjaan yang bersifat rutin.</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold bg-light">3. Artistic (A)</td>
+                                            <td>Individu dengan minat Artistic cenderung menyukai aktivitas kreatif dan ekspresif. Kecenderungan ini mengembangkan kompetensi kreativitas dan inovasi, namun kurang menyukai pekerjaan yang sangat terstruktur.</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold bg-light">4. Social (S)</td>
+                                            <td>Individu dengan minat Social cenderung menyukai aktivitas membantu, mengajar, dan bekerja sama dengan orang lain. Kecenderungan ini mengembangkan kompetensi komunikasi dan empati, namun kurang menyukai pekerjaan yang bersifat teknis.</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold bg-light">5. Enterprising (E)</td>
+                                            <td>Individu dengan minat Enterprising cenderung menyukai aktivitas memimpin, memengaruhi, dan berwirausaha. Kecenderungan ini mengembangkan kompetensi kepemimpinan dan persuasi, namun kurang menyukai pekerjaan yang rutin dan administratif.</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold bg-light">6. Conventional (C)</td>
+                                            <td>Individu dengan minat Conventional cenderung menyukai aktivitas yang teratur dan sistematis, seperti mengarsipkan dan mengolah data. Kecenderungan ini mengembangkan kompetensi administratif, numerik, dan bisnis, namun kurang menyukai aktivitas yang membutuhkan kreativitas.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <table class="table table-bordered table-sm align-middle mb-0" style="font-size: 0.75rem;">
+                                    <thead class="table-secondary text-center">
+                                        <tr><th width="25%">Konsistensi Minat</th><th>Konsistensi minat SDS Holland</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold bg-light text-center">Tinggi</td>
+                                            <td>Dua tipe minat Holland berada pada posisi yang berdekatan dalam hexagon sehingga cenderung selaras dan tidak banyak konflik.</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold bg-light text-center">Sedang</td>
+                                            <td>Dua tipe minat Holland berada pada posisi yang tidak terlalu dekat maupun terlalu jauh sehingga masih bisa dipadukan dengan beberapa penyesuaian.</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold bg-light text-center">Rendah</td>
+                                            <td>Dua tipe minat Holland berada pada posisi yang berjauhan atau berlawanan sehingga cenderung menunjukkan adanya perbedaan atau konflik arah minat.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KOLOM KANAN: Form Kesimpulan 2 Halaman -->
+    <div class="col-lg-7">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-body p-4" style="max-height: 80vh; overflow-y: auto;">
+                <form id="judgmentSmaForm">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="UserAssessmentId" value="@Model.UserAssessmentId" />
+
+                    <h6 class="fw-bold border-bottom pb-2 mb-3">1. Analisis Kekuatan & Area Pengembangan</h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted">Kekuatan (3-5 Poin)</label>
+                            <textarea id="Kekuatan" class="form-control bg-light border-0" style="min-height: 120px;" placeholder="- Poin 1&#10;- Poin 2"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted">Area Pengembangan (3-5 Poin)</label>
+                            <textarea id="AreaPengembangan" class="form-control bg-light border-0" style="min-height: 120px;" placeholder="- Poin 1&#10;- Poin 2"></textarea>
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold border-bottom pb-2 mb-3">2. Dinamika Psikologis</h6>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Kognitif & Bakat</label>
+                        <textarea id="DinamikaKognitif" class="form-control bg-light border-0" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Sikap Kerja & Kepribadian</label>
+                        <textarea id="DinamikaSikapKerja" class="form-control bg-light border-0" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Gaya Belajar</label>
+                        <textarea id="DinamikaGayaBelajar" class="form-control bg-light border-0" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Minat Karier</label>
+                        <textarea id="DinamikaMinatKarier" class="form-control bg-light border-0" rows="3"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-muted">Rekomendasi Pekerjaan & Jurusan (Integrasi)</label>
+                        <textarea id="DinamikaRekomendasi" class="form-control bg-light border-0" rows="4"></textarea>
+                    </div>
+
+                    <h6 class="fw-bold border-bottom pb-2 mb-3">3. Saran Pengembangan Akhir</h6>
+                    <div class="mb-4">
+                        <textarea id="SaranPengembangan" class="form-control bg-light border-0" style="min-height: 120px;" placeholder="Saran praktis berdasarkan kekuatan dan area pengembangan..."></textarea>
+                    </div>
+
+                    <div class="text-end border-top pt-3">
+                        <button type="button" id="btnSubmit" onclick="submitSmaJudgment()" class="btn btn-warning rounded-pill px-5 py-2 fw-bold text-dark shadow-sm">
+                            <i class="bi bi-check2-circle me-1"></i> Simpan & Kirim Email Laporan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        async function submitSmaJudgment() {
+            const btn = document.getElementById('btnSubmit');
+            const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Menyimpan...';
+
+            const payload = {
+                UserAssessmentId: document.getElementById('UserAssessmentId').value,
+                Kekuatan: document.getElementById('Kekuatan').value,
+                AreaPengembangan: document.getElementById('AreaPengembangan').value,
+                DinamikaKognitif: document.getElementById('DinamikaKognitif').value,
+                DinamikaSikapKerja: document.getElementById('DinamikaSikapKerja').value,
+                DinamikaGayaBelajar: document.getElementById('DinamikaGayaBelajar').value,
+                DinamikaMinatKarier: document.getElementById('DinamikaMinatKarier').value,
+                DinamikaRekomendasi: document.getElementById('DinamikaRekomendasi').value,
+                SaranPengembangan: document.getElementById('SaranPengembangan').value
+            };
+
+            try {
+                const response = await fetch('/Psychologist/SubmitSmaJudgment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': tokenElement ? tokenElement.value : ''
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    alert('Kesimpulan berhasil disimpan! Email laporan PDF sedang dikirimkan ke peserta.');
+                    window.location.href = '/Psychologist/Queue';
+                } else {
+                    alert('Gagal menyimpan penilaian.');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="bi bi-check2-circle me-1"></i> Simpan & Kirim Email Laporan';
+                }
+            } catch (error) {
+                alert('Koneksi terputus.');
+                btn.disabled = false;
+            }
+        }
+    </script>
+}
