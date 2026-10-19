@@ -84,6 +84,7 @@ namespace SangtuariCareerCompass.Controllers
             {
                 bool isIstJudged = await _context.UserTestResults.AnyAsync(r => r.UserAssessmentId == user.Id && r.TestCategory == "IST");
                 bool isPapiJudged = await _context.UserTestResults.AnyAsync(r => r.UserAssessmentId == user.Id && r.TestCategory == "PAPI_Kostick");
+                bool isFinalJudged = await _context.UserTestResults.AnyAsync(r => r.UserAssessmentId == user.Id && r.TestCategory == "Final_Judgment_SMA");
 
                 queueList.Add(new
                 {
@@ -95,7 +96,8 @@ namespace SangtuariCareerCompass.Controllers
                     user.FullName,
                     user.SchoolName,
                     IsIstJudged = isIstJudged,
-                    IsPapiJudged = isPapiJudged
+                    IsPapiJudged = isPapiJudged,
+                    IsFinalJudged = isFinalJudged
                 });
             }
 
@@ -319,8 +321,6 @@ namespace SangtuariCareerCompass.Controllers
             _context.UserTestResults.Add(resultEntity);
             await _context.SaveChangesAsync();
 
-            await CheckAndTriggerDiscoveryEmailAsync(dto.UserAssessmentId);
-
             return Ok(new { success = true });
         }
 
@@ -362,8 +362,6 @@ namespace SangtuariCareerCompass.Controllers
 
             _context.UserTestResults.Add(resultEntity);
             await _context.SaveChangesAsync();
-
-            await CheckAndTriggerDiscoveryEmailAsync(dto.UserAssessmentId);
 
             return Ok(new { success = true });
         }
@@ -459,45 +457,69 @@ namespace SangtuariCareerCompass.Controllers
             return Ok(new { success = true });
         }
 
-        private async Task CheckAndTriggerDiscoveryEmailAsync(Guid userAssessmentId)
+        // --- FINAL JUDGMENT SMA ---
+        [HttpGet]
+        public async Task<IActionResult> SmaJudgment(Guid userAssessmentId)
         {
-            // 1. Tarik semua kategori tes yang sudah dinilai untuk user ini
-            var judgedTests = await _context.UserTestResults
-                .AsNoTracking()
-                .Where(r => r.UserAssessmentId == userAssessmentId && (r.TestCategory == "IST" || r.TestCategory == "PAPI_Kostick"))
-                .Select(r => r.TestCategory)
-                .ToListAsync();
+            var vm = await FinalReportSmaViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
+            if (vm == null) return NotFound("Data tidak ditemukan.");
 
-            // 2. Jika keduanya sudah ada, tembak email
-            if (judgedTests.Contains("IST") && judgedTests.Contains("PAPI_Kostick"))
+            if (vm.IsFinalJudged) return RedirectToAction("FinalReportSMA", "Report", new { userAssessmentId });
+
+            return View("~/Views/Psychologist/Report/SmaJudgment.cshtml", vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitSmaJudgment([FromBody] SubmitSmaJudgmentDto dto)
+        {
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Guid? psychologistId = Guid.TryParse(userIdStr, out var id) ? id : null;
+
+            var resultEntity = new UserTestResult
             {
-                var assessment = await _context.UserAssessments.FindAsync(userAssessmentId);
-
-                if (assessment != null && assessment.AssessmentType == "Discovery")
+                UserAssessmentId = dto.UserAssessmentId,
+                PsychologistId = psychologistId,
+                TestCategory = "Final_Judgment_SMA",
+                OverallScore = 0,
+                Classification = "Manual Judged",
+                ResultDetails = JsonDocument.Parse(JsonSerializer.Serialize(new
                 {
-                    var request = HttpContext.Request;
-                    var baseUrl = $"{request.Scheme}://{request.Host}";
-                    var reportUrl = $"{baseUrl}/Report/FinalReportSMA?userAssessmentId={assessment.Id}";
+                    dto.Kekuatan,
+                    dto.AreaPengembangan,
+                    dto.DinamikaKognitif,
+                    dto.DinamikaSikapKerja,
+                    dto.DinamikaGayaBelajar,
+                    dto.DinamikaMinatKarier,
+                    dto.DinamikaRekomendasi,
+                    dto.SaranPengembangan
+                }))
+            };
 
-                    // Fire-and-Forget: Jangan blokir UI psikolog
-                    _ = Task.Run(async () =>
+            _context.UserTestResults.Add(resultEntity);
+            await _context.SaveChangesAsync();
+
+            // TRIGGER EMAIL HANYA SETELAH KESIMPULAN FINAL DI-SUBMIT
+            var assessment = await _context.UserAssessments.FindAsync(dto.UserAssessmentId);
+            if (assessment != null && assessment.AssessmentType == "Discovery")
+            {
+                var request = HttpContext.Request;
+                var baseUrl = $"{request.Scheme}://{request.Host}";
+                var reportUrl = $"{baseUrl}/Report/FinalReportSMA?userAssessmentId={assessment.Id}";
+
+                _ = Task.Run(async () =>
+                {
+                    try
                     {
-                        try
-                        {
-                            await _emailService.SendResultEmailAsync(
-                                assessment.Email,
-                                assessment.FullName,
-                                reportUrl,
-                                assessment.AssessmentType
-                            );
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"[Error] Auto-email SMA gagal untuk {assessment.Email}: {ex.Message}");
-                        }
-                    });
-                }
+                        await _emailService.SendResultEmailAsync(assessment.Email, assessment.FullName, reportUrl, assessment.AssessmentType);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[Error] Auto-email SMA gagal: {ex.Message}");
+                    }
+                });
             }
+
+            return Ok(new { success = true });
         }
 
         // Tambahkan fungsi helper untuk generate password (8 karakter acak)
