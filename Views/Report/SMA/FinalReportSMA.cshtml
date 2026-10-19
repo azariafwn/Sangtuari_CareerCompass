@@ -23,6 +23,7 @@
             overflow: hidden;
             color: #000;
             font-size: 11px;
+            position: relative;
         }
 
         .header-box {
@@ -128,220 +129,301 @@
             position: relative;
             margin: 0 auto;
         }
+
+        /* Class khusus untuk memisahkan halaman PDF via html2pdf */
+        .html2pdf__page-break {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            page-break-after: always;
+        }
     </style>
 }
 
-<div class="wrapper" id="pdf-content">
-    <!-- HEADER -->
-    <div class="header-box d-flex align-items-center gap-3">
-        <img src="~/images/logo-sangtuari.png" alt="Sangtuari" class="logo-img" onerror="this.style.display='none'" />
-        <div>
-            <h6 class="fw-bold mb-0" style="font-size: 14px;">SANGTUARI CONSULTING</h6>
-            <div style="font-size: 11px; font-style: italic; line-height: 1.2;">
-                <strong>Psychological Services</strong><br />
-                PT. Sangtuari Aman Bertumbuh<br />
-                Prominent Building, Jl Bukit Cimanggu City Raya KD 2 No 16A Tanah Sareal Bogor<br />
-                Jawa Barat 16167 | 0813 929 8822 | sangtuaripsikologi@gmail.com
+<div id="pdf-content" style="background: transparent;">
+
+    <!-- ================= HALAMAN 1 : PSIKOGRAM ================= -->
+    <div class="wrapper mb-4">
+        <!-- HEADER -->
+        <div class="header-box d-flex align-items-center gap-3">
+            <img src="~/images/logo-sangtuari.png" alt="Sangtuari" class="logo-img" onerror="this.style.display='none'" />
+            <div>
+                <h6 class="fw-bold mb-0" style="font-size: 14px;">SANGTUARI CONSULTING</h6>
+                <div style="font-size: 11px; font-style: italic; line-height: 1.2;">
+                    <strong>Psychological Services</strong><br />
+                    PT. Sangtuari Aman Bertumbuh<br />
+                    Prominent Building, Jl Bukit Cimanggu City Raya KD 2 No 16A Tanah Sareal Bogor<br />
+                    Jawa Barat 16167 | 0813 929 8822 | sangtuaripsikologi@gmail.com
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="main-title">HASIL ASESMEN PSIKOLOGIS</div>
+        <div class="main-title">HASIL ASESMEN PSIKOLOGIS</div>
 
-    <!-- IDENTITAS -->
-    <table class="info-table">
-        <tr>
-            <td class="label-col">Nama Lengkap</td>
-            <td>@Model.FullName</td>
-            <td class="label-col">Tanggal Lahir</td>
-            <td>@formattedDob</td>
-        </tr>
-        <tr>
-            <td class="label-col">Jenis Kelamin</td>
-            <td>@Model.Gender</td>
-            <td class="label-col">Tanggal Pemeriksaan</td>
-            <td>@Model.TestedAt.ToString("dd MMMM yyyy")</td>
-        </tr>
-        <tr>
-            <td class="label-col">Pendidikan Terakhir</td>
-            <td>@Model.SchoolName</td>
-            <td class="label-col">No. Pemeriksaan</td>
-            <td>@assessmentNumber</td>
-        </tr>
-    </table>
+        <!-- IDENTITAS -->
+        <table class="info-table">
+            <tr>
+                <td class="label-col">Nama Lengkap</td>
+                <td>@Model.FullName</td>
+                <td class="label-col">Tanggal Lahir</td>
+                <td>@formattedDob</td>
+            </tr>
+            <tr>
+                <td class="label-col">Jenis Kelamin</td>
+                <td>@Model.Gender</td>
+                <td class="label-col">Tanggal Pemeriksaan</td>
+                <td>@Model.TestedAt.ToString("dd MMMM yyyy")</td>
+            </tr>
+            <tr>
+                <td class="label-col">Pendidikan Terakhir</td>
+                <td>@Model.SchoolName</td>
+                <td class="label-col">No. Pemeriksaan</td>
+                <td>@assessmentNumber</td>
+            </tr>
+        </table>
 
-    <div class="text-center fw-bold fs-6 mb-2">PSIKOGRAM</div>
+        <div class="text-center fw-bold fs-6 mb-2">PSIKOGRAM</div>
 
-    <div class="row g-2">
-        <!-- KOLOM KIRI (A & B) -->
-        <div class="col-7">
-            <div class="section-title">A. KOGNITIF & BAKAT</div>
-            <div class="iq-box">Inteligensi (IQ) = @Model.IstIqScore / @Model.IstIqClassification (IST)</div>
+        <div class="row g-2">
+            <!-- KOLOM KIRI (A & B) -->
+            <div class="col-7">
+                <div class="section-title">A. KOGNITIF & BAKAT</div>
+                <div class="iq-box">Inteligensi (IQ) = @Model.IstIqScore / @Model.IstIqClassification (IST)</div>
 
-            <table class="table-custom mb-1">
-                <thead>
-                    <tr>
-                        <th rowspan="2" width="28%">Aspek Psikologis</th>
-                        <th rowspan="2" width="47%">Definisi</th>
-                        <th colspan="5">Kategori</th>
-                    </tr>
-                    <tr>
-                        <th width="5%">KS</th>
-                        <th width="5%">K</th>
-                        <th width="5%">R</th>
-                        <th width="5%">B</th>
-                        <th width="5%">BS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @functions {
-                        string RenderCheck(string val, string target) => val == target ? "✔" : "";
-                        string ConvertIstCat(string cat) => cat switch { "Kurang Sekali" => "KS", "Kurang" => "K", "Rata-rata" => "R", "Baik" => "B", "Baik Sekali" => "BS", _ => "" };
-                    }
-                    @{
-                        var istDefs = new Dictionary<string, string> {
-                                        {"Kecerdasan Umum", "Kemampuan memahami, mengolah, dan menerapkan informasi dalam menyelesaikan masalah."},
-                                        {"Kemampuan Membuat Pertimbangan dan Keputusan", "Kemampuan membuat pertimbangan dan keputusan yang realistis."},
-                                        {"Kemampuan Verbal", "Kemampuan memahami dan mengolah informasi verbal."},
-                                        {"Kemampuan Analogi dan Hubungan Logis", "Kemampuan berpikir logis melalui hubungan antar konsep."},
-                                        {"Kemampuan Abstraksi Verbal", "Kemampuan berpikir abstrak dan membentuk konsep umum."},
-                                        {"Kemampuan Memori", "Kemampuan mengingat dan mempertahankan informasi."},
-                                        {"Kemampuan Numerik Praktis", "Kemampuan berhitung dan mengolah informasi numerik."},
-                                        {"Kemampuan Penalaran Numerik", "Kemampuan menemukan pola dan hubungan logis pada angka."},
-                                        {"Kemampuan Analisis Visual", "Kemampuan menganalisis dan menyusun informasi visual."},
-                                        {"Kemampuan Spasial", "Kemampuan memahami hubungan ruang dan bentuk tiga dimensi."}
-                                        };
-
-                        foreach (var aspect in istDefs)
-                        {
-                            string shortCat = ConvertIstCat(Model.IstAspectCategories.GetValueOrDefault(aspect.Key, "Rata-rata"));
-                            <tr>
-                                <td class="fw-bold">@aspect.Key</td>
-                                <td class="def-col">@aspect.Value</td>
-                                <td class="check-box">@RenderCheck(shortCat, "KS")</td>
-                                <td class="check-box">@RenderCheck(shortCat, "K")</td>
-                                <td class="check-box">@RenderCheck(shortCat, "R")</td>
-                                <td class="check-box">@RenderCheck(shortCat, "B")</td>
-                                <td class="check-box">@RenderCheck(shortCat, "BS")</td>
-                            </tr>
+                <table class="table-custom mb-1">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" width="28%">Aspek Psikologis</th>
+                            <th rowspan="2" width="47%">Definisi</th>
+                            <th colspan="5">Kategori</th>
+                        </tr>
+                        <tr>
+                            <th width="5%">KS</th>
+                            <th width="5%">K</th>
+                            <th width="5%">R</th>
+                            <th width="5%">B</th>
+                            <th width="5%">BS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @functions {
+                            string RenderCheck(string val, string target) => val == target ? "✔" : "";
+                            string ConvertIstCat(string cat) => cat switch { "Kurang Sekali" => "KS", "Kurang" => "K", "Rata-rata" => "R", "Baik" => "B", "Baik Sekali" => "BS", _ => "" };
                         }
-                    }
-                </tbody>
-            </table>
-            <div style="font-size: 9px; margin-bottom: 8px;"><strong>Keterangan:</strong> KS=Kurang Sekali, K=Kurang, R=Rata-rata, B=Baik, BS=Baik Sekali</div>
+                        @{
+                            var istDefs = new Dictionary<string, string> {
+                                                {"Kecerdasan Umum", "Kemampuan memahami, mengolah, dan menerapkan informasi dalam menyelesaikan masalah."},
+                                                {"Kemampuan Membuat Pertimbangan dan Keputusan", "Kemampuan membuat pertimbangan dan keputusan yang realistis."},
+                                                {"Kemampuan Verbal", "Kemampuan memahami dan mengolah informasi verbal."},
+                                                {"Kemampuan Analogi dan Hubungan Logis", "Kemampuan berpikir logis melalui hubungan antar konsep."},
+                                                {"Kemampuan Abstraksi Verbal", "Kemampuan berpikir abstrak dan membentuk konsep umum."},
+                                                {"Kemampuan Memori", "Kemampuan mengingat dan mempertahankan informasi."},
+                                                {"Kemampuan Numerik Praktis", "Kemampuan berhitung dan mengolah informasi numerik."},
+                                                {"Kemampuan Penalaran Numerik", "Kemampuan menemukan pola dan hubungan logis pada angka."},
+                                                {"Kemampuan Analisis Visual", "Kemampuan menganalisis dan menyusun informasi visual."},
+                                                {"Kemampuan Spasial", "Kemampuan memahami hubungan ruang dan bentuk tiga dimensi."}
+                                                };
 
-            <div class="section-title">B. SIKAP KERJA & KEPRIBADIAN</div>
-            <table class="table-custom mb-1">
-                <thead>
-                    <tr>
-                        <th rowspan="2" width="28%">Aspek Psikologis</th>
-                        <th rowspan="2" width="47%">Definisi</th>
-                        <th colspan="5">Kategori</th>
-                    </tr>
-                    <tr>
-                        <th width="5%">KS</th>
-                        <th width="5%">K</th>
-                        <th width="5%">R</th>
-                        <th width="5%">B</th>
-                        <th width="5%">BS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        var papiDefs = new Dictionary<string, string> {
-                                        {"Motivasi Kerja", "Dorongan untuk mencapai target, menunjukkan usaha, ketekunan, dan orientasi terhadap prestasi."},
-                                        {"Kepemimpinan", "Kecenderungan untuk memengaruhi, mengarahkan, mengambil keputusan, dan bertanggung jawab terhadap kelompok."},
-                                        {"Gaya Kerja", "Cara mengatur pekerjaan, mematuhi prosedur, bekerja secara sistematis, dan memperhatikan detail."},
-                                        {"Hubungan Interpersonal", "Kemampuan menjalin hubungan sosial, bekerja sama, serta berinteraksi dengan lingkungan sekitar."},
-                                        {"Stabilitas Emosi", "Kemampuan mengelola tekanan, mengendalikan emosi, dan tetap tenang dalam situasi yang menantang."},
-                                        {"Aktivitas kerja", "Kemampuan menyesuaikan diri terhadap perubahan, tantangan baru, dan situasi yang berbeda."},
-                                        {"Kepatuhan terhadap Aturan", "Kecenderungan mengikuti aturan, menerima arahan, menghormati otoritas, dan bekerja dalam struktur organisasi."}
-                                        };
-
-                        foreach (var aspect in papiDefs)
-                        {
-                            string jud = Model.PapiAspectJudgments.GetValueOrDefault(aspect.Key, "R");
-                            <tr>
-                                <td class="fw-bold">@aspect.Key</td>
-                                <td class="def-col">@aspect.Value</td>
-                                <td class="check-box">@RenderCheck(jud, "KS")</td>
-                                <td class="check-box">@RenderCheck(jud, "K")</td>
-                                <td class="check-box">@RenderCheck(jud, "R")</td>
-                                <td class="check-box">@RenderCheck(jud, "B")</td>
-                                <td class="check-box">@RenderCheck(jud, "BS")</td>
-                            </tr>
+                            foreach (var aspect in istDefs)
+                            {
+                                string shortCat = ConvertIstCat(Model.IstAspectCategories.GetValueOrDefault(aspect.Key, "Rata-rata"));
+                                <tr>
+                                    <td class="fw-bold">@aspect.Key</td>
+                                    <td class="def-col">@aspect.Value</td>
+                                    <td class="check-box">@RenderCheck(shortCat, "KS")</td>
+                                    <td class="check-box">@RenderCheck(shortCat, "K")</td>
+                                    <td class="check-box">@RenderCheck(shortCat, "R")</td>
+                                    <td class="check-box">@RenderCheck(shortCat, "B")</td>
+                                    <td class="check-box">@RenderCheck(shortCat, "BS")</td>
+                                </tr>
+                            }
                         }
-                    }
-                </tbody>
-            </table>
-            <div style="font-size: 9px;"><strong>Keterangan:</strong> KS=Kurang Sekali, K=Kurang, R=Rata-rata, B=Baik, BS=Baik Sekali</div>
-        </div>
+                    </tbody>
+                </table>
+                <div style="font-size: 9px; margin-bottom: 8px;"><strong>Keterangan:</strong> KS=Kurang Sekali, K=Kurang, R=Rata-rata, B=Baik, BS=Baik Sekali</div>
 
-        <!-- KOLOM KANAN (C & D) -->
-        <div class="col-5">
-            <div class="section-title">C. GAYA BELAJAR</div>
-            <div class="chart-box mb-2">
-                <div class="canvas-container">
-                    <canvas id="varkChart"></canvas>
-                </div>
-                <div class="text-start mt-1">
-                    <span class="fw-bold d-block border-top pt-1">Gaya Belajar Dominan:</span>
-                    <span class="fw-bold fst-italic">@Model.VarkDominant</span>
-                </div>
+                <div class="section-title">B. SIKAP KERJA & KEPRIBADIAN</div>
+                <table class="table-custom mb-1">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" width="28%">Aspek Psikologis</th>
+                            <th rowspan="2" width="47%">Definisi</th>
+                            <th colspan="5">Kategori</th>
+                        </tr>
+                        <tr>
+                            <th width="5%">KS</th>
+                            <th width="5%">K</th>
+                            <th width="5%">R</th>
+                            <th width="5%">B</th>
+                            <th width="5%">BS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var papiDefs = new Dictionary<string, string> {
+                                                {"Motivasi Kerja", "Dorongan untuk mencapai target, menunjukkan usaha, ketekunan, dan orientasi terhadap prestasi."},
+                                                {"Kepemimpinan", "Kecenderungan untuk memengaruhi, mengarahkan, mengambil keputusan, dan bertanggung jawab terhadap kelompok."},
+                                                {"Gaya Kerja", "Cara mengatur pekerjaan, mematuhi prosedur, bekerja secara sistematis, dan memperhatikan detail."},
+                                                {"Hubungan Interpersonal", "Kemampuan menjalin hubungan sosial, bekerja sama, serta berinteraksi dengan lingkungan sekitar."},
+                                                {"Stabilitas Emosi", "Kemampuan mengelola tekanan, mengendalikan emosi, dan tetap tenang dalam situasi yang menantang."},
+                                                {"Aktivitas kerja", "Kemampuan menyesuaikan diri terhadap perubahan, tantangan baru, dan situasi yang berbeda."},
+                                                {"Kepatuhan terhadap Aturan", "Kecenderungan mengikuti aturan, menerima arahan, menghormati otoritas, dan bekerja dalam struktur organisasi."}
+                                                };
+
+                            foreach (var aspect in papiDefs)
+                            {
+                                string jud = Model.PapiAspectJudgments.GetValueOrDefault(aspect.Key, "R");
+                                <tr>
+                                    <td class="fw-bold">@aspect.Key</td>
+                                    <td class="def-col">@aspect.Value</td>
+                                    <td class="check-box">@RenderCheck(jud, "KS")</td>
+                                    <td class="check-box">@RenderCheck(jud, "K")</td>
+                                    <td class="check-box">@RenderCheck(jud, "R")</td>
+                                    <td class="check-box">@RenderCheck(jud, "B")</td>
+                                    <td class="check-box">@RenderCheck(jud, "BS")</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div style="font-size: 9px;"><strong>Keterangan:</strong> KS=Kurang Sekali, K=Kurang, R=Rata-rata, B=Baik, BS=Baik Sekali</div>
             </div>
 
-            <div class="section-title">D. MINAT KARIER</div>
-            <div class="chart-box" style="padding-bottom: 2px;">
-                <div class="canvas-container">
-                    <canvas id="hollandChart"></canvas>
-                </div>
-                <div class="text-start mt-2">
-                    <div class="border-top pt-1 mb-1">
-                        <span class="fw-bold d-block">3 Minat Tertinggi:</span>
-                        <span>@Model.HollandSummaryCode</span>
+            <!-- KOLOM KANAN (C & D) -->
+            <div class="col-5">
+                <div class="section-title">C. GAYA BELAJAR</div>
+                <div class="chart-box mb-2">
+                    <div class="canvas-container">
+                        <canvas id="varkChart"></canvas>
                     </div>
-                    <div class="border-top pt-1 mb-1">
-                        <span class="fw-bold d-block">Konsistensi Minat:</span>
-                        <span>@Model.HollandConsistency</span>
-                    </div>
-                    <div class="border-top pt-1 mb-1">
-                        <span class="fw-bold d-block">Rekomendasi Karier:</span>
-                        <ul class="mb-0 ps-3" style="font-size: 10px; line-height: 1.1;">
-                            @foreach (var career in Model.HollandCareers)
-                            {
-                                <li>@career</li>
-                            }
-                        </ul>
-                    </div>
-                    <div class="border-top pt-1">
-                        <span class="fw-bold d-block">Rekomendasi Pendidikan:</span>
-                        <ul class="mb-0 ps-3" style="font-size: 10px; line-height: 1.1;">
-                            @foreach (var edu in Model.HollandEducation)
-                            {
-                                <li>@edu</li>
-                            }
-                        </ul>
+                    <div class="text-start mt-1">
+                        <span class="fw-bold d-block border-top pt-1">Gaya Belajar Dominan:</span>
+                        <span class="fw-bold fst-italic">@Model.VarkDominant</span>
                     </div>
                 </div>
-            </div>
 
-            <!-- TTD DIGITAL SMA -->
-            <div class="mt-4 ms-3 d-flex justify-content-end w-100">
-                <div style="min-width: 260px; max-width: 320px;">
-                    <div class="d-flex justify-content-start align-items-center gap-2">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=60x60&data=Assessed_By_@Uri.EscapeDataString(Model.PsychologistName)_SILP_@Model.PsychologistSilp" alt="TTD Barcode" style="width: 55px; height: 55px; flex-shrink: 0;" />
-                        <div class="text-start">
-                            <div style="font-size: 11px;">Bogor, @Model.TestedAt.ToString("dd MMMM yyyy")</div>
-                            <div class="fw-bold mb-1" style="font-size: 11px;">Psikolog Pemeriksa,</div>
-                            <div class="fw-bold" style="text-decoration: underline; font-size: 11px; line-height: 1.1;">@Model.PsychologistName, @Model.PsychologistDegree</div>
-                            <div style="font-size: 10px; margin-top: 2px;">No. SILP: @Model.PsychologistSilp</div>
+                <div class="section-title">D. MINAT KARIER</div>
+                <div class="chart-box" style="padding-bottom: 2px;">
+                    <div class="canvas-container">
+                        <canvas id="hollandChart"></canvas>
+                    </div>
+                    <div class="text-start mt-2">
+                        <div class="border-top pt-1 mb-1">
+                            <span class="fw-bold d-block">3 Minat Tertinggi:</span>
+                            <span>@Model.HollandSummaryCode</span>
+                        </div>
+                        <div class="border-top pt-1 mb-1">
+                            <span class="fw-bold d-block">Konsistensi Minat:</span>
+                            <span>@Model.HollandConsistency</span>
+                        </div>
+                        <div class="border-top pt-1 mb-1">
+                            <span class="fw-bold d-block">Rekomendasi Karier:</span>
+                            <ul class="mb-0 ps-3" style="font-size: 10px; line-height: 1.1;">
+                                @foreach (var career in Model.HollandCareers)
+                                {
+                                    <li>@career</li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="border-top pt-1">
+                            <span class="fw-bold d-block">Rekomendasi Pendidikan:</span>
+                            <ul class="mb-0 ps-3" style="font-size: 10px; line-height: 1.1;">
+                                @foreach (var edu in Model.HollandEducation)
+                                {
+                                    <li>@edu</li>
+                                }
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-        </div> <!-- Penutup col-5 -->
-    </div> <!-- Penutup row g-2 -->
+    <!-- JEDA HALAMAN HTML2PDF -->
+    <div class="html2pdf__page-break"></div>
+
+    <!-- ================= HALAMAN 2 : KESIMPULAN & SARAN ================= -->
+    <div class="wrapper">
+        <!-- HEADER HALAMAN 2 -->
+        <div class="header-box d-flex align-items-center gap-3">
+            <img src="~/images/logo-sangtuari.png" alt="Sangtuari" class="logo-img" onerror="this.style.display='none'" />
+            <div>
+                <h6 class="fw-bold mb-0" style="font-size: 14px;">SANGTUARI CONSULTING</h6>
+                <div style="font-size: 11px; font-style: italic; line-height: 1.2;">
+                    <strong>Psychological Services</strong><br />
+                    PT. Sangtuari Aman Bertumbuh<br />
+                    Prominent Building, Jl Bukit Cimanggu City Raya KD 2 No 16A Tanah Sareal Bogor<br />
+                    Jawa Barat 16167 | 0813 929 8822 | sangtuaripsikologi@gmail.com
+                </div>
+            </div>
+        </div>
+
+        <div class="main-title mt-3">KESIMPULAN DAN SARAN</div>
+
+        <table class="table-custom mt-3">
+            <thead>
+                <tr>
+                    <th width="50%" class="text-start ps-2" style="font-size: 11px;">KEKUATAN</th>
+                    <th width="50%" class="text-start ps-2" style="font-size: 11px;">AREA PENGEMBANGAN</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="align-top text-start p-3" style="min-height: 150px; font-size: 11px; line-height: 1.4;">
+                        @Html.Raw(Model.Kekuatan.Replace("\n", "<br>"))
+                    </td>
+                    <td class="align-top text-start p-3" style="font-size: 11px; line-height: 1.4;">
+                        @Html.Raw(Model.AreaPengembangan.Replace("\n", "<br>"))
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2" class="text-start ps-2 bg-light border-top" style="font-size: 11px;">DINAMIKA PSIKOLOGIS</th>
+                </tr>
+                <tr>
+                    <td colspan="2" class="align-top text-start p-3" style="font-size: 11px; line-height: 1.4;">
+                        <strong class="fst-italic text-muted">Kognitif & Bakat:</strong><br />
+                        @Html.Raw(Model.DinamikaKognitif.Replace("\n", "<br>"))<br /><br />
+
+                        <strong class="fst-italic text-muted">Sikap Kerja & Kepribadian:</strong><br />
+                        @Html.Raw(Model.DinamikaSikapKerja.Replace("\n", "<br>"))<br /><br />
+
+                        <strong class="fst-italic text-muted">Gaya Belajar:</strong><br />
+                        @Html.Raw(Model.DinamikaGayaBelajar.Replace("\n", "<br>"))<br /><br />
+
+                        <strong class="fst-italic text-muted">Minat Karier:</strong><br />
+                        @Html.Raw(Model.DinamikaMinatKarier.Replace("\n", "<br>"))<br /><br />
+
+                        <strong class="fst-italic text-muted">Rekomendasi pekerjaan dan jurusan berdasarkan integrasi 4 domain di atas:</strong><br />
+                        @Html.Raw(Model.DinamikaRekomendasi.Replace("\n", "<br>"))
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2" class="text-start ps-2 bg-light border-top" style="font-size: 11px;">SARAN PENGEMBANGAN</th>
+                </tr>
+                <tr>
+                    <td colspan="2" class="align-top text-start p-3" style="min-height: 120px; font-size: 11px; line-height: 1.4;">
+                        @Html.Raw(Model.SaranPengembangan.Replace("\n", "<br>"))
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- TANDA TANGAN -->
+        <div class="mt-4 d-flex justify-content-end w-100 pe-4">
+            <div style="min-width: 300px; max-width: 420px;">
+                <div class="d-flex justify-content-start align-items-center gap-3">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=60x60&data=Assessed_By_@Uri.EscapeDataString(Model.PsychologistName)_SILP_@Model.PsychologistSilp" alt="TTD Barcode" style="width: 60px; height: 60px; flex-shrink: 0;" />
+                    <div class="text-start">
+                        <div style="font-size: 12px;">Bogor, @Model.TestedAt.ToString("dd MMMM yyyy")</div>
+                        <div class="fw-bold mb-1" style="font-size: 12px;">Psikolog Pemeriksa,</div>
+                        <div class="fw-bold" style="text-decoration: underline; font-size: 12px; line-height: 1.1; white-space: nowrap;">@Model.PsychologistName, @Model.PsychologistDegree</div>
+                        <div style="font-size: 11px; margin-top: 2px;">No. SILP: @Model.PsychologistSilp</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
@@ -391,7 +473,7 @@
                 }
             });
 
-            // Eksekusi Unduh PDF via tombol di Navigation Bar
+            // Eksekusi Unduh PDF
             document.getElementById('btnDownload').addEventListener('click', function () {
                 const element = document.getElementById('pdf-content');
                 const btn = this;
@@ -399,13 +481,11 @@
                 btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Memproses...';
                 btn.disabled = true;
 
-                // 1. SOLUSI BUG: Gulir ke atas untuk mereset offset dari sticky navbar
                 window.scrollTo(0, 0);
 
                 const originalMargin = element.style.margin;
                 const originalBoxShadow = element.style.boxShadow;
 
-                // 2. SOLUSI BUG: Paksa margin hilang agar html2canvas merekam lebar absolut 800px
                 element.style.margin = "0";
                 element.style.boxShadow = "none";
 
@@ -413,7 +493,6 @@
                     margin:       0,
                     filename:     `Hasil_Psikotes_SMA_Sangtuari_${'@Model.FullName'.replace(/\s+/g, '_')}.pdf`,
                     image:        { type: 'png'},
-                    // 3. Tambahkan scrollY dan scrollX = 0 di konfigurasi html2canvas
                     html2canvas:  { scale: 4, useCORS: true, scrollY: 0, scrollX: 0 },
                     jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
