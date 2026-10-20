@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Dev Data Seeder";
+}
+<div class="container py-5" style="max-width: 600px;">
+    <div class="card shadow p-4 rounded-4 border-0">
+        <h3 class="fw-bold mb-3" style="color: #4D3358;">Test Data Generator (Dev Only)</h3>
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-success">@TempData["Message"]</div>
+        }
+        <form asp-action="Generate" method="post">
+            <div class="mb-3">
+                <label class="form-label fw-bold">Nama Sekolah</label>
+                <input type="text" class="form-control" name="schoolName" value="SMAN 1 Surabaya" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Jenjang / Kelas</label>
+                <select name="grade" class="form-select" required>
+                    <option value="" disabled selected>Pilih Kelas...</option>
+                    <optgroup label="Exploration (SMP)">
+                        <option value="Kelas 7">Kelas 7</option>
+                        <option value="Kelas 8">Kelas 8</option>
+                        <option value="Kelas 9">Kelas 9</option>
+                    </optgroup>
+                    <optgroup label="Discovery (SMA)">
+                        <option value="Kelas 10">Kelas 10</option>
+                        <option value="Kelas 11">Kelas 11</option>
+                        <option value="Kelas 12">Kelas 12</option>
+                    </optgroup>
+                    <optgroup label="Advanced (Dewasa)">
+                        <option value="Umum / Pekerja">Umum / Pekerja</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Jumlah Data Anak</label>
+                <input type="number" class="form-control" name="count" value="10" min="1" max="100" required />
+            </div>
+            <button type="submit" class="btn text-white w-100 fw-bold py-2" style="background-color: #4D3358; border-radius: 10px;">Generate Dummy Data</button>
+        </form>
+    </div>
+</div>
