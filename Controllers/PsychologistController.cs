@@ -679,5 +679,24 @@ namespace SangtuariCareerCompass.Controllers
             TempData["SuccessMessage"] = $"Akun {targetUser.Email} berhasil dihapus secara permanen.";
             return RedirectToAction("AccountManagement");
         }
+
+        // Endpoint POST: Hapus Peserta Beserta Hasilnya (Hanya Head)
+        [Authorize(Roles = "Head")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteParticipant(Guid id)
+        {
+            var targetAssessment = await _context.UserAssessments.FindAsync(id);
+            if (targetAssessment == null) return NotFound();
+
+            // Cukup hapus UserAssessment. 
+            // Jika relasi di ApplicationDbContext sudah terkonfigurasi default (Cascade Delete),
+            // maka UserAnswer dan UserTestResult yang terkait akan otomatis ikut terhapus di database.
+            _context.UserAssessments.Remove(targetAssessment);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = $"Data peserta {targetAssessment.FullName} beserta seluruh jawaban dan hasil tesnya berhasil dihapus secara permanen.";
+            return RedirectToAction("ParticipantList");
+        }
     }
 }
