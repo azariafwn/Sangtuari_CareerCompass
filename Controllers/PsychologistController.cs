@@ -698,5 +698,34 @@ namespace SangtuariCareerCompass.Controllers
             TempData["SuccessMessage"] = $"Data peserta {targetAssessment.FullName} beserta seluruh jawaban dan hasil tesnya berhasil dihapus secara permanen.";
             return RedirectToAction("ParticipantList");
         }
+
+        // Endpoint POST: Hapus Banyak Peserta (Hanya Head)
+        [Authorize(Roles = "Head")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteMultipleParticipants(List<Guid> selectedIds)
+        {
+            if (selectedIds == null || !selectedIds.Any())
+            {
+                TempData["ErrorMessage"] = "Tidak ada data peserta yang dipilih untuk dihapus.";
+                return RedirectToAction("ParticipantList");
+            }
+
+            // Cari semua assessment yang ID-nya ada di dalam list yang dikirimkan
+            var targetAssessments = await _context.UserAssessments
+                .Where(u => selectedIds.Contains(u.Id))
+                .ToListAsync();
+
+            if (targetAssessments.Any())
+            {
+                // Gunakan RemoveRange untuk efisiensi penghapusan masal di EF Core
+                _context.UserAssessments.RemoveRange(targetAssessments);
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = $"{targetAssessments.Count} data peserta beserta seluruh jawaban dan hasil tesnya berhasil dihapus secara permanen.";
+            }
+
+            return RedirectToAction("ParticipantList");
+        }
     }
 }
