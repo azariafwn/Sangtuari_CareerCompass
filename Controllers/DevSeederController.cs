@@ -123,14 +123,18 @@ namespace SangtuariCareerCompass.Controllers
 
             for (int i = 0; i < count; i++)
             {
-                string name = $"{firstNames[rnd.Next(firstNames.Length)]} {lastNames[rnd.Next(lastNames.Length)]} {i + 1}";
+                string firstName = firstNames[rnd.Next(firstNames.Length)];
+                string lastName = lastNames[rnd.Next(lastNames.Length)];
+                string name = $"{firstName} {lastName} {i + 1}";
+                string dummyEmail = $"{firstName.ToLower()}.{lastName.ToLower()}{i + 1}@test.com";
+
                 var birthDate = DateTime.SpecifyKind(new DateTime(birthYear, 6, 15), DateTimeKind.Utc);
 
                 var user = new UserAssessment
                 {
                     AssessmentType = assessmentType,
                     FullName = name,
-                    Email = $"user{rnd.Next(1000, 9999)}@test.com",
+                    Email = dummyEmail,
                     Gender = i % 2 == 0 ? "Perempuan" : "Laki-laki",
                     BirthDate = birthDate,
                     SchoolName = schoolName,
