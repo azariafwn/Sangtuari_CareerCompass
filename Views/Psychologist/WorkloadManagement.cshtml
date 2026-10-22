@@ -1,0 +1,151 @@
+﻿@{
+    ViewData["Title"] = "Pembagian Tugas Penilaian";
+    Layout = "_PsychologistLayout";
+}
+
+<div class="bg-white p-4 rounded-4 shadow-sm">
+    <h4 class="fw-bold mb-4" style="color: #4A2B50;">Pembagian Tugas Penilaian</h4>
+
+    <div class="row">
+        <!-- Pilihan Sekolah -->
+        <div class="col-md-5">
+            <label class="fw-bold mb-2">Pilih Sekolah (Hanya yang memiliki antrean tertunda):</label>
+            <select id="schoolSelect" class="form-select mb-4" onchange="resetAllocation()">
+                <option value="" data-count="0">-- Pilih Sekolah --</option>
+                @foreach (var school in ViewBag.PendingSchools)
+                {
+                    <option value="@school.SchoolName" data-count="@school.UnassignedCount">@school.SchoolName (@school.UnassignedCount belum ditugaskan)</option>
+                }
+            </select>
+            <div class="alert alert-info">
+                Total Peserta yang harus dibagi: <strong id="totalToAssign">0</strong>
+            </div>
+        </div>
+
+        <!-- Pilihan Psikolog & Alokasi -->
+        <div class="col-md-7">
+            <label class="fw-bold mb-2">Pilih Psikolog & Sesuaikan Kuota:</label>
+            <div class="card border-0 bg-light p-3">
+                <form id="allocationForm">
+                    @foreach (var p in ViewBag.Psychologists)
+                    {
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="form-check flex-grow-1">
+                                <input class="form-check-input psych-check" type="checkbox" value="@p.Id" id="chk_@p.Id" onchange="recalculateDefaultAllocation()">
+                                <label class="form-check-label fw-bold" for="chk_@p.Id">
+                                    @p.FullName
+                                </label>
+                            </div>
+                            <div style="width: 120px;">
+                                <input type="number" class="form-control psych-quota" id="quota_@p.Id" data-id="@p.Id" min="0" value="0" disabled oninput="validateTotal()">
+                            </div>
+                        </div>
+                    }
+                </form>
+                <div class="d-flex justify-content-between align-items-center mt-3 border-top pt-3">
+                    <span class="text-muted small" id="validationMessage">Pilih sekolah dan psikolog untuk memulai.</span>
+                    <button class="btn text-white fw-bold px-4" style="background-color: #4A2B50;" id="btnSubmit" disabled onclick="submitAllocation()">Simpan Pembagian</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function getTotalPeserta() {
+            let select = document.getElementById('schoolSelect');
+            let selectedOption = select.options[select.selectedIndex];
+            return parseInt(selectedOption.getAttribute('data-count')) || 0;
+        }
+
+        function resetAllocation() {
+            let total = getTotalPeserta();
+            document.getElementById('totalToAssign').innerText = total;
+            document.querySelectorAll('.psych-check').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.psych-quota').forEach(input => {
+                input.value = 0;
+                input.disabled = true;
+            });
+            validateTotal();
+        }
+
+        // Algoritma pembagian rata (Default)
+        function recalculateDefaultAllocation() {
+            let total = getTotalPeserta();
+            if (total === 0) return;
+
+            let checkedBoxes = document.querySelectorAll('.psych-check:checked');
+            let totalChecked = checkedBoxes.length;
+
+            document.querySelectorAll('.psych-quota').forEach(input => {
+                let isChecked = document.getElementById('chk_' + input.getAttribute('data-id')).checked;
+                input.disabled = !isChecked;
+                if (!isChecked) input.value = 0;
+            });
+
+            if (totalChecked > 0) {
+                let baseQuota = Math.floor(total / totalChecked);
+                let remainder = total % totalChecked;
+
+                checkedBoxes.forEach((cb, index) => {
+                    let input = document.getElementById('quota_' + cb.value);
+                    // Sisa bagi didistribusikan ke psikolog awal agar pas
+                    input.value = baseQuota + (index < remainder ? 1 : 0);
+                });
+            }
+            validateTotal();
+        }
+
+        // Validasi jika Head mengubah angka manual
+        function validateTotal() {
+            let targetTotal = getTotalPeserta();
+            let currentTotal = 0;
+            let inputs = document.querySelectorAll('.psych-quota:not([disabled])');
+
+            inputs.forEach(input => currentTotal += (parseInt(input.value) || 0));
+
+            let btn = document.getElementById('btnSubmit');
+            let msg = document.getElementById('validationMessage');
+
+            if (targetTotal === 0 || inputs.length === 0) {
+                btn.disabled = true;
+                msg.innerText = "Pilih sekolah dan psikolog untuk memulai.";
+                msg.className = "text-muted small";
+            } else if (currentTotal === targetTotal) {
+                btn.disabled = false;
+                msg.innerHTML = `<span class="text-success"><i class="bi bi-check-circle-fill"></i> Alokasi Pas (${currentTotal}/${targetTotal})</span>`;
+            } else {
+                btn.disabled = true;
+                msg.innerHTML = `<span class="text-danger"><i class="bi bi-exclamation-circle-fill"></i> Total alokasi tidak pas (${currentTotal}/${targetTotal})</span>`;
+            }
+        }
+
+        function submitAllocation() {
+            let schoolName = document.getElementById('schoolSelect').value;
+            let inputs = document.querySelectorAll('.psych-quota:not([disabled])');
+
+            let allocations = {};
+            inputs.forEach(input => {
+                let val = parseInt(input.value) || 0;
+                if(val > 0) allocations[input.getAttribute('data-id')] = val;
+            });
+
+            fetch('/Psychologist/AssignWorkload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ SchoolName: schoolName, Allocations: allocations })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Pembagian tugas berhasil disimpan!');
+                    window.location.reload();
+                } else {
+                    alert('Gagal: ' + data.message);
+                }
+            })
+            .catch(err => alert('Terjadi kesalahan sistem.'));
+        }
+    </script>
+}
