@@ -9,6 +9,8 @@ namespace SangtuariCareerCompass.Models
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
+        public Guid? AssignedPsychologistId { get; set; }
+
         // Page 1: Tipe Asesmen
         [Required]
         public string AssessmentType { get; set; } // Exploration, Discovery, Advanced
