@@ -535,7 +535,7 @@ namespace SangtuariCareerCompass.Controllers
         [HttpGet]
         public async Task<IActionResult> WorkloadManagement()
         {
-            // Ambil daftar sekolah yang memiliki peserta belum dinilai (AssignedPsychologistId == null)
+            // 1. Ambil data sekolah yang belum dibagi tugas
             var pendingSchools = await _context.UserAssessments
                 .Where(u => u.AssignedPsychologistId == null)
                 .GroupBy(u => u.SchoolName)
@@ -547,8 +547,35 @@ namespace SangtuariCareerCompass.Controllers
                 .Select(p => new { p.Id, p.FullName })
                 .ToListAsync();
 
+            // 2. Kueri Agregasi Monitoring Kerja (Optimalisasi di level DB)
+            var workloadStats = await _context.UserAssessments
+                .Where(u => u.AssignedPsychologistId != null)
+                .Join(_context.PsychologistUsers,
+                      a => a.AssignedPsychologistId,
+                      p => p.Id,
+                      (a, p) => new { Assessment = a, Psychologist = p })
+                .Select(x => new
+                {
+                    PsychologistName = x.Psychologist.FullName,
+                    SchoolName = x.Assessment.SchoolName,
+                    // Cukup cek eksistensi baris Final_Judgment tanpa menarik seluruh detail JSONB
+                    IsJudged = _context.UserTestResults.Any(r => r.UserAssessmentId == x.Assessment.Id && r.TestCategory.StartsWith("Final_Judgment"))
+                })
+                .GroupBy(x => new { x.PsychologistName, x.SchoolName })
+                .Select(g => new
+                {
+                    PsychologistName = g.Key.PsychologistName,
+                    SchoolName = g.Key.SchoolName,
+                    TotalAssigned = g.Count(),
+                    TotalJudged = g.Count(x => x.IsJudged),
+                    TotalPending = g.Count(x => !x.IsJudged)
+                })
+                .OrderBy(x => x.SchoolName).ThenBy(x => x.PsychologistName)
+                .ToListAsync();
+
             ViewBag.PendingSchools = pendingSchools;
             ViewBag.Psychologists = activePsychologists;
+            ViewBag.WorkloadStats = workloadStats;
 
             return View();
         }
