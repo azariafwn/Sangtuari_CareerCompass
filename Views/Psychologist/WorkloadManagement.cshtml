@@ -3,7 +3,7 @@
     Layout = "_PsychologistLayout";
 }
 
-<div class="bg-white p-4 rounded-4 shadow-sm">
+<div class="bg-white p-4 rounded-4 shadow-sm mb-4">
     <h4 class="fw-bold mb-4" style="color: #4A2B50;">Pembagian Tugas Penilaian</h4>
 
     <div class="row">
@@ -51,6 +51,69 @@
     </div>
 </div>
 
+<!-- TABEL MONITORING PROGRESS PENILAIAN -->
+<div class="bg-white p-4 rounded-4 shadow-sm">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold mb-0" style="color: #4A2B50;">Monitoring Progress Penilaian</h5>
+
+        <div class="d-flex gap-2">
+            <div class="input-group" style="width: 250px;">
+                <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+                <input type="text" id="searchMonitoring" class="form-control border-start-0 bg-light" placeholder="Cari nama / sekolah" onkeyup="filterMonitoring()">
+            </div>
+            <button class="btn btn-outline-secondary" onclick="window.location.reload()">
+                <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle" id="monitoringTable">
+            <thead style="background-color: #4A2B50; color: white; cursor: pointer;">
+                <tr>
+                    <th width="25%" class="border-0 text-white" onclick="sortMonitoringTable(0)">Nama Psikolog <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i></th>
+                    <th width="25%" class="border-0 text-white" onclick="sortMonitoringTable(1)">Asal Sekolah <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i></th>
+                    <th width="15%" class="border-0 text-center text-white" onclick="sortMonitoringTable(2)">Total Ditugaskan <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i></th>
+                    <th width="15%" class="border-0 text-center text-white" onclick="sortMonitoringTable(3)">Selesai Dinilai <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i></th>
+                    <th width="20%" class="border-0 text-center text-white" onclick="sortMonitoringTable(4)">Menunggu Penilaian <i class="bi bi-arrow-down-up ms-1 small opacity-50"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.WorkloadStats != null && ViewBag.WorkloadStats.Count > 0)
+                {
+                    foreach (var stat in ViewBag.WorkloadStats)
+                    {
+                        <tr>
+                            <td class="fw-bold">@stat.PsychologistName</td>
+                            <td>@stat.SchoolName</td>
+                            <td class="text-center fw-bold text-primary">@stat.TotalAssigned</td>
+                            <td class="text-center">
+                                <span class="badge bg-success rounded-pill px-3">@stat.TotalJudged</span>
+                            </td>
+                            <td class="text-center">
+                                @if (stat.TotalPending > 0)
+                                {
+                                    <span class="badge bg-warning text-dark rounded-pill px-3">@stat.TotalPending</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-light text-muted border rounded-pill px-3" data-sort="0">Clear</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr id="emptyRow">
+                        <td colspan="5" class="text-center text-muted py-4">Belum ada data tugas yang didistribusikan.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
 @section Scripts {
     <script>
         function getTotalPeserta() {
@@ -70,7 +133,6 @@
             validateTotal();
         }
 
-        // Algoritma pembagian rata (Default)
         function recalculateDefaultAllocation() {
             let total = getTotalPeserta();
             if (total === 0) return;
@@ -90,14 +152,12 @@
 
                 checkedBoxes.forEach((cb, index) => {
                     let input = document.getElementById('quota_' + cb.value);
-                    // Sisa bagi didistribusikan ke psikolog awal agar pas
                     input.value = baseQuota + (index < remainder ? 1 : 0);
                 });
             }
             validateTotal();
         }
 
-        // Validasi jika Head mengubah angka manual
         function validateTotal() {
             let targetTotal = getTotalPeserta();
             let currentTotal = 0;
@@ -114,10 +174,10 @@
                 msg.className = "text-muted small";
             } else if (currentTotal === targetTotal) {
                 btn.disabled = false;
-                msg.innerHTML = `<span class="text-success"><i class="bi bi-check-circle-fill"></i> Alokasi Pas (${currentTotal}/${targetTotal})</span>`;
+                msg.innerHTML = `<span class="text-success fw-bold"><i class="bi bi-check-circle-fill"></i> Alokasi Pas (${currentTotal}/${targetTotal})</span>`;
             } else {
                 btn.disabled = true;
-                msg.innerHTML = `<span class="text-danger"><i class="bi bi-exclamation-circle-fill"></i> Total alokasi tidak pas (${currentTotal}/${targetTotal})</span>`;
+                msg.innerHTML = `<span class="text-danger fw-bold"><i class="bi bi-exclamation-circle-fill"></i> Total tidak pas (${currentTotal}/${targetTotal})</span>`;
             }
         }
 
@@ -131,6 +191,10 @@
                 if(val > 0) allocations[input.getAttribute('data-id')] = val;
             });
 
+            let btn = document.getElementById('btnSubmit');
+            btn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> Menyimpan...`;
+            btn.disabled = true;
+
             fetch('/Psychologist/AssignWorkload', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -139,13 +203,76 @@
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    alert('Pembagian tugas berhasil disimpan!');
                     window.location.reload();
                 } else {
                     alert('Gagal: ' + data.message);
+                    btn.innerHTML = `Simpan Pembagian`;
+                    btn.disabled = false;
                 }
             })
-            .catch(err => alert('Terjadi kesalahan sistem.'));
+            .catch(err => {
+                alert('Terjadi kesalahan koneksi/sistem.');
+                btn.innerHTML = `Simpan Pembagian`;
+                btn.disabled = false;
+            });
+        }
+
+        // --- Fitur Filter Tabel Monitoring ---
+        function filterMonitoring() {
+            let searchText = document.getElementById('searchMonitoring').value.toLowerCase();
+            let rows = document.querySelectorAll('#monitoringTable tbody tr:not(#emptyRow)');
+
+            rows.forEach(row => {
+                // Filter berdasarkan Nama Psikolog (Index 0) dan Asal Sekolah (Index 1)
+                let name = row.cells[0].innerText.toLowerCase();
+                let school = row.cells[1].innerText.toLowerCase();
+
+                if (name.includes(searchText) || school.includes(searchText)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // --- Fitur Sort Tabel Monitoring ---
+        let currentSortCol = -1;
+        let asc = true;
+
+        function sortMonitoringTable(columnIndex) {
+            let table = document.getElementById("monitoringTable");
+            let tbody = table.querySelector("tbody");
+            let rows = Array.from(tbody.querySelectorAll("tr:not(#emptyRow)"));
+
+            if (rows.length === 0) return;
+
+            asc = currentSortCol === columnIndex ? !asc : true;
+            currentSortCol = columnIndex;
+
+            rows.sort((a, b) => {
+                let cellA = a.cells[columnIndex];
+                let cellB = b.cells[columnIndex];
+
+                // Memanfaatkan atribut data-sort jika ada (contoh: "Clear" menjadi 0), jika tidak gunakan teks murni
+                let valA = cellA.querySelector('[data-sort]') ? cellA.querySelector('[data-sort]').getAttribute("data-sort") : cellA.innerText.trim();
+                let valB = cellB.querySelector('[data-sort]') ? cellB.querySelector('[data-sort]').getAttribute("data-sort") : cellB.innerText.trim();
+
+                // Coba parsing ke integer untuk kolom angka
+                let intA = parseInt(valA);
+                let intB = parseInt(valB);
+
+                if (!isNaN(intA) && !isNaN(intB)) {
+                    return asc ? intA - intB : intB - intA;
+                }
+
+                valA = valA.toLowerCase();
+                valB = valB.toLowerCase();
+                if (valA < valB) return asc ? -1 : 1;
+                if (valA > valB) return asc ? 1 : -1;
+                return 0;
+            });
+
+            rows.forEach(row => tbody.appendChild(row));
         }
     </script>
 }
