@@ -67,43 +67,7 @@ namespace SangtuariCareerCompass.Controllers
             return View();
         }
 
-        [Authorize]
-        [HttpGet]
-        public async Task<IActionResult> Queue()
-        {
-            // --- LOGIKA TABEL ANTREAN (Pindahan dari Index sebelumnya) ---
-            var assessments = await _context.UserAssessments
-                .AsNoTracking()
-                .Where(u => u.AssessmentType == "Discovery")
-                .OrderByDescending(u => u.CreatedAt)
-                .ToListAsync();
-
-            var queueList = new List<dynamic>();
-
-            foreach (var user in assessments)
-            {
-                bool isIstJudged = await _context.UserTestResults.AnyAsync(r => r.UserAssessmentId == user.Id && r.TestCategory == "IST");
-                bool isPapiJudged = await _context.UserTestResults.AnyAsync(r => r.UserAssessmentId == user.Id && r.TestCategory == "PAPI_Kostick");
-                bool isFinalJudged = await _context.UserTestResults.AnyAsync(r => r.UserAssessmentId == user.Id && r.TestCategory == "Final_Judgment_SMA");
-
-                queueList.Add(new
-                {
-                    user.Id,
-                    // Format khusus untuk logika sorting (YYYYMMDDHHmmss)
-                    CreatedAtSort = user.CreatedAt.ToString("yyyyMMddHHmmss"),
-                    // Format untuk tampilan UI (02 Sep 2026, 14:30)
-                    CreatedAtDisplay = user.CreatedAt.ToString("dd MMM yyyy, HH:mm"),
-                    user.FullName,
-                    user.SchoolName,
-                    IsIstJudged = isIstJudged,
-                    IsPapiJudged = isPapiJudged,
-                    IsFinalJudged = isFinalJudged
-                });
-            }
-
-            return View(queueList);
-        }
-
+        
         [HttpGet]
         public IActionResult Login()
         {
@@ -366,17 +330,63 @@ namespace SangtuariCareerCompass.Controllers
             return Ok(new { success = true });
         }
 
-        // 1. TAMBAHKAN FUNGSI ANTREAN SMP
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Queue()
+        {
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUserId = Guid.Parse(userIdStr);
+            bool isHead = User.IsInRole("Head");
+
+            var baseQuery = _context.UserAssessments.AsNoTracking().Where(u => u.AssessmentType == "Discovery");
+
+            // Filter: Jika bukan Head, hanya tampilkan yang ditugaskan ke dirinya
+            if (!isHead)
+            {
+                baseQuery = baseQuery.Where(u => u.AssignedPsychologistId == currentUserId);
+            }
+
+            var assessments = await baseQuery.OrderByDescending(u => u.CreatedAt).ToListAsync();
+            var queueList = new List<dynamic>();
+
+            foreach (var user in assessments)
+            {
+                bool isIstJudged = await _context.UserTestResults.AnyAsync(r => r.UserAssessmentId == user.Id && r.TestCategory == "IST");
+                bool isPapiJudged = await _context.UserTestResults.AnyAsync(r => r.UserAssessmentId == user.Id && r.TestCategory == "PAPI_Kostick");
+                bool isFinalJudged = await _context.UserTestResults.AnyAsync(r => r.UserAssessmentId == user.Id && r.TestCategory == "Final_Judgment_SMA");
+
+                queueList.Add(new
+                {
+                    user.Id,
+                    CreatedAtSort = user.CreatedAt.ToString("yyyyMMddHHmmss"),
+                    CreatedAtDisplay = user.CreatedAt.ToString("dd MMM yyyy, HH:mm"),
+                    user.FullName,
+                    user.SchoolName,
+                    IsIstJudged = isIstJudged,
+                    IsPapiJudged = isPapiJudged,
+                    IsFinalJudged = isFinalJudged
+                });
+            }
+            return View(queueList);
+        }
+
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> QueueSMP()
         {
-            var assessments = await _context.UserAssessments
-                .AsNoTracking()
-                .Where(u => u.AssessmentType == "Exploration")
-                .OrderByDescending(u => u.CreatedAt)
-                .ToListAsync();
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUserId = Guid.Parse(userIdStr);
+            bool isHead = User.IsInRole("Head");
 
+            var baseQuery = _context.UserAssessments.AsNoTracking().Where(u => u.AssessmentType == "Exploration");
+
+            // Filter: Jika bukan Head, hanya tampilkan yang ditugaskan ke dirinya
+            if (!isHead)
+            {
+                baseQuery = baseQuery.Where(u => u.AssignedPsychologistId == currentUserId);
+            }
+
+            var assessments = await baseQuery.OrderByDescending(u => u.CreatedAt).ToListAsync();
             var queueList = new List<dynamic>();
 
             foreach (var user in assessments)
@@ -393,7 +403,6 @@ namespace SangtuariCareerCompass.Controllers
                     IsJudged = isJudged
                 });
             }
-
             return View(queueList);
         }
 
@@ -520,6 +529,61 @@ namespace SangtuariCareerCompass.Controllers
             }
 
             return Ok(new { success = true });
+        }
+
+        [Authorize(Roles = "Head")]
+        [HttpGet]
+        public async Task<IActionResult> WorkloadManagement()
+        {
+            // Ambil daftar sekolah yang memiliki peserta belum dinilai (AssignedPsychologistId == null)
+            var pendingSchools = await _context.UserAssessments
+                .Where(u => u.AssignedPsychologistId == null)
+                .GroupBy(u => u.SchoolName)
+                .Select(g => new { SchoolName = g.Key, UnassignedCount = g.Count() })
+                .ToListAsync();
+
+            var activePsychologists = await _context.PsychologistUsers
+                .Where(p => p.IsActive)
+                .Select(p => new { p.Id, p.FullName })
+                .ToListAsync();
+
+            ViewBag.PendingSchools = pendingSchools;
+            ViewBag.Psychologists = activePsychologists;
+
+            return View();
+        }
+
+        [Authorize(Roles = "Head")]
+        [HttpPost]
+        public async Task<IActionResult> AssignWorkload([FromBody] WorkloadAllocationDto dto)
+        {
+            if (dto == null || string.IsNullOrEmpty(dto.SchoolName) || dto.Allocations == null || !dto.Allocations.Any())
+                return BadRequest("Data alokasi tidak valid.");
+
+            var unassignedAssessments = await _context.UserAssessments
+                .Where(u => u.SchoolName == dto.SchoolName && u.AssignedPsychologistId == null)
+                .ToListAsync();
+
+            int totalAllocated = dto.Allocations.Values.Sum();
+            if (totalAllocated != unassignedAssessments.Count)
+                return BadRequest($"Total alokasi ({totalAllocated}) tidak cocok dengan jumlah peserta yang belum ditugaskan ({unassignedAssessments.Count}).");
+
+            int currentIndex = 0;
+            foreach (var allocation in dto.Allocations)
+            {
+                var psychId = allocation.Key;
+                var quota = allocation.Value;
+
+                // Loop sebanyak kuota, tandai ID psikolog ke peserta
+                for (int i = 0; i < quota; i++)
+                {
+                    unassignedAssessments[currentIndex].AssignedPsychologistId = psychId;
+                    currentIndex++;
+                }
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok(new { success = true, message = "Beban kerja berhasil didistribusikan." });
         }
 
         // Tambahkan fungsi helper untuk generate password (8 karakter acak)
