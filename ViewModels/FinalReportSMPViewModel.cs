@@ -46,6 +46,11 @@ namespace SangtuariCareerCompass.ViewModels
         public string CustomSaran { get; set; } = string.Empty;
         public bool IsJudged { get; set; } = false;
 
+        //properti TTD Digital
+        public string PsychologistSignatureKey { get; set; } = string.Empty;
+        public string PsychologistSignatureUrl { get; set; } = string.Empty;
+        public string PsychologistRole { get; set; } = string.Empty;
+
         public static async Task<FinalReportSMPViewModel?> BuildFromDatabaseAsync(ApplicationDbContext dbContext, Guid assessmentId)
         {
             var user = await dbContext.UserAssessments.AsNoTracking().FirstOrDefaultAsync(u => u.Id == assessmentId);
@@ -166,6 +171,8 @@ namespace SangtuariCareerCompass.ViewModels
                     vm.PsychologistName = assessor.FullName;
                     vm.PsychologistDegree = assessor.Degree;
                     vm.PsychologistSilp = assessor.SilpNumber;
+                    vm.PsychologistSignatureKey = assessor.SignatureObjectKey;
+                    vm.PsychologistRole = assessor.Role;
                 }
             }
             // Fallback keamanan jika belum dinilai namun dirender (meski tidak seharusnya terjadi di production)
@@ -177,6 +184,8 @@ namespace SangtuariCareerCompass.ViewModels
                     vm.PsychologistName = headPsychologist.FullName;
                     vm.PsychologistDegree = headPsychologist.Degree;
                     vm.PsychologistSilp = headPsychologist.SilpNumber;
+                    vm.PsychologistSignatureKey = headPsychologist.SignatureObjectKey;
+                    vm.PsychologistRole = headPsychologist.Role;
                 }
             }
 
