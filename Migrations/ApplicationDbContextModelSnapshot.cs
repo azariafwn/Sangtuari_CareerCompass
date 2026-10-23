@@ -58,6 +58,9 @@ namespace SangtuariCareerCompass.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<string>("SignatureObjectKey")
+                        .HasColumnType("text");
+
                     b.Property<DateOnly?>("SilpEndDate")
                         .HasColumnType("date");
 
@@ -80,11 +83,11 @@ namespace SangtuariCareerCompass.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(2026, 10, 22, 7, 55, 29, 336, DateTimeKind.Utc).AddTicks(6537),
+                            CreatedAt = new DateTime(2026, 10, 23, 13, 29, 38, 555, DateTimeKind.Utc).AddTicks(6391),
                             Email = "admin@sangtuari.com",
                             FullName = "Kepala Psikolog Sangtuari",
                             IsActive = true,
-                            PasswordHash = "$2a$11$bQUNu5BlHZChyDjH4.9vSegIXT2lk9irQjTK5Sy7OGaw/poM845nC",
+                            PasswordHash = "$2a$11$6MwW1XCAeYuVJ6/tRYPF5uhusf8/HsiWbPVIyMsH5vHgxnxyKlUH.",
                             Role = "Head"
                         });
                 });
