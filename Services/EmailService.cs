@@ -62,6 +62,12 @@ namespace SangtuariCareerCompass.Services
                         <div style='text-align: center; margin: 30px 0;'>
                             <a href='{reportUrl}' style='background-color: #9C7BB4; color: white; padding: 12px 25px; text-decoration: none; border-radius: 25px; font-weight: bold;'>Lihat & Unduh Laporan PDF</a>
                         </div>
+
+                        <div style='background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 12px 15px; margin: 20px 0; font-size: 13px; color: #856404;'>
+                            <strong><span style='font-size: 16px;'>⚠️</span> PENTING: Segera Unduh Laporan Anda!</strong><br/>
+                            Tautan unduhan dan dokumen tanda tangan digital di dalamnya memiliki <strong>batas waktu akses</strong> demi keamanan data. Harap <strong>segera mengunduh dan menyimpan</strong> file PDF hasil tes Anda di perangkat pribadi untuk menghindari kendala akses di kemudian hari.
+                        </div>
+
                         <p style='font-size: 12px; color: #777;'>Jika tombol di atas tidak berfungsi, salin tautan berikut ke browser Anda: <br/> {reportUrl}</p>
                     </div>
                 </div>"
