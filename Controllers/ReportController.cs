@@ -16,11 +16,13 @@ namespace SangtuariCareerCompass.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IstScoringEngine _istEngine;
+        private readonly IStorageService _storageService;
 
-        public ReportController(ApplicationDbContext context)
+        public ReportController(ApplicationDbContext context, IStorageService storageService)
         {
             _context = context;
             _istEngine = new IstScoringEngine();
+            _storageService = storageService;
         }
 
         [HttpGet]
@@ -192,6 +194,12 @@ namespace SangtuariCareerCompass.Controllers
             var reportVm = await FinalReportSmaViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
             if (reportVm == null) return NotFound("Data asesmen tidak ditemukan.");
 
+            if (!string.IsNullOrEmpty(reportVm.PsychologistSignatureKey))
+            {
+                // Berikan waktu kadaluarsa presigned URL secukupnya untuk render PDF (misal 60 menit)
+                reportVm.PsychologistSignatureUrl = _storageService.GeneratePresignedUrl(reportVm.PsychologistSignatureKey, 60);
+            }
+
             return View("~/Views/Report/SMA/FinalReportSMA.cshtml", reportVm);
         }
 
@@ -229,8 +237,15 @@ namespace SangtuariCareerCompass.Controllers
         public async Task<IActionResult> FinalReportSMP(Guid userAssessmentId)
         {
             if (userAssessmentId == Guid.Empty) return RedirectToAction("Index", "Assessment");
+            
             var reportVm = await FinalReportSMPViewModel.BuildFromDatabaseAsync(_context, userAssessmentId);
             if (reportVm == null) return NotFound("Data asesmen tidak ditemukan.");
+
+            if (!string.IsNullOrEmpty(reportVm.PsychologistSignatureKey))
+            {
+                reportVm.PsychologistSignatureUrl = _storageService.GeneratePresignedUrl(reportVm.PsychologistSignatureKey, 60);
+            }
+
             return View("~/Views/Report/SMP/FinalReportSMP.cshtml", reportVm);
         }
 
