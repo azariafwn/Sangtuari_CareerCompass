@@ -27,7 +27,8 @@
             </div>
         }
 
-        <form asp-action="Profile" method="post">
+        <!-- PERHATIAN: enctype="multipart/form-data" WAJIB untuk upload file -->
+        <form asp-action="Profile" method="post" enctype="multipart/form-data">
             <h5 class="fw-bold mb-3 border-bottom pb-2" style="color: #4A2B50;">Informasi Dasar</h5>
             <div class="row g-3 mb-4">
                 <div class="col-md-6">
@@ -65,6 +66,28 @@
                 </div>
             </div>
 
+            <!-- BLOK BARU: TANDA TANGAN DIGITAL (QR CODE) -->
+            <h5 class="fw-bold mb-3 border-bottom pb-2 mt-4" style="color: #4A2B50;">Tanda Tangan Digital (QR Code)</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-12">
+                    @if (!string.IsNullOrEmpty(Model.SignaturePresignedUrl))
+                    {
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-muted small">QR Code Saat Ini</label>
+                            <div class="border rounded-3 p-3 bg-light text-center" style="max-width: 200px;">
+                                <!-- URL ini ditarik secara dinamis dari Cloudflare R2 dengan masa berlaku terbatas -->
+                                <img src="@Model.SignaturePresignedUrl" alt="QR Tanda Tangan" class="img-fluid rounded" />
+                            </div>
+                        </div>
+                    }
+                    
+                    <label class="form-label fw-bold text-muted small">Unggah QR Code Baru (Maks 2MB, JPG/PNG)</label>
+                    <!-- Pembatasan tipe file di sisi klien menggunakan atribut accept -->
+                    <input asp-for="NewSignatureFile" type="file" class="form-control bg-light" accept="image/jpeg, image/png, image/jpg" />
+                    <span asp-validation-for="NewSignatureFile" class="text-danger small"></span>
+                </div>
+            </div>
+
             <div class="text-end mt-4">
                 <button type="submit" class="btn text-white rounded-pill px-5 fw-bold shadow-sm" style="background-color: #4A2B50;">
                     Simpan Perubahan
@@ -74,7 +97,6 @@
     </div>
 
     <!-- BLOK 2: UBAH PASSWORD -->
-    <!-- Dihapus mt-4 nya karena margin pemisah sudah dihandle oleh mb-4 di blok atas -->
     <div class="card border-0 shadow-sm rounded-4">
         <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
             <h5 class="fw-bold" style="color: #4A2B50;"><i class="bi bi-shield-lock-fill me-2"></i>Ubah Password</h5>
@@ -97,14 +119,12 @@
                 <div class="mb-3">
                     <label class="form-label fw-bold text-muted small">Password Baru</label>
                     <div class="input-group">
-                        <!-- Tambahkan id="newPassword" jika belum ada -->
                         <input type="password" name="NewPassword" id="newPassword" class="form-control" required minlength="8" maxlength="12">
                         <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('newPassword', this)">
                             <i class="bi bi-eye"></i>
                         </button>
                     </div>
                     
-                    <!-- PERUBAHAN: Daftar Syarat Password -->
                     <ul class="list-unstyled small mt-2 mb-0" id="passwordRules">
                         <li id="ruleLength" class="text-danger"><i class="bi bi-x-circle me-1"></i> 8-12 karakter</li>
                         <li id="ruleUpper" class="text-danger"><i class="bi bi-x-circle me-1"></i> Minimal 1 huruf besar (A-Z)</li>
@@ -126,7 +146,6 @@
                 </div>
 
                 <div class="text-end">
-                    <!-- PERUBAHAN: Tambahkan id dan atribut disabled bawaan -->
                     <button type="submit" id="btnSubmitPassword" class="btn text-white rounded-pill px-4 fw-bold" style="background-color: #4A2B50;" disabled>Simpan Password</button>
                 </div>
             </form>
@@ -157,7 +176,6 @@
     const btnSubmit = document.getElementById('btnSubmitPassword');
     const ruleMatch = document.getElementById('ruleMatch');
 
-    // Helper untuk mengubah warna dan ikon aturan
     function updateRule(elementId, isValid) {
         const el = document.getElementById(elementId);
         const icon = el.querySelector('i');
@@ -172,19 +190,16 @@
         return isValid;
     }
 
-    // Fungsi Validasi Utama
     function validatePassword() {
         const val = newPassInput.value;
         const confVal = confPassInput.value;
 
-        // Evaluasi Regex
         const isLength = updateRule('ruleLength', val.length >= 8 && val.length <= 12);
         const isUpper = updateRule('ruleUpper', /[A-Z]/.test(val));
         const isLower = updateRule('ruleLower', /[a-z]/.test(val));
         const isNumber = updateRule('ruleNumber', /[0-9]/.test(val));
         const isSymbol = updateRule('ruleSymbol', /[\W_]/.test(val));
 
-        // Evaluasi Kecocokan (Hanya tampilkan error jika konfirmasi sudah mulai diisi)
         let isMatch = false;
         if (confVal.length > 0) {
             isMatch = val === confVal;
@@ -200,7 +215,6 @@
             ruleMatch.classList.add('d-none');
         }
 
-        // Enable tombol HANYA JIKA semua aturan terpenuhi
         if (isLength && isUpper && isLower && isNumber && isSymbol && isMatch) {
             btnSubmit.removeAttribute('disabled');
         } else {
@@ -208,11 +222,9 @@
         }
     }
 
-    // Pasang Event Listener saat pengguna mengetik
     newPassInput.addEventListener('input', validatePassword);
     confPassInput.addEventListener('input', validatePassword);
 
-    // Menggunakan Fetch API untuk mencegah Chrome Pop-up saat gagal
     document.getElementById('formChangePassword').addEventListener('submit', async function (e) {
         e.preventDefault();
 
@@ -224,7 +236,6 @@
         btn.innerText = "Menyimpan...";
         alertPlaceholder.innerHTML = '';
 
-        // PERBAIKAN: Deklarasi di luar blok try agar dikenali oleh finally
         let response;
 
         try {
@@ -250,7 +261,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>`;
         } finally {
-            // PERBAIKAN: Variabel response sekarang aman dibaca
             if (!response || !response.ok) {
                 btn.disabled = false;
                 btn.innerText = "Simpan Password";
