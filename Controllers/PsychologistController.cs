@@ -22,11 +22,13 @@ namespace SangtuariCareerCompass.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly EmailService _emailService;
+        private readonly IStorageService _storageService;
 
-        public PsychologistController(ApplicationDbContext context, EmailService emailService)
+        public PsychologistController(ApplicationDbContext context, EmailService emailService, IStorageService storageService)
         {
             _context = context;
             _emailService = emailService;
+            _storageService = storageService;
         }
 
         [Authorize]
@@ -141,7 +143,10 @@ namespace SangtuariCareerCompass.Controllers
                 SilpNumber = user.SilpNumber,
                 SilpStartDate = user.SilpStartDate,
                 SilpEndDate = user.SilpEndDate,
-                StrNumber = user.StrNumber
+                StrNumber = user.StrNumber,
+                SignatureObjectKey = user.SignatureObjectKey,
+                // Generate URL sementara untuk ditampilkan di View
+                SignaturePresignedUrl = _storageService.GeneratePresignedUrl(user.SignatureObjectKey, 60)
             };
 
             return View(model);
@@ -159,6 +164,46 @@ namespace SangtuariCareerCompass.Controllers
 
             var user = await _context.PsychologistUsers.FindAsync(userId);
             if (user == null) return NotFound();
+
+            // VALIDASI FILE UPLOAD
+            if (model.NewSignatureFile != null)
+            {
+                // 1. Validasi Ukuran (Maks 2MB)
+                if (model.NewSignatureFile.Length > 2 * 1024 * 1024)
+                {
+                    ModelState.AddModelError("NewSignatureFile", "Ukuran file QR Code maksimal 2 MB.");
+                }
+
+                // 2. Validasi Ekstensi/MIME Type (Hanya Gambar)
+                var allowedMimeTypes = new[] { "image/jpeg", "image/png", "image/jpg" };
+                if (!Array.Exists(allowedMimeTypes, m => m == model.NewSignatureFile.ContentType))
+                {
+                    ModelState.AddModelError("NewSignatureFile", "Format file tidak valid. Gunakan JPG atau PNG.");
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                // Regenerate URL karena form akan dikembalikan
+                model.SignaturePresignedUrl = _storageService.GeneratePresignedUrl(user.SignatureObjectKey, 60);
+                return View(model);
+            }
+
+            // EKSEKUSI UPLOAD R2 JIKA ADA FILE BARU
+            if (model.NewSignatureFile != null)
+            {
+                try
+                {
+                    // Kirim object key lama untuk ditimpa/dihapus otomatis oleh service
+                    user.SignatureObjectKey = await _storageService.UploadSignatureAsync(model.NewSignatureFile, user.SignatureObjectKey);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, "Gagal mengunggah foto ke server penyimpanan.");
+                    model.SignaturePresignedUrl = _storageService.GeneratePresignedUrl(user.SignatureObjectKey, 60);
+                    return View(model);
+                }
+            }
 
             // Update hanya field yang diizinkan (Role dan PasswordHash aman)
             user.FullName = model.FullName;
