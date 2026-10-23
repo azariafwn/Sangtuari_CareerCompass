@@ -31,7 +31,7 @@ namespace SangtuariCareerCompass.Data
                 FullName = "Kepala Psikolog Sangtuari",
                 Email = "admin@sangtuari.com",
                 // Hash BCrypt untuk password "admin123"
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("@Head111"),
                 Role = "Head"
             });
         }
