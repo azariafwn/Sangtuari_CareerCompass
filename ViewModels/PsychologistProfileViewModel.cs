@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace SangtuariCareerCompass.ViewModels
 {
@@ -20,6 +21,11 @@ namespace SangtuariCareerCompass.ViewModels
         public DateOnly? SilpStartDate { get; set; }
 
         public DateOnly? SilpEndDate { get; set; }
+
+        public string? SignatureObjectKey { get; set; }
+        public string? SignaturePresignedUrl { get; set; }
+        public IFormFile? NewSignatureFile { get; set; }
+
 
         [MaxLength(50)]
         public string? StrNumber { get; set; }
