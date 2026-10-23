@@ -36,5 +36,7 @@ namespace SangtuariCareerCompass.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public bool IsActive { get; set; } = true;
+
+        public string? SignatureObjectKey { get; set; }
     }
 }
