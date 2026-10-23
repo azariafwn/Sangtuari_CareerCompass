@@ -413,7 +413,7 @@
         <div class="mt-4 d-flex justify-content-end w-100 pe-4">
             <div style="min-width: 300px; max-width: 420px;">
                 <div class="d-flex justify-content-start align-items-center gap-3">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=60x60&data=Assessed_By_@Uri.EscapeDataString(Model.PsychologistName)_SILP_@Model.PsychologistSilp" alt="TTD Barcode" style="width: 60px; height: 60px; flex-shrink: 0;" />
+                    <img src="@Model.PsychologistSignatureUrl" alt="TTD Psikolog" style="width: 60px; height: 60px; flex-shrink: 0; object-fit: contain;" />
                     <div class="text-start">
                         <div style="font-size: 12px;">Bogor, @Model.TestedAt.ToString("dd MMMM yyyy")</div>
                         <div class="fw-bold mb-1" style="font-size: 12px;">Psikolog Pemeriksa,</div>
