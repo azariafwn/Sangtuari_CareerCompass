@@ -23,6 +23,7 @@ namespace SangtuariCareerCompass
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<EmailService>();
+            builder.Services.AddScoped<IStorageService, CloudflareR2Service>();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
